@@ -1100,7 +1100,7 @@
   <div class="hero-glow"></div>
   <div class="hero-eyebrow">Weekly Intelligence Brief</div>
   <h1 class="hero-headline">What's real. What's credible. What it means.</h1>
-  <p class="hero-sub">The Veil tracks the disclosure story, scores every source for credibility, and gives you what actually matters, every Tuesday morning.</p>
+  <p class="hero-sub">The Veil tracks the disclosure story, scores every source for credibility, and gives you what actually matters, every Sunday evening.</p>
   <div class="hero-meta">
     <span id="meta-week">Loading this week’s issue…</span>
   </div>
@@ -1244,9 +1244,9 @@
 
   <!-- CTA -->
   <div class="newsletter-cta">
-    <div class="cta-eyebrow">The Weekly Brief</div>
-    <h3 class="cta-headline">Every story. Scored. Sent every Tuesday morning.</h3>
-    <p class="cta-sub">The Veil Brief, credibility-scored UAP coverage delivered every Tuesday morning in your inbox.</p>
+    <div class="cta-eyebrow">The Weekly Brief · Sunday Evenings</div>
+    <h3 class="cta-headline">End your weekend questioning everything.</h3>
+    <p class="cta-sub">The Veil Brief: credibility-scored UAP coverage, delivered free to your inbox every Sunday evening.</p>
     <div class="cta-form">
       <input class="cta-input" type="email" placeholder="your@email.com">
       <button class="cta-submit">Subscribe Free</button>
@@ -1461,7 +1461,7 @@
   <div class="footer-logo">The Veil</div>
   <div class="footer-copy">
     The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>
-    Not affiliated with any government program &nbsp;·&nbsp; Delivered every Tuesday morning
+    Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening
   </div>
 </footer>
 
@@ -1516,14 +1516,14 @@ async function loadFeed(){
 function renderEmpty(){
   document.getElementById('meta-week').textContent = 'No issue published yet';
   document.getElementById('lead-mount').innerHTML =
-    '<div style="padding:48px;text-align:center;color:var(--text-secondary);">The first issue is on its way. Check back Tuesday morning.</div>';
+    '<div style="padding:48px;text-align:center;color:var(--text-secondary);">The first issue is on its way. Check back Sunday evening.</div>';
 }
 
 function renderMeta(week, count){
   const d = new Date(week + 'T00:00:00');
   const label = isNaN(d) ? week : d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('meta-week').innerHTML =
-    'Week of ' + label + ' <span>|</span> ' + count + ' ' + (count===1?'Story':'Stories') + ' <span>|</span> New issue every Tuesday';
+    'Week of ' + label + ' <span>|</span> ' + count + ' ' + (count===1?'Story':'Stories') + ' <span>|</span> New issue every Sunday evening';
 }
 
 function renderLead(a){
@@ -1642,7 +1642,7 @@ function wireSubscribe(){
     btn.disabled=true; btn.textContent='…';
     try{
       await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'email='+encodeURIComponent(email)});
-      setMsg('You’re in. Watch for The Veil every Tuesday morning.', true);
+      setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
     }catch(e){
       btn.disabled=false; btn.textContent='Subscribe Free';
       setMsg('Something went wrong. Please try again.', false);
