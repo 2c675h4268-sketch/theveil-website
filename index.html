@@ -989,6 +989,34 @@
   .src-desc { font-size: 12px; line-height: 1.5; color: var(--text-secondary); flex: 1; }
   .src-go   { font-size: 11px; font-weight: 600; color: var(--text-primary); font-family: 'Space Mono', monospace; }
   @media (max-width: 700px) { .src-grid { grid-template-columns: 1fr; } }
+
+  /* ── THE VEIL'S READ ── */
+  .veils-read {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: var(--radius);
+    padding: 26px 30px;
+    margin-bottom: 28px;
+  }
+  .veils-read .vr-eyebrow {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 16px;
+  }
+  .veils-read p {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px; line-height: 1.78; color: var(--text-secondary);
+    margin: 0 0 14px 0;
+  }
+  .veils-read p:first-of-type { color: var(--text-primary); font-size: 16px; }
+  .veils-read p:last-of-type { margin-bottom: 0; }
+  .veils-read .vr-sig {
+    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    color: var(--text-muted); margin-top: 18px;
+  }
+  @media (max-width: 560px) { .veils-read { padding: 20px 20px; } }
 </style>
 </head>
 <body>
@@ -1052,6 +1080,15 @@
   </div>
 
   <div id="lead-mount"></div>
+
+  <!-- THE VEIL'S READ -->
+  <div id="veils-read-section" style="display:none;">
+    <div class="section-header">
+      <span class="section-title">The Veil's Read</span>
+      <div class="section-rule"></div>
+    </div>
+    <div id="veils-read" class="veils-read"></div>
+  </div>
 
   <!-- TILE GRID -->
   <div class="section-header">
@@ -1542,6 +1579,21 @@ document.querySelectorAll('.subscribe-btn, .mobile-menu a:last-child').forEach(f
 });
 wireSubscribe();
 
+// ---- The Veil's Read (weekly editorial synthesis) ----
+async function loadRead(){
+  try{
+    const res = await fetch(SUPABASE_URL + '/rest/v1/weekly_analysis?select=body,week_of&order=created_at.desc&limit=1', { headers: SB_HEADERS });
+    if(!res.ok) return;
+    const rows = await res.json();
+    if(!rows.length || !rows[0].body) return;
+    const paras = String(rows[0].body).split(/\n\n+/).map(function(p){ return '<p>'+esc(p.trim())+'</p>'; }).join('');
+    document.getElementById('veils-read').innerHTML =
+      '<span class="vr-eyebrow">Editorial analysis — scored, sourced, measured</span>' + paras + '<div class="vr-sig">— The Veil editorial desk</div>';
+    document.getElementById('veils-read-section').style.display = 'block';
+  }catch(e){ /* leave hidden on error */ }
+}
+
+loadRead();
 loadFeed();
 </script>
 </body>
