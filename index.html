@@ -638,6 +638,23 @@
   }
   .cta-submit:hover { background: var(--amber-bright); }
 
+  .cta-tz {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 8px;
+    max-width: 440px; margin: 16px auto 0;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .cta-tz-select {
+    padding: 6px 28px 6px 10px;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 600;
+    background-color: var(--surface); color: var(--text-primary);
+    cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23D4933A' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
+  .cta-tz-select:focus { border-color: var(--amber); }
+
   /* ── FOOTER ── */
   footer {
     background: var(--deep);
@@ -1251,6 +1268,10 @@
       <input class="cta-input" type="email" placeholder="your@email.com">
       <button class="cta-submit">Subscribe Free</button>
     </div>
+    <div class="cta-tz">
+      <span>Delivered Sunday evening in your timezone:</span>
+      <select id="veil-tz-select" class="cta-tz-select" aria-label="Your timezone"></select>
+    </div>
   </div>
 
 </main>
@@ -1627,6 +1648,46 @@ document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('clic
 
 // ---- subscribe ----
 const SUBSCRIBE_WEBHOOK = 'https://hook.us2.make.com/krlnf1d61bokrrwcfymviv92dte1ralt';
+
+// ── Timezone bucketing: map the browser's IANA zone to a delivery wave ──
+function veilDetectIana(){
+  try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){ return ''; }
+}
+function veilBucketFromIana(iana){
+  iana = iana || '';
+  var m = {
+    'America/New_York':'ET','America/Detroit':'ET','America/Toronto':'ET','America/Montreal':'ET','America/Indiana/Indianapolis':'ET','America/Kentucky/Louisville':'ET','America/Nassau':'ET',
+    'America/Chicago':'CT','America/Winnipeg':'CT','America/Indiana/Knox':'CT','America/Menominee':'CT','America/Matamoros':'CT',
+    'America/Denver':'MT','America/Edmonton':'MT','America/Boise':'MT','America/Phoenix':'MT','America/Mazatlan':'MT',
+    'America/Los_Angeles':'PT','America/Vancouver':'PT','America/Tijuana':'PT',
+    'America/Anchorage':'AKT','America/Juneau':'AKT','America/Sitka':'AKT',
+    'Pacific/Honolulu':'HT'
+  };
+  if (m[iana]) return m[iana];
+  if (iana === 'Europe/London' || iana === 'Europe/Dublin' || iana === 'Europe/Lisbon' || iana === 'Atlantic/Reykjavik') return 'UK';
+  if (iana.indexOf('Europe/') === 0 || iana.indexOf('Africa/') === 0 || iana.indexOf('Atlantic/') === 0) return 'EU';
+  if (iana.indexOf('Asia/') === 0 || iana.indexOf('Australia/') === 0 || iana.indexOf('Pacific/') === 0 || iana.indexOf('Indian/') === 0) return 'APAC';
+  return 'ET'; // safe default (Eastern wave)
+}
+var VEIL_TZ_OPTIONS = [['ET','US Eastern'],['CT','US Central'],['MT','US Mountain'],['PT','US Pacific'],['AKT','Alaska'],['HT','Hawaii'],['UK','UK / Ireland'],['EU','Europe'],['APAC','Asia / Pacific']];
+function veilTzFields(){
+  var iana = veilDetectIana();
+  var sel = document.getElementById('veil-tz-select');
+  var region = (sel && sel.value) ? sel.value : veilBucketFromIana(iana);
+  return { region: region, tz: iana || region };
+}
+(function initVeilTzSelect(){
+  var sel = document.getElementById('veil-tz-select');
+  if(!sel) return;
+  var detected = veilBucketFromIana(veilDetectIana());
+  VEIL_TZ_OPTIONS.forEach(function(o){
+    var op = document.createElement('option');
+    op.value = o[0]; op.textContent = o[1];
+    if(o[0] === detected) op.selected = true;
+    sel.appendChild(op);
+  });
+})();
+
 function wireSubscribe(){
   const form = document.querySelector('.cta-form');
   if(!form) return;
@@ -1641,7 +1702,9 @@ function wireSubscribe(){
     if(SUBSCRIBE_WEBHOOK.indexOf('__')===0){ setMsg('Subscriptions open shortly. Check back soon.', true); return; }
     btn.disabled=true; btn.textContent='…';
     try{
-      await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'email='+encodeURIComponent(email)});
+      const tzf = veilTzFields();
+      const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
+      await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', body: body});
       setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
     }catch(e){
       btn.disabled=false; btn.textContent='Subscribe Free';
