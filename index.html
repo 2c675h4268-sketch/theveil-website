@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Veil — Weekly UAP Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --void: #0A0A0F;
+    --deep: #0F0F18;
+    --surface: #13131C;
+    --panel: #1A1A26;
+    --border: rgba(255,255,255,0.08);
+    --amber: #D4933A;
+    --amber-bright: #F0AA44;
+    --amber-dim: #8A6420;
+    --text-primary: #F0EDE4;
+    --text-secondary: #9A97A8;
+    --text-muted: #52505E;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  body {
+    background: var(--void);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-mark {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--amber);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .logo-mark svg { width: 18px; height: 18px; }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .logo-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 7.5px;
+    color: var(--amber);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+
+  .subscribe-btn {
+    background: var(--amber) !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    padding: 7px 16px !important;
+    border-radius: 10px !important;
+  }
+
+  .subscribe-btn:hover { background: var(--amber-bright) !important; }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    background: none;
+    border: none;
+  }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-secondary); border-radius: 2px; }
+
+  .mobile-menu {
+    display: none;
+    background: var(--deep);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px 16px;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-menu a:last-child { border-bottom: none; color: var(--amber); font-weight: 600; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--deep);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(212,147,58,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: rgba(212,147,58,0.1);
+    border: 1px solid rgba(212,147,58,0.25);
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--amber);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5.5vw, 60px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--text-primary);
+    max-width: 720px;
+    margin: 0 auto 16px;
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto 28px;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .hero-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .hero-meta span { color: var(--amber-dim); margin: 0 8px; }
+
+  /* ── FILTERS ── */
+  .filters-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .pill:hover { border-color: rgba(212,147,58,0.4); color: var(--text-primary); }
+  .pill.active { background: var(--amber); border-color: var(--amber); color: #000; font-weight: 600; }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+  /* ── FEATURED TILE ── */
+  .featured-tile {
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 28px;
+    cursor: pointer;
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+    transition: transform 0.25s, box-shadow 0.25s;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .featured-tile:hover { transform: translateY(-2px); box-shadow: 0 16px 56px rgba(0,0,0,0.6); }
+
+  .featured-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.4s;
+  }
+
+  .featured-tile:hover .featured-bg { transform: scale(1.02); }
+
+  .featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5,5,10,0.97) 0%, rgba(5,5,10,0.6) 45%, rgba(5,5,10,0.1) 100%);
+  }
+
+  .featured-body {
+    position: relative;
+    z-index: 2;
+    padding: 32px 36px;
+    width: 100%;
+    max-width: 780px;
+  }
+
+  .featured-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .featured-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--amber); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .featured-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3.2vw, 32px);
+    font-weight: 700;
+    line-height: 1.22;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .featured-summary {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    max-width: 620px;
+  }
+
+  .featured-footer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    width: fit-content;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tag-disclosure { background: rgba(220,60,60,0.18); color: #F08080; border: 1px solid rgba(220,60,60,0.3); }
+  .tag-sighting   { background: rgba(60,130,220,0.18); color: #80B8F0; border: 1px solid rgba(60,130,220,0.3); }
+  .tag-science    { background: rgba(60,180,110,0.18); color: #80D4A8; border: 1px solid rgba(60,180,110,0.3); }
+  .tag-government { background: rgba(140,80,220,0.18); color: #C0A0F0; border: 1px solid rgba(140,80,220,0.3); }
+
+  /* ── CREDIBILITY ── */
+  .credibility {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cred-ring {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .cred-high { border: 2px solid #70D4A0; color: #70D4A0; background: rgba(60,180,110,0.15); }
+  .cred-mid  { border: 2px solid var(--amber); color: var(--amber); background: rgba(212,147,58,0.15); }
+  .cred-low  { border: 2px solid #F08080; color: #F08080; background: rgba(220,60,60,0.15); }
+
+  .cred-label { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.3; }
+  .cred-label strong { display: block; color: rgba(255,255,255,0.75); font-weight: 500; font-size: 11px; }
+
+  .tile-source-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── TILE GRID ── */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .tile {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.22s, box-shadow 0.22s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+
+  .tile:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.55); }
+
+  /* Tile image — real Unsplash photos via direct embed */
+  .tile-img {
+    width: 100%;
+    height: 190px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .tile-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(19,19,28,0.8) 0%, transparent 50%);
+  }
+
+  .tile-img-tag {
+    position: absolute;
+    top: 12px; left: 12px;
+    z-index: 2;
+  }
+
+  .tile-body {
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .tile-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.38;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .tile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .tile-source {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .read-arrow {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(212,147,58,0.12);
+    border: 1px solid rgba(212,147,58,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--amber);
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .tile:hover .read-arrow { background: var(--amber); color: #000; }
+
+  /* ── TIMELINE ── */
+  .timeline-strip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .timeline-strip::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--amber), transparent);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .timeline-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
+  }
+
+  .timeline-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--amber);
+  }
+
+  .timeline-updated {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px; letter-spacing: 0.1em;
+    color: var(--text-muted); text-transform: uppercase;
+  }
+
+  .timeline-items { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  .timeline-item { position: relative; padding-left: 14px; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: 0; top: 6px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text-muted);
+  }
+  .timeline-item.active::before { background: var(--amber); box-shadow: 0 0 8px rgba(212,147,58,0.6); }
+
+  .timeline-date {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    color: var(--amber-dim); letter-spacing: 0.08em; margin-bottom: 5px;
+  }
+  .timeline-event { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+
+  /* ── NEWSLETTER CTA ── */
+  .newsletter-cta {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .newsletter-cta::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(212,147,58,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 12px;
+  }
+
+  .cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 700; color: var(--text-primary); margin-bottom: 10px;
+  }
+
+  .cta-sub {
+    font-size: 14px; color: var(--text-secondary);
+    font-weight: 400; margin-bottom: 24px; line-height: 1.6;
+    max-width: 420px; margin-left: auto; margin-right: auto;
+  }
+
+  .cta-form {
+    display: flex; gap: 8px;
+    max-width: 420px; margin: 0 auto;
+  }
+
+  .cta-input {
+    flex: 1; min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 11px 16px;
+    font-size: 14px; font-family: 'Inter', sans-serif;
+    outline: none; border-radius: var(--radius-sm);
+    transition: border-color 0.2s;
+  }
+  .cta-input::placeholder { color: var(--text-muted); }
+  .cta-input:focus { border-color: var(--amber); }
+
+  .cta-submit {
+    background: var(--amber); color: #000; border: none;
+    padding: 11px 22px; font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.03em;
+    cursor: pointer; border-radius: var(--radius-sm);
+    white-space: nowrap; flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .cta-submit:hover { background: var(--amber-bright); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 8px;
+  }
+
+  .footer-copy {
+    font-size: 11px; color: var(--text-muted); line-height: 1.8;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.88); z-index: 200;
+    align-items: flex-start; justify-content: center;
+    padding: 24px 16px; overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-width: 660px; width: 100%;
+    position: relative; margin: auto;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+  }
+
+  .modal-img {
+    width: 100%; height: 220px;
+    background-size: cover; background-position: center;
+    position: relative;
+  }
+
+  .modal-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--surface) 0%, transparent 60%);
+  }
+
+  .modal-content { padding: 24px 28px 28px; }
+
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff; font-size: 14px; cursor: pointer;
+    line-height: 1; padding: 6px 10px; border-radius: 8px;
+    z-index: 10;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.1); }
+
+  .modal-tag { margin-bottom: 10px; }
+  .modal-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(17px, 3vw, 22px);
+    font-weight: 700; line-height: 1.28; margin-bottom: 14px;
+    color: var(--text-primary);
+  }
+  .modal-meta {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 10px; margin-bottom: 18px;
+    padding-bottom: 18px; border-bottom: 1px solid var(--border);
+    font-size: 11px; color: var(--text-muted);
+    font-family: 'Space Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .modal-body {
+    font-size: 14px; color: var(--text-secondary);
+    line-height: 1.78; margin-bottom: 20px;
+  }
+  .modal-cred {
+    background: rgba(212,147,58,0.08);
+    border: 1px solid rgba(212,147,58,0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px; font-size: 12px; color: var(--text-secondary);
+  }
+  .modal-cred strong {
+    color: var(--amber); font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    display: block; margin-bottom: 6px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .tile-grid { grid-template-columns: repeat(2, 1fr); }
+    .timeline-items { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .featured-body { padding: 24px 22px; }
+    .featured-tile { min-height: 340px; }
+  }
+
+  @media (max-width: 560px) {
+    .tile-grid { grid-template-columns: 1fr; }
+    .timeline-items { grid-template-columns: 1fr; }
+    .hero { padding: 36px 16px 32px; }
+    .main { padding: 20px 16px 48px; }
+    .filters-bar { padding: 12px 16px; }
+    .cta-form { flex-direction: column; }
+    .cta-submit { width: 100%; border-radius: var(--radius-sm); }
+    .header-inner { padding: 0 16px; }
+    .featured-tile { min-height: 300px; }
+    .featured-body { padding: 20px 18px; }
+    .newsletter-cta { padding: 28px 20px; }
+    .timeline-strip { padding: 20px 20px; }
+  }
+
+  /* ── SCORING PAGE ── */
+  .scoring-hero {
+    background: var(--deep);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scoring-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+  }
+
+  .scoring-intro {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scoring-section {
+    margin-bottom: 52px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scoring-section:last-of-type { border-bottom: none; }
+
+  .scoring-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .scoring-section-intro {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+
+  /* LEGEND */
+  .score-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+  }
+
+  .legend-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .legend-body { flex: 1; }
+  .legend-body strong { display: block; font-size: 14px; color: var(--text-primary); margin-bottom: 4px; }
+  .legend-body span { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+  /* DIMENSION CARDS */
+  .dimension-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .dimension-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+  }
+
+  .dimension-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .dimension-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    background: rgba(212,147,58,0.1);
+    border: 1px solid rgba(212,147,58,0.2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .dimension-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  .dimension-weight {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-top: 3px;
+  }
+
+  .dimension-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .dimension-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+
+  .scale-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  .scale-pts {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    min-width: 46px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .scale-pts.high { background: rgba(60,180,110,0.15); color: #70D4A0; }
+  .scale-pts.mid  { background: rgba(212,147,58,0.15); color: var(--amber); }
+  .scale-pts.low  { background: rgba(220,130,60,0.12); color: #E09050; }
+  .scale-pts.none { background: rgba(220,60,60,0.12); color: #F08080; }
+
+  .scale-label { color: var(--text-secondary); line-height: 1.4; }
+
+  /* HARD RULES */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .rule-ceiling { border-top: 3px solid #70D4A0; }
+  .rule-floor   { border-top: 3px solid #F08080; }
+
+  .rule-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .rule-body strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .rule-body p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Nav active state */
+  .nav-links a.nav-active {
+    color: var(--amber);
+  }
+
+  @media (max-width: 600px) {
+    .rules-grid { grid-template-columns: 1fr; }
+    .legend-item { flex-direction: column; gap: 10px; }
+    .legend-badge { min-width: unset; width: fit-content; }
+    .scoring-main { padding: 28px 16px 48px; }
+    .scoring-hero { padding: 36px 16px 32px; }
+    .dimension-card { padding: 16px; }
+    .dimension-header { gap: 10px; }
+    .dimension-name { font-size: 15px; }
+    .scoring-section-title { font-size: 19px; }
+    .scale-row { flex-wrap: wrap; gap: 6px; }
+    .scale-pts { min-width: unset; }
+    .rule-card { flex-direction: column; gap: 8px; padding: 16px; }
+    .dimension-grid { gap: 14px; }
+    .scoring-section { margin-bottom: 36px; padding-bottom: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <circle cx="9" cy="9" r="2.5" fill="#000"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-word">The Veil</span>
+        <span class="logo-sub">TheVeil.media</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#">Disclosure</a>
+      <a href="#">Sightings</a>
+      <a href="#">Science</a>
+      <a href="#">Government</a>
+      <a href="#">Timeline</a>
+      <a href="#" onclick="showPage('scoring'); return false;" id="nav-scoring">How We Score</a>
+      <a href="#" class="subscribe-btn">Subscribe Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#">Disclosure</a>
+  <a href="#">Sightings</a>
+  <a href="#">Science</a>
+  <a href="#">Government</a>
+  <a href="#">Timeline</a>
+  <a href="#" onclick="showPage('scoring'); toggleMenu(); return false;">How We Score</a>
+  <a href="#">Subscribe Free</a>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">Weekly Intelligence Brief</div>
+  <h1 class="hero-headline">What's real. What's credible. What it means.</h1>
+  <p class="hero-sub">The Veil tracks the disclosure story, scores every source for credibility, and gives you what actually matters — every Tuesday morning.</p>
+  <div class="hero-meta">
+    <span id="meta-week">Loading this week’s issue…</span>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <button class="pill active">All Stories</button>
+  <button class="pill">Disclosure</button>
+  <button class="pill">Sightings</button>
+  <button class="pill">Science</button>
+  <button class="pill">Government</button>
+  <button class="pill">High Credibility</button>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- FEATURED -->
+  <div class="section-header">
+    <span class="section-title">Lead Story</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div id="lead-mount"></div>
+
+  <!-- TILE GRID -->
+  <div class="section-header">
+    <span class="section-title">This Week's Stories</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="tile-grid" id="tile-grid"></div>
+
+  <!-- DISCLOSURE TIMELINE -->
+  <div class="section-header">
+    <span class="section-title">Disclosure Timeline</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="timeline-strip">
+    <div class="timeline-header">
+      <span class="timeline-title">Key Milestones — 2017 to Present</span>
+      <span class="timeline-updated">Updated Weekly</span>
+    </div>
+    <div class="timeline-items">
+      <div class="timeline-item">
+        <div class="timeline-date">Dec 2017</div>
+        <div class="timeline-event">NYT publishes AATIP program and Tic Tac footage. DoD confirms authenticity.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Jun 2021</div>
+        <div class="timeline-event">DNI preliminary UAP report to Congress. 143 incidents, 1 explained.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Jul 2023</div>
+        <div class="timeline-event">Grusch congressional testimony. Non-human intelligence asserted under oath.</div>
+      </div>
+      <div class="timeline-item active">
+        <div class="timeline-date">Jun 2026</div>
+        <div class="timeline-event">AARO classified briefing exceeds prior disclosures. Biological material reported.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="newsletter-cta">
+    <div class="cta-eyebrow">The Weekly Brief</div>
+    <h3 class="cta-headline">Every story. Scored. Sent every Tuesday morning.</h3>
+    <p class="cta-sub">The Veil Brief — credibility-scored UAP coverage delivered every Tuesday morning in your inbox.</p>
+    <div class="cta-form">
+      <input class="cta-input" type="email" placeholder="your@email.com">
+      <button class="cta-submit">Subscribe Free</button>
+    </div>
+  </div>
+
+</main>
+
+</div><!-- end #page-home -->
+
+<!-- SCORING PAGE -->
+<div id="page-scoring" style="display:none;">
+
+<div class="scoring-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">Editorial Standards</div>
+  <h1 class="hero-headline" style="font-size:clamp(28px,4.5vw,48px);">How We Score Every Story</h1>
+  <p class="hero-sub">Every story published in The Veil receives a credibility score from 0 to 100. Here is exactly how we calculate it — and why transparency about our methodology matters.</p>
+</div>
+
+<div class="scoring-main">
+
+  <div class="scoring-intro">
+    <p>The UAP space has a serious credibility problem. Legitimate government disclosures sit alongside unverified claims, anonymous sourcing, and outright fabrication — often presented with equal weight. The Veil exists to change that. Our scoring system applies a consistent, transparent framework to every story we cover, so you always know how much confidence to place in what you're reading.</p>
+    <p style="margin-top:14px;">Scores are generated by our editorial process and reviewed before publication. No story appears in The Veil without a score and a written rationale.</p>
+  </div>
+
+  <!-- SCORE LEGEND -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">Score Ranges</div>
+    <div class="score-legend">
+      <div class="legend-item">
+        <div class="legend-badge" style="border-color:#70D4A0;color:#70D4A0;background:rgba(60,180,110,0.12);">85-100</div>
+        <div class="legend-body">
+          <strong>Very High Credibility</strong>
+          <span>Official government source, primary document, or story corroborated by three or more independent credible sources. The strongest tier of evidence in the disclosure space.</span>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-badge" style="border-color:#A0D470;color:#A0D470;background:rgba(100,180,60,0.12);">70-84</div>
+        <div class="legend-body">
+          <strong>High Credibility</strong>
+          <span>Named, credentialed sources with strong track records, corroborated by at least two independent outlets, or peer-reviewed scientific findings.</span>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-badge" style="border-color:#D4933A;color:#D4933A;background:rgba(212,147,58,0.12);">55-69</div>
+        <div class="legend-body">
+          <strong>Moderate Credibility</strong>
+          <span>Single credible source with partial documentation, or multiple sources from outlets with limited UAP track records. Worth monitoring for corroboration.</span>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-badge" style="border-color:#E09050;color:#E09050;background:rgba(220,130,60,0.12);">35-54</div>
+        <div class="legend-body">
+          <strong>Low Credibility</strong>
+          <span>Anonymous sourcing without documentary support, single-source claims that contradict established record, or reporting from outlets with inconsistent accuracy.</span>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-badge" style="border-color:#F08080;color:#F08080;background:rgba(220,60,60,0.12);">0-34</div>
+        <div class="legend-body">
+          <strong>Unverified / Speculative</strong>
+          <span>No sourcing cited, originated from social media without corroboration, or directly contradicts verified official statements. We cover these only when the claim is significant enough to address publicly.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIVE DIMENSIONS -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">The Five Scoring Dimensions</div>
+    <p class="scoring-section-intro">Every story is evaluated across five dimensions. Each dimension carries a different maximum weight, reflecting its relative importance to overall credibility.</p>
+
+    <div class="dimension-grid">
+
+      <div class="dimension-card">
+        <div class="dimension-header">
+          <div class="dimension-number">01</div>
+          <div class="dimension-meta">
+            <div class="dimension-name">Source Tier</div>
+            <div class="dimension-weight">Up to 30 points</div>
+          </div>
+        </div>
+        <p class="dimension-desc">The single most important factor. Where did the story originate? Primary government documents and named senior officials score highest. Anonymous sources and unverified community posts score lowest.</p>
+        <div class="dimension-scale">
+          <div class="scale-row"><span class="scale-pts high">28-30</span><span class="scale-label">Official government document (DoD, AARO, congressional record)</span></div>
+          <div class="scale-row"><span class="scale-pts high">22-26</span><span class="scale-label">Named senior official, on the record</span></div>
+          <div class="scale-row"><span class="scale-pts mid">18-22</span><span class="scale-label">Established investigative outlet (The Debrief, Liberation Times)</span></div>
+          <div class="scale-row"><span class="scale-pts mid">18-24</span><span class="scale-label">Named researcher or academic, peer-reviewed publication</span></div>
+          <div class="scale-row"><span class="scale-pts mid">15-20</span><span class="scale-label">Mainstream national press (NYT, WaPo, DefenseScoop)</span></div>
+          <div class="scale-row"><span class="scale-pts low">8-12</span><span class="scale-label">Single anonymous source</span></div>
+          <div class="scale-row"><span class="scale-pts low">2-6</span><span class="scale-label">Blogger, YouTuber, or community forum</span></div>
+          <div class="scale-row"><span class="scale-pts none">0-3</span><span class="scale-label">Known sensationalist or fabrication-prone outlet</span></div>
+        </div>
+      </div>
+
+      <div class="dimension-card">
+        <div class="dimension-header">
+          <div class="dimension-number">02</div>
+          <div class="dimension-meta">
+            <div class="dimension-name">Corroboration</div>
+            <div class="dimension-weight">Up to 25 points</div>
+          </div>
+        </div>
+        <p class="dimension-desc">How many independent sources confirm the same claim? Independent confirmation is the gold standard of journalism. A story confirmed by three separate credible sources is fundamentally different from a single-source report.</p>
+        <div class="dimension-scale">
+          <div class="scale-row"><span class="scale-pts high">22-25</span><span class="scale-label">Three or more independent credible sources</span></div>
+          <div class="scale-row"><span class="scale-pts high">15-18</span><span class="scale-label">Two independent credible sources</span></div>
+          <div class="scale-row"><span class="scale-pts mid">10-13</span><span class="scale-label">Single source with documentary evidence</span></div>
+          <div class="scale-row"><span class="scale-pts low">4-7</span><span class="scale-label">Single source, no supporting documentation</span></div>
+          <div class="scale-row"><span class="scale-pts none">0-2</span><span class="scale-label">No sourcing cited at all</span></div>
+        </div>
+      </div>
+
+      <div class="dimension-card">
+        <div class="dimension-header">
+          <div class="dimension-number">03</div>
+          <div class="dimension-meta">
+            <div class="dimension-name">Specificity &amp; Verifiability</div>
+            <div class="dimension-weight">Up to 20 points</div>
+          </div>
+        </div>
+        <p class="dimension-desc">Can the claim be checked, tested, or falsified? Specific dates, locations, named individuals, and document references allow independent verification. Vague claims that cannot be checked or disproven score significantly lower.</p>
+        <div class="dimension-scale">
+          <div class="scale-row"><span class="scale-pts high">17-20</span><span class="scale-label">Specific dates, locations, named individuals, document references</span></div>
+          <div class="scale-row"><span class="scale-pts mid">10-14</span><span class="scale-label">Partial specifics with some verifiable details</span></div>
+          <div class="scale-row"><span class="scale-pts low">3-7</span><span class="scale-label">Vague claim with no checkable anchors</span></div>
+          <div class="scale-row"><span class="scale-pts none">0-2</span><span class="scale-label">Unfalsifiable by nature</span></div>
+        </div>
+      </div>
+
+      <div class="dimension-card">
+        <div class="dimension-header">
+          <div class="dimension-number">04</div>
+          <div class="dimension-meta">
+            <div class="dimension-name">Outlet Track Record</div>
+            <div class="dimension-weight">Up to 15 points</div>
+          </div>
+        </div>
+        <p class="dimension-desc">Has this outlet been accurate on UAP stories before? General journalistic credibility matters, but UAP-specific track record matters more. An outlet that has broken verified disclosure stories earns higher baseline trust.</p>
+        <div class="dimension-scale">
+          <div class="scale-row"><span class="scale-pts high">13-15</span><span class="scale-label">Strong verified track record on UAP reporting specifically</span></div>
+          <div class="scale-row"><span class="scale-pts mid">8-11</span><span class="scale-label">Reputable generally, limited UAP coverage history</span></div>
+          <div class="scale-row"><span class="scale-pts low">4-6</span><span class="scale-label">New or unknown outlet</span></div>
+          <div class="scale-row"><span class="scale-pts none">0-3</span><span class="scale-label">Prior credibility issues on this subject specifically</span></div>
+        </div>
+      </div>
+
+      <div class="dimension-card">
+        <div class="dimension-header">
+          <div class="dimension-number">05</div>
+          <div class="dimension-meta">
+            <div class="dimension-name">Consistency with Known Record</div>
+            <div class="dimension-weight">Up to 10 points</div>
+          </div>
+        </div>
+        <p class="dimension-desc">Does this claim fit the established, documented disclosure record — or contradict it without explanation? New claims that build logically on verified prior disclosures are more credible than claims that overturn settled facts without evidence.</p>
+        <div class="dimension-scale">
+          <div class="scale-row"><span class="scale-pts high">8-10</span><span class="scale-label">Consistent with and builds on verified prior disclosures</span></div>
+          <div class="scale-row"><span class="scale-pts mid">5-7</span><span class="scale-label">Neutral — neither confirmed nor contradicted by prior record</span></div>
+          <div class="scale-row"><span class="scale-pts low">1-3</span><span class="scale-label">Contradicts established record without supporting explanation</span></div>
+          <div class="scale-row"><span class="scale-pts none">0-1</span><span class="scale-label">Directly contradicts verified official statements</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HARD RULES -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">Hard Rules</div>
+    <p class="scoring-section-intro">Two absolute rules apply regardless of how a story scores on other dimensions.</p>
+    <div class="rules-grid">
+      <div class="rule-card rule-ceiling">
+        <div class="rule-icon">⬆</div>
+        <div class="rule-body">
+          <strong>Score Ceiling: 60</strong>
+          <p>Any story sourced exclusively from social media — regardless of how specific or widely shared — is capped at a maximum score of 60. Viral reach is not evidence.</p>
+        </div>
+      </div>
+      <div class="rule-card rule-floor">
+        <div class="rule-icon">⬇</div>
+        <div class="rule-body">
+          <strong>Score Floor: 0</strong>
+          <p>Any story from an outlet with a documented history of fabrication receives a score of 0, regardless of the specific claim's apparent specificity or sourcing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT WE DONT SCORE -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">What We Don't Cover</div>
+    <div class="scoring-intro" style="margin-top:0;">
+      <p>The Veil does not cover personal testimonials without corroboration, alleged contact experiences, channeled or psychic claims, or content from outlets with a documented history of fabrication. Our focus is the documented disclosure record — government actions, scientific research, credentialed reporting, and verified witness accounts from trained observers.</p>
+      <p style="margin-top:14px;">We cover the story of what governments know and what the evidence shows. That is a large enough story on its own.</p>
+    </div>
+  </div>
+
+  <!-- BACK BUTTON -->
+  <div style="text-align:center;padding:16px 0 8px;">
+    <button onclick="showPage('home')" style="background:var(--amber);color:#000;border:none;padding:12px 28px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.03em;">← Back to Latest Stories</button>
+  </div>
+
+</div><!-- end scoring-main -->
+
+</div><!-- end #page-scoring -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">
+    The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>
+    Not affiliated with any government program &nbsp;·&nbsp; Delivered every Tuesday morning
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL  = 'https://zujxdvzvcyzpyfqininu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1anhkdnp2Y3l6cHlmcWluaW51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNTYyNjIsImV4cCI6MjA5NzgzMjI2Mn0.ljS8POA6SpLAmd5Al7sdWduXbQpfUq0v8LTWCGv2cAU';
+const SB_HEADERS = { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + SUPABASE_ANON };
+
+const stories = {};        // id -> article (for modal + filtering)
+let currentFilter = 'all';
+let tileList = [];         // current issue minus the lead
+
+// ---- helpers ----
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function catKey(c){ return (c||'').toLowerCase(); }
+function catLabel(c){ return c||'Brief'; }
+function credClass(n){ return n>=80 ? 'cred-high' : n>=55 ? 'cred-mid' : 'cred-low'; }
+function credLabel(n){ return n>=85?'Very High Credibility':n>=70?'High Credibility':n>=55?'Moderate Credibility':n>=35?'Low Credibility':'Unverified'; }
+function fmtDate(iso){ if(!iso) return ''; const d=new Date(iso); return isNaN(d)?'':d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function bg(url){ return url ? "background-image:url('"+String(url).replace(/'/g,'%27')+"');" : 'background:linear-gradient(135deg,#1A1A26,#0F0F18);'; }
+function tierLabel(t){ return t==1?'Tier 1 · Official / Major source':t==2?'Tier 2 · Established independent':t==3?'Tier 3 · Unverified / social':''; }
+
+// ---- fetch ----
+async function loadFeed(){
+  try{
+    const url = SUPABASE_URL + '/rest/v1/articles?select=*&order=week_of.desc,credibility_score.desc&limit=24';
+    const res = await fetch(url, { headers: SB_HEADERS });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    if(!rows.length){ renderEmpty(); return; }
+    const week = rows[0].week_of;
+    const issue = rows.filter(r => r.week_of === week);
+    issue.forEach(r => stories[r.id] = r);
+    renderMeta(week, issue.length);
+    renderLead(issue[0]);
+    tileList = issue.slice(1);
+    renderTiles();
+  }catch(e){
+    document.getElementById('lead-mount').innerHTML =
+      '<div style="padding:48px;text-align:center;color:var(--text-secondary);">Couldn’t load this week’s stories.<br><span style="font-size:12px;color:var(--text-muted);">'+esc(e.message)+'</span></div>';
+  }
+}
+
+function renderEmpty(){
+  document.getElementById('meta-week').textContent = 'No issue published yet';
+  document.getElementById('lead-mount').innerHTML =
+    '<div style="padding:48px;text-align:center;color:var(--text-secondary);">The first issue is on its way. Check back Tuesday morning.</div>';
+}
+
+function renderMeta(week, count){
+  const d = new Date(week + 'T00:00:00');
+  const label = isNaN(d) ? week : d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('meta-week').innerHTML =
+    'Week of ' + label + ' <span>|</span> ' + count + ' ' + (count===1?'Story':'Stories') + ' <span>|</span> Every source scored';
+}
+
+function renderLead(a){
+  document.getElementById('lead-mount').innerHTML =
+  '<div class="featured-tile" onclick="openModal(\''+a.id+'\')">'
+  + '<div class="featured-bg" style="'+bg(a.image_url)+'"></div>'
+  + '<div class="featured-overlay"></div>'
+  + '<div class="featured-body">'
+  +   '<div class="featured-badge">This Week’s Lead Story</div>'
+  +   '<div class="tag tag-'+catKey(a.category)+'" style="margin-bottom:12px;">'+esc(catLabel(a.category))+'</div>'
+  +   '<h2 class="featured-headline">'+esc(a.title)+'</h2>'
+  +   '<p class="featured-summary">'+esc(a.summary||'')+'</p>'
+  +   '<div class="featured-footer">'
+  +     '<div class="credibility">'
+  +       '<div class="cred-ring '+credClass(a.credibility_score)+'">'+(a.credibility_score!=null?a.credibility_score:'—')+'</div>'
+  +       '<div class="cred-label"><strong>'+credLabel(a.credibility_score)+'</strong>'+esc(tierLabel(a.source_tier))+'</div>'
+  +     '</div>'
+  +     '<div class="tile-source-meta">'+esc(a.source||'')+' &nbsp;·&nbsp; '+fmtDate(a.published_date)+'</div>'
+  +   '</div>'
+  + '</div></div>';
+}
+
+function renderTiles(){
+  const grid = document.getElementById('tile-grid');
+  const list = tileList.filter(matchesFilter);
+  if(!list.length){ grid.innerHTML = '<div style="grid-column:1/-1;padding:32px;text-align:center;color:var(--text-muted);">No stories in this category this week.</div>'; return; }
+  grid.innerHTML = list.map(function(a){ return ''
+  + '<div class="tile" onclick="openModal(\''+a.id+'\')">'
+  +   '<div class="tile-img" style="'+bg(a.image_url)+'">'
+  +     '<div class="tile-img-overlay"></div>'
+  +     '<div class="tile-img-tag"><div class="tag tag-'+catKey(a.category)+'">'+esc(catLabel(a.category))+'</div></div>'
+  +   '</div>'
+  +   '<div class="tile-body">'
+  +     '<p class="tile-headline">'+esc(a.title)+'</p>'
+  +     '<div class="credibility">'
+  +       '<div class="cred-ring '+credClass(a.credibility_score)+'">'+(a.credibility_score!=null?a.credibility_score:'—')+'</div>'
+  +       '<div class="cred-label"><strong>'+credLabel(a.credibility_score)+'</strong>'+esc(a.source||'')+'</div>'
+  +     '</div>'
+  +     '<div class="tile-footer">'
+  +       '<span class="tile-source">'+esc(a.source||'')+' — '+fmtDate(a.published_date)+'</span>'
+  +       '<div class="read-arrow">→</div>'
+  +     '</div>'
+  +   '</div>'
+  + '</div>'; }).join('');
+}
+
+function matchesFilter(a){
+  if(currentFilter==='all') return true;
+  if(currentFilter==='high') return (a.credibility_score||0) >= 80;
+  return catKey(a.category) === currentFilter;
+}
+
+// ---- modal ----
+function openModal(id){
+  const s = stories[id];
+  if(!s) return;
+  const sw = s.so_what ? '<div class="modal-cred" style="margin-bottom:14px;"><strong>The “So What”</strong>'+esc(s.so_what)+'</div>' : '';
+  const rationale = (s.score_breakdown && s.score_breakdown.rationale) ? s.score_breakdown.rationale : tierLabel(s.source_tier);
+  const credBox = '<div class="modal-cred"><strong>Credibility Assessment — '+credLabel(s.credibility_score)+' ('+(s.credibility_score!=null?s.credibility_score:'—')+')</strong>'+esc(rationale)+'</div>';
+  const readLink = s.url ? '<p style="margin-top:18px;"><a href="'+esc(s.url)+'" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;text-decoration:none;font-size:13px;">Read the source →</a></p>' : '';
+  document.getElementById('modal-inner').innerHTML =
+    '<div class="modal-img" style="'+bg(s.image_url)+'"><div class="modal-img-overlay"></div></div>'
+  + '<div class="modal-content">'
+  +   '<div class="modal-tag"><div class="tag tag-'+catKey(s.category)+'">'+esc(catLabel(s.category))+'</div></div>'
+  +   '<h2 class="modal-headline">'+esc(s.title)+'</h2>'
+  +   '<div class="modal-meta">'
+  +     '<span>'+esc(s.source||'')+'</span><span>'+fmtDate(s.published_date)+'</span>'
+  +     '<div class="cred-ring '+credClass(s.credibility_score)+'" style="width:30px;height:30px;font-size:9px;">'+(s.credibility_score!=null?s.credibility_score:'—')+'</div>'
+  +     '<span>'+credLabel(s.credibility_score)+'</span>'
+  +   '</div>'
+  +   '<div class="modal-body">'+esc(s.summary||'')+'</div>'
+  +   sw + credBox + readLink
+  + '</div>';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow=''; }
+function closeModalOnOverlay(e){ if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+// ---- pages / nav ----
+function showPage(page){
+  document.getElementById('page-home').style.display = page==='home'?'block':'none';
+  document.getElementById('page-scoring').style.display = page==='scoring'?'block':'none';
+  document.getElementById('nav-scoring').classList.toggle('nav-active', page==='scoring');
+  window.scrollTo(0,0);
+}
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+
+// ---- filters ----
+const FILTER_MAP = {'All Stories':'all','Disclosure':'disclosure','Sightings':'sighting','Science':'science','Government':'government','High Credibility':'high'};
+document.querySelectorAll('.pill').forEach(function(p){
+  p.addEventListener('click', function(){
+    document.querySelectorAll('.pill').forEach(function(x){ x.classList.remove('active'); });
+    p.classList.add('active');
+    currentFilter = FILTER_MAP[p.textContent.trim()] || 'all';
+    renderTiles();
+  });
+});
+
+loadFeed();
+</script>
+</body>
+</html>
