@@ -976,6 +976,19 @@
     .dimension-grid { gap: 14px; }
     .scoring-section { margin-bottom: 36px; padding-bottom: 36px; }
   }
+
+  /* ── OFFICIAL SOURCES ── */
+  .src-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .src-link {
+    display: flex; flex-direction: column; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 16px 18px; text-decoration: none; transition: border-color 0.2s, transform 0.2s;
+  }
+  .src-link:hover { border-color: rgba(212,147,58,0.5); transform: translateY(-2px); }
+  .src-name { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); font-weight: 700; }
+  .src-desc { font-size: 12px; line-height: 1.5; color: var(--text-secondary); flex: 1; }
+  .src-go   { font-size: 11px; font-weight: 600; color: var(--text-primary); font-family: 'Space Mono', monospace; }
+  @media (max-width: 700px) { .src-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1001,6 +1014,7 @@
       <a href="#">Science</a>
       <a href="#">Government</a>
       <a href="#">Timeline</a>
+      <a href="#">Sources</a>
       <a href="#" onclick="showPage('scoring'); return false;" id="nav-scoring">How We Score</a>
       <a href="#" class="subscribe-btn">Subscribe Free</a>
     </div>
@@ -1016,6 +1030,7 @@
   <a href="#">Science</a>
   <a href="#">Government</a>
   <a href="#">Timeline</a>
+  <a href="#">Sources</a>
   <a href="#" onclick="showPage('scoring'); toggleMenu(); return false;">How We Score</a>
   <a href="#">Subscribe Free</a>
 </div>
@@ -1091,6 +1106,35 @@
         <div class="timeline-date">Jun 2026</div>
         <div class="timeline-event">AARO classified briefing exceeds prior disclosures. Biological material reported.</div>
       </div>
+    </div>
+  </div>
+
+  <!-- OFFICIAL SOURCES -->
+  <div class="section-header">
+    <span class="section-title">Official Sources</span>
+    <div class="section-rule"></div>
+  </div>
+  <div id="official-sources" class="timeline-strip">
+    <div class="timeline-header">
+      <span class="timeline-title">Go Straight to the Record</span>
+      <span class="timeline-updated">Primary Government Sources</span>
+    </div>
+    <div class="src-grid">
+      <a class="src-link" href="https://www.aaro.mil" target="_blank" rel="noopener">
+        <span class="src-name">AARO</span>
+        <span class="src-desc">DoD's All-domain Anomaly Resolution Office — official UAP case resolutions &amp; reports</span>
+        <span class="src-go">aaro.mil →</span>
+      </a>
+      <a class="src-link" href="https://www.dni.gov/index.php/newsroom/reports-publications" target="_blank" rel="noopener">
+        <span class="src-name">ODNI</span>
+        <span class="src-desc">Office of the Director of National Intelligence — annual UAP reports to Congress</span>
+        <span class="src-go">dni.gov →</span>
+      </a>
+      <a class="src-link" href="https://science.nasa.gov/uap/" target="_blank" rel="noopener">
+        <span class="src-name">NASA</span>
+        <span class="src-desc">NASA UAP Independent Study — findings and data on unidentified phenomena</span>
+        <span class="src-go">science.nasa.gov →</span>
+      </a>
     </div>
   </div>
 
@@ -1475,6 +1519,28 @@ document.querySelectorAll('.pill').forEach(function(p){
   });
 });
 
+
+// ---- top nav ----
+const NAV_CAT = {'Disclosure':'disclosure','Sightings':'sighting','Science':'science','Government':'government'};
+function activatePillFor(cat){
+  document.querySelectorAll('.pill').forEach(function(x){ x.classList.toggle('active', (FILTER_MAP[x.textContent.trim()]||'all')===cat); });
+}
+function scrollToSel(sel){ const el=document.querySelector(sel); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
+document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
+  const t = a.textContent.trim();
+  const inMobile = !!a.closest('.mobile-menu');
+  if(NAV_CAT[t]){
+    a.addEventListener('click', function(e){
+      e.preventDefault(); showPage('home'); currentFilter = NAV_CAT[t]; activatePillFor(currentFilter); renderTiles();
+      setTimeout(function(){ scrollToSel('#tile-grid'); }, 40); if(inMobile) toggleMenu();
+    });
+  } else if(t==='Timeline'){
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('.timeline-strip'); }, 40); if(inMobile) toggleMenu(); });
+  } else if(t==='Sources'){
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#official-sources'); }, 40); if(inMobile) toggleMenu(); });
+  }
+});
+document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); }); });
 
 // ---- subscribe ----
 const SUBSCRIBE_WEBHOOK = '__SUBSCRIBE_WEBHOOK__';
