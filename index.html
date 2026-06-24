@@ -1475,6 +1475,45 @@ document.querySelectorAll('.pill').forEach(function(p){
   });
 });
 
+
+// ---- subscribe ----
+const SUBSCRIBE_WEBHOOK = '__SUBSCRIBE_WEBHOOK__';
+function wireSubscribe(){
+  const form = document.querySelector('.cta-form');
+  if(!form) return;
+  const input = form.querySelector('.cta-input');
+  const btn = form.querySelector('.cta-submit');
+  function setMsg(text, ok){
+    form.innerHTML = '<p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:14px;font-weight:500;color:'+(ok?'#70D4A0':'#F08080')+';">'+text+'</p>';
+  }
+  async function submit(){
+    const email = (input.value||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ input.style.borderColor='#F08080'; input.focus(); return; }
+    if(SUBSCRIBE_WEBHOOK.indexOf('__')===0){ setMsg('Subscriptions open shortly — check back soon.', true); return; }
+    btn.disabled=true; btn.textContent='…';
+    try{
+      await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'email='+encodeURIComponent(email)});
+      setMsg('You’re in. Watch for The Veil every Tuesday morning.', true);
+    }catch(e){
+      btn.disabled=false; btn.textContent='Subscribe Free';
+      setMsg('Something went wrong — please try again.', false);
+    }
+  }
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', function(e){ if(e.key==='Enter') submit(); });
+}
+// header / mobile "Subscribe Free" buttons scroll to the form
+document.querySelectorAll('.subscribe-btn, .mobile-menu a:last-child').forEach(function(a){
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    const cta = document.querySelector('.newsletter-cta');
+    if(cta) cta.scrollIntoView({behavior:'smooth', block:'center'});
+    const inp = document.querySelector('.cta-input');
+    if(inp) setTimeout(function(){ inp.focus(); }, 450);
+  });
+});
+wireSubscribe();
+
 loadFeed();
 </script>
 </body>
