@@ -1357,7 +1357,7 @@ async function loadFeed(){
     issue.forEach(r => stories[r.id] = r);
     renderMeta(week, issue.length);
     renderLead(issue[0]);
-    tileList = issue.slice(1);
+    tileList = issue.slice(1, 10);
     renderTiles();
   }catch(e){
     document.getElementById('lead-mount').innerHTML =
