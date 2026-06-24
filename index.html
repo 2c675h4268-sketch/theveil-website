@@ -1402,7 +1402,7 @@ function renderMeta(week, count){
   const d = new Date(week + 'T00:00:00');
   const label = isNaN(d) ? week : d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('meta-week').innerHTML =
-    'Week of ' + label + ' <span>|</span> ' + count + ' ' + (count===1?'Story':'Stories') + ' <span>|</span> Every source scored';
+    'Week of ' + label + ' <span>|</span> ' + count + ' ' + (count===1?'Story':'Stories') + ' <span>|</span> New issue every Tuesday';
 }
 
 function renderLead(a){
