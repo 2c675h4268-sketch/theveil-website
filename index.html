@@ -1009,10 +1009,6 @@
       </div>
     </a>
     <div class="nav-links">
-      <a href="#">Disclosure</a>
-      <a href="#">Sightings</a>
-      <a href="#">Science</a>
-      <a href="#">Government</a>
       <a href="#">Timeline</a>
       <a href="#">Sources</a>
       <a href="#" onclick="showPage('scoring'); return false;" id="nav-scoring">How We Score</a>
@@ -1025,10 +1021,6 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#">Disclosure</a>
-  <a href="#">Sightings</a>
-  <a href="#">Science</a>
-  <a href="#">Government</a>
   <a href="#">Timeline</a>
   <a href="#">Sources</a>
   <a href="#" onclick="showPage('scoring'); toggleMenu(); return false;">How We Score</a>
@@ -1049,15 +1041,6 @@
   </div>
 </div>
 
-<!-- FILTERS -->
-<div class="filters-bar">
-  <button class="pill active">All Stories</button>
-  <button class="pill">Disclosure</button>
-  <button class="pill">Sightings</button>
-  <button class="pill">Science</button>
-  <button class="pill">Government</button>
-  <button class="pill">High Credibility</button>
-</div>
 
 <!-- MAIN -->
 <main class="main">
@@ -1508,33 +1491,12 @@ function showPage(page){
 }
 function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
 
-// ---- filters ----
-const FILTER_MAP = {'All Stories':'all','Disclosure':'disclosure','Sightings':'sighting','Science':'science','Government':'government','High Credibility':'high'};
-document.querySelectorAll('.pill').forEach(function(p){
-  p.addEventListener('click', function(){
-    document.querySelectorAll('.pill').forEach(function(x){ x.classList.remove('active'); });
-    p.classList.add('active');
-    currentFilter = FILTER_MAP[p.textContent.trim()] || 'all';
-    renderTiles();
-  });
-});
-
-
 // ---- top nav ----
-const NAV_CAT = {'Disclosure':'disclosure','Sightings':'sighting','Science':'science','Government':'government'};
-function activatePillFor(cat){
-  document.querySelectorAll('.pill').forEach(function(x){ x.classList.toggle('active', (FILTER_MAP[x.textContent.trim()]||'all')===cat); });
-}
 function scrollToSel(sel){ const el=document.querySelector(sel); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
 document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
   const t = a.textContent.trim();
   const inMobile = !!a.closest('.mobile-menu');
-  if(NAV_CAT[t]){
-    a.addEventListener('click', function(e){
-      e.preventDefault(); showPage('home'); currentFilter = NAV_CAT[t]; activatePillFor(currentFilter); renderTiles();
-      setTimeout(function(){ scrollToSel('#tile-grid'); }, 40); if(inMobile) toggleMenu();
-    });
-  } else if(t==='Timeline'){
+  if(t==='Timeline'){
     a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('.timeline-strip'); }, 40); if(inMobile) toggleMenu(); });
   } else if(t==='Sources'){
     a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#official-sources'); }, 40); if(inMobile) toggleMenu(); });
