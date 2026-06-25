@@ -1586,10 +1586,21 @@ async function loadFeed(){
     if(!rows.length){ renderEmpty(); return; }
     const week = rows[0].week_of;
     const issue = rows.filter(r => r.week_of === week);
-    issue.forEach(r => stories[r.id] = r);
-    renderMeta(week, issue.length);
-    renderLead(issue[0]);
-    tileList = issue.slice(1, 10);
+    // quality-gated / flex selection: floor 40, minimum 6, cap 13
+    const FLOOR = 40, CAP = 13, MIN = 6;
+    // backstop dedup of re-syndicated identical headlines (semantic dedup happens at ingest)
+    const seenTitles = new Set();
+    const pool = issue.filter(function(r){
+      const k = (r.title||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,55);
+      if(!k || seenTitles.has(k)) return false; seenTitles.add(k); return true;
+    });
+    const selected = pool.filter(function(r, i){
+      return i < CAP && ((r.credibility_score||0) >= FLOOR || i < MIN);
+    });
+    selected.forEach(r => stories[r.id] = r);
+    renderMeta(week, selected.length);
+    renderLead(selected[0]);
+    tileList = selected.slice(1);
     renderTiles();
   }catch(e){
     document.getElementById('lead-mount').innerHTML =
