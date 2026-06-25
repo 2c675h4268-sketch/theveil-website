@@ -1358,8 +1358,9 @@
   </div>
   <div id="gov-releases" class="timeline-strip">
     <p class="cred-anchor-intro">The primary source material, straight from the government. Watch the footage, read the reports, and review the hearings yourself.</p>
+    <div id="gov-releases-latest"></div>
 
-    <div class="rel-group-label first">Footage</div>
+    <div class="rel-group-label">Footage</div>
     <div class="src-grid">
       <a class="src-link" href="https://www.defense.gov/News/Releases/Release/Article/2165713/statement-by-the-department-of-defense-on-the-release-of-historical-navy-videos/" target="_blank" rel="noopener">
         <span class="src-name">Navy UAP Videos</span>
@@ -2039,7 +2040,29 @@ async function loadRead(){
   }catch(e){ /* leave hidden on error */ }
 }
 
+// ---- Government Releases: auto-detected drops (release_type set by the weekly pipeline) ----
+async function loadReleases(){
+  try{
+    const url = SUPABASE_URL + '/rest/v1/articles?select=title,summary,so_what,source,url,release_type,published_date&release_type=in.(Footage,Report,Hearing,Document)&order=published_date.desc&limit=9';
+    const res = await fetch(url, { headers: SB_HEADERS });
+    if(!res.ok) return;
+    const rows = await res.json();
+    if(!rows.length) return;
+    const tiles = rows.map(function(r){
+      const desc = esc(r.so_what || r.summary || '');
+      const go = esc(r.release_type || 'Release') + (r.source ? ' · ' + esc(r.source) : '') + ' →';
+      return '<a class="src-link" href="' + esc(r.url || '#') + '" target="_blank" rel="noopener">'
+        + '<span class="src-name">' + esc(r.title || '') + '</span>'
+        + '<span class="src-desc">' + desc + '</span>'
+        + '<span class="src-go">' + go + '</span></a>';
+    }).join('');
+    document.getElementById('gov-releases-latest').innerHTML =
+      '<div class="rel-group-label first">Recently Detected</div><div class="src-grid">' + tiles + '</div>';
+  }catch(e){ /* leave baseline only on error */ }
+}
+
 loadRead();
+loadReleases();
 loadFeed();
 </script>
 </body>
