@@ -42,6 +42,20 @@
   /* keep anchored sections clear of the sticky header */
   .section-header, .timeline-strip, #official-sources, .newsletter-cta { scroll-margin-top: 76px; }
 
+  /* back to top */
+  #to-top {
+    position: fixed; bottom: 20px; right: 20px; z-index: 150;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--amber); color: #000; border: none;
+    font-size: 22px; font-weight: 700; line-height: 1; cursor: pointer;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transform: translateY(8px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  #to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  #to-top:hover { background: var(--amber-bright); }
+
   /* ── HEADER ── */
   header {
     background: rgba(10,10,15,0.92);
@@ -1352,7 +1366,7 @@
   <div class="tile-grid" id="tile-grid"></div>
 
   <!-- GOVERNMENT RELEASES -->
-  <div class="section-header">
+  <div class="section-header" id="sec-releases">
     <span class="section-title">Government Releases</span>
     <div class="section-rule"></div>
   </div>
@@ -1419,7 +1433,7 @@
   </div>
 
   <!-- DISCLOSURE TIMELINE -->
-  <div class="section-header">
+  <div class="section-header" id="sec-timeline">
     <span class="section-title">Disclosure Timeline</span>
     <div class="section-rule"></div>
   </div>
@@ -1482,7 +1496,7 @@
   </div>
 
   <!-- CREDIBILITY -->
-  <div class="section-header">
+  <div class="section-header" id="sec-credibility">
     <span class="section-title">Credibility</span>
     <div class="section-rule"></div>
   </div>
@@ -1758,6 +1772,8 @@
   <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
 </footer>
 
+<button id="to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
   <div class="modal" id="modal-box">
@@ -1934,11 +1950,11 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
   const t = a.textContent.trim();
   const inMobile = !!a.closest('.mobile-menu');
   if(t==='Timeline'){
-    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('.timeline-strip'); }, 40); if(inMobile) toggleMenu(); });
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#sec-timeline'); }, 40); if(inMobile) toggleMenu(); });
   } else if(t==='Credibility'){
-    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#credibility'); }, 40); if(inMobile) toggleMenu(); });
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#sec-credibility'); }, 40); if(inMobile) toggleMenu(); });
   } else if(t==='Releases'){
-    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#gov-releases'); }, 40); if(inMobile) toggleMenu(); });
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#sec-releases'); }, 40); if(inMobile) toggleMenu(); });
   }
 });
 document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); }); });
@@ -2064,6 +2080,15 @@ async function loadReleases(){
 loadRead();
 loadReleases();
 loadFeed();
+
+// ---- back-to-top button ----
+(function(){
+  var btn = document.getElementById('to-top');
+  if(!btn) return;
+  window.addEventListener('scroll', function(){
+    btn.classList.toggle('show', window.pageYOffset > 400);
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
