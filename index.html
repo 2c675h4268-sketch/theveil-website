@@ -1262,6 +1262,7 @@
     <div class="nav-links">
       <a href="#">Timeline</a>
       <a href="#">Credibility</a>
+      <a href="#">Releases</a>
       <a href="#" onclick="showPage('scoring'); return false;" id="nav-scoring">How We Score</a>
       <a href="#" class="subscribe-btn">Subscribe Free</a>
     </div>
@@ -1274,6 +1275,7 @@
 <div class="mobile-menu" id="mobile-menu">
   <a href="#">Timeline</a>
   <a href="#">Credibility</a>
+  <a href="#">Releases</a>
   <a href="#" onclick="showPage('scoring'); toggleMenu(); return false;">How We Score</a>
   <a href="#">Subscribe Free</a>
 </div>
@@ -1934,6 +1936,8 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
     a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('.timeline-strip'); }, 40); if(inMobile) toggleMenu(); });
   } else if(t==='Credibility'){
     a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#credibility'); }, 40); if(inMobile) toggleMenu(); });
+  } else if(t==='Releases'){
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#gov-releases'); }, 40); if(inMobile) toggleMenu(); });
   }
 });
 document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); }); });
