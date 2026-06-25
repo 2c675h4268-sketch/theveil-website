@@ -166,11 +166,17 @@
 
   .mobile-menu {
     display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 99;
     background: var(--deep);
     border-bottom: 1px solid var(--border);
     padding: 12px 24px 16px;
     flex-direction: column;
     gap: 2px;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.55);
   }
   .mobile-menu.open { display: flex; }
   .mobile-menu a {
