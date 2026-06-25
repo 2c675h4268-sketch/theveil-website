@@ -577,6 +577,26 @@
   }
   .tile:hover .read-arrow { background: var(--amber); color: #000; }
 
+  /* ── "SO WHAT" CALLOUT ── */
+  .so-what {
+    background: #1A160E;
+    border: 1px solid #4A3A1C;
+    border-left: 3px solid var(--amber);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    margin-top: 14px;
+  }
+  .so-what-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .so-what-text { font-size: 14px; line-height: 1.6; color: #B8B5C4; margin: 0; }
+
   /* ── TIMELINE ── */
   .timeline-strip {
     background: var(--surface);
@@ -861,6 +881,8 @@
     .tile-img { height: 200px; }
     .tile-headline { font-size: 17px; }
     .tile-source { font-size: 11px; }
+    .so-what-label { font-size: 11px; }
+    .so-what-text { font-size: 15px; }
     .src-name { font-size: 15px; }
     .src-desc { font-size: 15px; }
     .src-go { font-size: 13px; }
@@ -1674,6 +1696,7 @@ function credClass(n){ return n>=80 ? 'cred-high' : n>=55 ? 'cred-mid' : 'cred-l
 function credLabel(n){ return n>=85?'Very High Credibility':n>=70?'High Credibility':n>=55?'Moderate Credibility':n>=35?'Low Credibility':'Unverified'; }
 function fmtDate(iso){ if(!iso) return ''; const d=new Date(iso); return isNaN(d)?'':d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
 function bg(url){ return url ? "background-image:url('"+String(url).replace(/'/g,'%27')+"');" : 'background:linear-gradient(135deg,#1A1A26,#0F0F18);'; }
+function soWhatBlock(a){ return a.so_what ? '<div class="so-what"><div class="so-what-label">The “So What”</div><p class="so-what-text">'+esc(a.so_what)+'</p></div>' : ''; }
 function tierLabel(t){ return t==1?'Tier 1 · Official / Major source':t==2?'Tier 2 · Established independent':t==3?'Tier 3 · Unverified / social':''; }
 
 // ---- fetch ----
@@ -1738,6 +1761,7 @@ function renderLead(a){
   +     '</div>'
   +     '<div class="tile-source-meta">'+esc(a.source||'')+' &nbsp;·&nbsp; '+fmtDate(a.published_date)+'</div>'
   +   '</div>'
+  +   soWhatBlock(a)
   + '</div></div>';
 }
 
@@ -1757,6 +1781,7 @@ function renderTiles(){
   +       '<div class="cred-ring '+credClass(a.credibility_score)+'">'+(a.credibility_score!=null?a.credibility_score:'-')+'</div>'
   +       '<div class="cred-label"><strong>'+credLabel(a.credibility_score)+'</strong>'+esc(a.source||'')+'</div>'
   +     '</div>'
+  +     soWhatBlock(a)
   +     '<div class="tile-footer">'
   +       '<span class="tile-source">'+esc(a.source||'')+' · '+fmtDate(a.published_date)+'</span>'
   +       '<div class="read-arrow">→</div>'
