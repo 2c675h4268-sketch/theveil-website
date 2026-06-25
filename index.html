@@ -19,8 +19,8 @@
     --amber-bright: #F0AA44;
     --amber-dim: #8A6420;
     --text-primary: #F0EDE4;
-    --text-secondary: #9A97A8;
-    --text-muted: #52505E;
+    --text-secondary: #B2AFBE;
+    --text-muted: #807E8C;
     --radius: 16px;
     --radius-sm: 10px;
   }
@@ -761,26 +761,63 @@
     .hamburger { display: flex; }
   }
 
-  /* phones: single column, tighter padding */
+  /* phones: single column, tighter padding, larger + brighter type */
   @media (max-width: 560px) {
+    body { font-size: 16px; }
     .tile-grid { grid-template-columns: 1fr; }
     .timeline-items { grid-template-columns: 1fr; }
     .hero { padding: 40px 18px 34px; }
-    .hero-sub { font-size: 15px; }
+    .hero-eyebrow { font-size: 12px; }
+    .hero-sub { font-size: 16px; }
+    .hero-meta { font-size: 10.5px; }
     .main { padding: 22px 16px 48px; }
     .filters-bar { padding: 12px 16px; }
+    .section-title { font-size: 13px; }
     .cta-form { flex-direction: column; }
-    .cta-submit { width: 100%; border-radius: var(--radius-sm); padding: 13px 22px; }
+    .cta-submit { width: 100%; border-radius: var(--radius-sm); padding: 14px 22px; font-size: 15px; }
     .header-inner { padding: 0 16px; }
     .featured-tile { min-height: 320px; }
     .featured-body { padding: 22px 20px; }
-    .featured-summary { font-size: 14px; }
+    .featured-headline { font-size: 24px; }
+    .featured-summary { font-size: 15px; }
+    .featured-badge { font-size: 11px; }
+    .tag { font-size: 11px; }
+    .cred-ring { font-size: 11px; }
+    .cred-label { font-size: 13px; color: rgba(255,255,255,0.62); }
+    .cred-label strong { font-size: 13px; color: rgba(255,255,255,0.92); }
+    .tile-source-meta { font-size: 10.5px; }
     .newsletter-cta { padding: 30px 20px; }
     .timeline-strip { padding: 22px 20px; }
+    .timeline-title { font-size: 15px; }
+    .timeline-updated { font-size: 11px; }
+    .timeline-date { font-size: 12.5px; }
+    .timeline-event { font-size: 15px; }
     .tile-img { height: 200px; }
-    .tile-headline { font-size: 16px; }
+    .tile-headline { font-size: 17px; }
+    .tile-source { font-size: 11px; }
+    .src-name { font-size: 15px; }
+    .src-desc { font-size: 15px; }
+    .src-go { font-size: 13px; }
+    .veils-read p { font-size: 17px; }
+    .veils-read p:first-of-type { font-size: 18px; }
+    .vr-eyebrow { font-size: 11px; }
+    .cta-eyebrow { font-size: 11px; }
+    .cta-sub { font-size: 16px; }
+    .cta-tz { font-size: 13px; }
+    .cta-tz-select { font-size: 14px; }
     .modal-content { padding: 22px 20px 24px; }
     .modal-img { height: 200px; }
+    .modal-headline { font-size: 20px; }
+    .modal-body { font-size: 16px; }
+    .modal-meta { font-size: 12px; }
+    .footer-copy { font-size: 12.5px; }
+    .scoring-intro { font-size: 16px; }
+    .scoring-section-intro { font-size: 15px; }
+    .dimension-desc { font-size: 15px; }
+    .scale-label { font-size: 13px; }
+    .legend-body span { font-size: 14px; }
+    .legend-body strong { font-size: 15px; }
+    .rule-body p { font-size: 14px; }
   }
 
   /* small phones (iPhone SE / mini, compact Android) */
@@ -1071,6 +1108,23 @@
     color: var(--text-muted); margin-top: 18px;
   }
   @media (max-width: 560px) { .veils-read { padding: 20px 20px; } }
+
+  /* mobile type bumps for blocks defined after the main phone media query */
+  @media (max-width: 560px) {
+    .scoring-intro { font-size: 16px; }
+    .scoring-section-intro { font-size: 15px; }
+    .dimension-desc { font-size: 15px; }
+    .scale-label { font-size: 13px; }
+    .legend-body span { font-size: 14px; }
+    .legend-body strong { font-size: 15px; }
+    .rule-body p { font-size: 14px; }
+    .src-name { font-size: 15px; }
+    .src-desc { font-size: 15px; }
+    .src-go { font-size: 13px; }
+    .veils-read p { font-size: 17px; }
+    .veils-read p:first-of-type { font-size: 18px; }
+    .vr-eyebrow { font-size: 11px; }
+  }
 </style>
 </head>
 <body>
