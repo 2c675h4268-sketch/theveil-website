@@ -1557,6 +1557,17 @@
   </div>
 </div>
 
+<!-- SUBSCRIBE CONFIRMATION / WHITELIST MODAL -->
+<div id="veil-whitelist-modal" onclick="if(event.target===this)closeVeilWhitelist()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);max-width:460px;width:100%;padding:34px 28px 28px;box-shadow:0 24px 80px rgba(0,0,0,0.7);position:relative;text-align:center;">
+    <button onclick="closeVeilWhitelist()" aria-label="Close" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:18px;color:var(--text-muted);cursor:pointer;line-height:1;">&#10005;</button>
+    <div style="font-size:34px;margin-bottom:12px;">&#128225;</div>
+    <div style="font-family:'Playfair Display',serif;font-size:23px;font-weight:700;color:var(--text-primary);margin-bottom:12px;">You're in.</div>
+    <p style="font-size:15px;color:var(--text-secondary);line-height:1.65;margin-bottom:22px;">Your first issue of The Veil arrives <strong style="color:var(--text-primary);">Sunday evening</strong>. So it doesn't slip into spam or Promotions, add <strong style="color:var(--amber);">brief@theveil.media</strong> to your contacts (or drag us into your primary inbox if you spot us there). Takes 5 seconds and makes all the difference.</p>
+    <button onclick="closeVeilWhitelist()" style="background:var(--amber);color:#000;border:none;border-radius:var(--radius-sm);padding:12px 30px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.01em;">Got it</button>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL  = 'https://zujxdvzvcyzpyfqininu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1anhkdnp2Y3l6cHlmcWluaW51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNTYyNjIsImV4cCI6MjA5NzgzMjI2Mn0.ljS8POA6SpLAmd5Al7sdWduXbQpfUq0v8LTWCGv2cAU';
@@ -1762,6 +1773,8 @@ function veilTzFields(){
   });
 })();
 
+function showVeilWhitelist(){ var m=document.getElementById('veil-whitelist-modal'); if(m){ m.style.display='flex'; document.body.style.overflow='hidden'; } }
+function closeVeilWhitelist(){ var m=document.getElementById('veil-whitelist-modal'); if(m){ m.style.display='none'; document.body.style.overflow=''; } }
 function wireSubscribe(){
   const form = document.querySelector('.cta-form');
   if(!form) return;
@@ -1780,6 +1793,7 @@ function wireSubscribe(){
       const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
       await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', body: body});
       setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
+      setTimeout(showVeilWhitelist, 350);
     }catch(e){
       btn.disabled=false; btn.textContent='Subscribe Free';
       setMsg('Something went wrong. Please try again.', false);
