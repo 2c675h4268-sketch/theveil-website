@@ -1169,7 +1169,21 @@
   .src-name { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); font-weight: 700; }
   .src-desc { font-size: 13.5px; line-height: 1.6; color: #BDBAC8; flex: 1; }
   .src-go   { font-size: 12px; font-weight: 600; color: var(--text-primary); font-family: 'Space Mono', monospace; }
-  @media (max-width: 700px) { .src-grid { grid-template-columns: 1fr; } }
+  /* ── CREDIBILITY HUB ── */
+  .cred-anchor-intro { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin: 0 0 22px; max-width: 760px; }
+  .tier-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 18px; }
+  .tier-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+  .tier-card.tier-1 { border-top: 3px solid #70D4A0; }
+  .tier-card.tier-2 { border-top: 3px solid var(--amber); }
+  .tier-card.tier-3 { border-top: 3px solid #F08080; }
+  .tier-badge { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .tier-name { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; line-height: 1.25; }
+  .tier-desc { font-size: 13px; line-height: 1.55; color: var(--text-secondary); }
+  .cred-anchor-method { display: inline-block; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--amber); text-decoration: none; margin: 0 0 26px; }
+  .cred-anchor-method:hover { color: var(--amber-bright); }
+  .cred-anchor-subhead { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 14px; }
+
+  @media (max-width: 700px) { .src-grid { grid-template-columns: 1fr; } .tier-grid { grid-template-columns: 1fr; } }
 
   /* ── THE VEIL'S READ ── */
   .veils-read {
@@ -1215,6 +1229,14 @@
     .veils-read p:first-of-type { font-size: 18px; }
     .vr-eyebrow { font-size: 11px; }
   }
+
+  @media (max-width: 560px) {
+    .cred-anchor-intro { font-size: 15px; }
+    .tier-name { font-size: 16px; }
+    .tier-desc { font-size: 14px; }
+    .cred-anchor-subhead { font-size: 14px; }
+    .cred-anchor-method { font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -1236,7 +1258,7 @@
     </a>
     <div class="nav-links">
       <a href="#">Timeline</a>
-      <a href="#">Sources</a>
+      <a href="#">Credibility</a>
       <a href="#" onclick="showPage('scoring'); return false;" id="nav-scoring">How We Score</a>
       <a href="#" class="subscribe-btn">Subscribe Free</a>
     </div>
@@ -1248,7 +1270,7 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="#">Timeline</a>
-  <a href="#">Sources</a>
+  <a href="#">Credibility</a>
   <a href="#" onclick="showPage('scoring'); toggleMenu(); return false;">How We Score</a>
   <a href="#">Subscribe Free</a>
 </div>
@@ -1387,16 +1409,20 @@
     </div>
   </div>
 
-  <!-- OFFICIAL SOURCES -->
+  <!-- CREDIBILITY -->
   <div class="section-header">
-    <span class="section-title">Official Sources</span>
+    <span class="section-title">Credibility</span>
     <div class="section-rule"></div>
   </div>
-  <div id="official-sources" class="timeline-strip">
-    <div class="timeline-header">
-      <span class="timeline-title">Go Straight to the Record</span>
-      <span class="timeline-updated">Primary Government Sources</span>
+  <div id="credibility" class="timeline-strip">
+    <p class="cred-anchor-intro">Every story here is scored 0 to 100 for credibility and tagged by source tier, so you always know how much to trust what you're reading. Here's the framework, and the primary records to hold us to.</p>
+    <div class="tier-grid">
+      <div class="tier-card tier-1"><div class="tier-badge">Tier 1</div><div class="tier-name">Official / Major</div><div class="tier-desc">Government documents, named senior officials, peer-reviewed work, and major national press.</div></div>
+      <div class="tier-card tier-2"><div class="tier-badge">Tier 2</div><div class="tier-name">Established Independent</div><div class="tier-desc">Credentialed UAP investigative outlets and reputable press with a shorter track record on this beat.</div></div>
+      <div class="tier-card tier-3"><div class="tier-badge">Tier 3</div><div class="tier-name">Unverified / Social</div><div class="tier-desc">Anonymous claims, blogs, social posts, and sensational outlets. Capped low until independently corroborated.</div></div>
     </div>
+    <a href="#" onclick="showPage('scoring');return false;" class="cred-anchor-method">See our full scoring method →</a>
+    <div class="cred-anchor-subhead">Don't take our word for it. Go straight to the record.</div>
     <div class="src-grid">
       <a class="src-link" href="https://www.aaro.mil" target="_blank" rel="noopener">
         <span class="src-name">AARO</span>
@@ -1839,8 +1865,8 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
   const inMobile = !!a.closest('.mobile-menu');
   if(t==='Timeline'){
     a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('.timeline-strip'); }, 40); if(inMobile) toggleMenu(); });
-  } else if(t==='Sources'){
-    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#official-sources'); }, 40); if(inMobile) toggleMenu(); });
+  } else if(t==='Credibility'){
+    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#credibility'); }, 40); if(inMobile) toggleMenu(); });
   }
 });
 document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); }); });
