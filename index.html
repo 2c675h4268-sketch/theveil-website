@@ -112,6 +112,48 @@
   .wtw-list li{position:relative;padding:14px 0 14px 26px;border-bottom:1px solid var(--border);font-size:16px;line-height:1.6;color:var(--text-secondary)}
   .wtw-list li:last-child{border-bottom:none}
   .wtw-list li::before{content:"→";position:absolute;left:0;top:14px;color:var(--amber);font-family:var(--mono);font-size:14px}
+
+  /* mid-page signup band */
+  .midcta{margin:64px 0 8px;background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:38px clamp(20px,4vw,44px);text-align:center}
+  .midcta h3{font-family:var(--sans);font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-0.02em;color:var(--text-primary);margin:0 0 8px}
+  .midcta p{font-size:15px;color:var(--text-secondary);margin:0 auto 20px;max-width:520px;line-height:1.6}
+  /* who-this-is-for + editor bands */
+  .band{margin:64px 0 8px}
+  .band-label{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
+  .band>h3{font-family:var(--sans);font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-0.02em;color:var(--text-primary);margin:0 0 14px;max-width:24ch}
+  .band>p{font-size:clamp(15px,1.7vw,17px);color:var(--text-secondary);line-height:1.7;max-width:720px;margin:0}
+  .editor-card{display:flex;gap:22px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px clamp(20px,3vw,32px)}
+  .editor-avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;background:linear-gradient(150deg,var(--amber),var(--amber-dim));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:24px;font-weight:700;color:#0a0a0a}
+  .editor-name{font-family:var(--sans);font-size:20px;font-weight:600;color:var(--text-primary);margin:0 0 4px}
+  .editor-role{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+  .editor-body p{font-size:15.5px;color:var(--text-secondary);line-height:1.7;max-width:640px;margin:0}
+  /* simplified scoring teaser */
+  .score-teaser{margin:64px 0 8px}
+  .score-teaser-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+  .score-factors{list-style:none;margin:10px 0 0;padding:0;counter-reset:sf}
+  .score-factors li{position:relative;padding:12px 0 12px 32px;border-bottom:1px solid var(--border);font-size:15.5px;color:var(--text-secondary);line-height:1.5}
+  .score-factors li:last-child{border-bottom:none}
+  .score-factors li strong{color:var(--text-primary);font-weight:600}
+  .score-factors li::before{counter-increment:sf;content:counter(sf,decimal-leading-zero);position:absolute;left:0;top:13px;font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700}
+  .score-example{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+  .score-example-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .score-ringbig{width:58px;height:58px;border-radius:50%;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;font-weight:700;color:var(--green);flex-shrink:0}
+  .score-ex-label{display:block;font-size:15px;font-weight:600;color:var(--text-primary)}
+  .score-ex-sub{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-top:3px}
+  .score-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .score-row:last-child{border-bottom:none;margin-bottom:16px}
+  .score-row span:first-child{color:var(--text-secondary)}
+  .score-row span:last-child{color:var(--text-primary);font-weight:600}
+  .score-teaser-link{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);text-decoration:none}
+  .score-teaser-link:hover{color:var(--amber-bright)}
+  /* sticky mobile subscribe */
+  .mobile-cta{display:none}
+  @media(max-width:820px){.score-teaser-grid{grid-template-columns:1fr}.editor-card{flex-direction:column;gap:16px}}
+  @media(max-width:767px){
+    .mobile-cta{display:block;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(8,9,13,0.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--border)}
+    .mobile-cta a{display:block;text-align:center;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px;border-radius:100px}
+    #to-top{bottom:74px!important}
+  }
   @media(max-width:820px){.promises-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:480px){.promises-grid{grid-template-columns:1fr}}
 
@@ -360,7 +402,7 @@
     <input class="cta-input" type="email" placeholder="Enter your email" aria-label="Email address">
     <button class="cta-submit">Get The Veil Free</button>
   </div>
-  <p class="hero-micro">One intelligent briefing every Sunday evening. No hype. No spam.</p>
+  <p class="hero-micro">Free. One email every Sunday. No sensationalism. Unsubscribe anytime.</p>
   <div class="hero-meta">
     <span id="meta-week">Loading this week’s issue…</span>
   </div>
@@ -392,6 +434,16 @@
   <p class="cred-anchor-intro">This week's stories, ranked by credibility. The number on each is our 0 to 100 assessment of how much to trust it.</p>
 
   <div class="tile-grid" id="tile-grid"></div>
+
+  <!-- MID SIGNUP -->
+  <div class="midcta">
+    <h3>Get this in your inbox every Sunday.</h3>
+    <p>The full brief, every story scored and sourced, lands in your inbox once a week. Free.</p>
+    <div class="cta-form" style="margin:0 auto;">
+      <input class="cta-input" type="email" placeholder="Enter your email">
+      <button class="cta-submit">Get The Veil Free</button>
+    </div>
+  </div>
 
   <!-- THE PRIMARY RECORD -->
   <div class="section-header" id="sec-releases">
@@ -544,33 +596,61 @@
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
-  <section class="how">
-    <div class="how-label">How The Veil works</div>
-    <div class="how-inner">
-      <div class="how-step">
-        <div class="how-num">01</div>
-        <div class="how-body">
-          <div class="how-title">We track the week’s UAP news</div>
-          <div class="how-text">Every major development across government, science, disclosure, and credible sightings.</div>
-        </div>
+  <!-- HOW WE SCORE (simplified teaser) -->
+  <div class="score-teaser">
+    <div class="section-header">
+      <span class="section-title">How we score</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="score-teaser-grid">
+      <div>
+        <p class="cred-anchor-intro" style="margin-bottom:0;">Every story is scored from 0 to 100 using five factors:</p>
+        <ul class="score-factors">
+          <li><strong>Quality of the original source.</strong> Primary documents and named officials over anonymous claims.</li>
+          <li><strong>Independent corroboration.</strong> How many credible outlets confirm the same thing.</li>
+          <li><strong>Verifiable details.</strong> Specific dates, names, and documents you can check.</li>
+          <li><strong>The outlet's UAP reporting history.</strong> Track record on this particular beat.</li>
+          <li><strong>Consistency with the documented record.</strong> Does it fit what is already established.</li>
+        </ul>
+        <div style="margin-top:20px;"><a class="score-teaser-link" href="#" onclick="showPage('scoring');return false;">See the complete scoring methodology →</a></div>
       </div>
-      <div class="how-step">
-        <div class="how-num">02</div>
-        <div class="how-body">
-          <div class="how-title">We score every source</div>
-          <div class="how-text">Each story gets a 0 to 100 credibility score with a transparent rationale, so hype can’t hide as fact.</div>
+      <div class="score-example">
+        <div class="score-example-top">
+          <div class="score-ringbig">82</div>
+          <div>
+            <span class="score-ex-label">Example credibility score</span>
+            <span class="score-ex-sub">High · Tier 1 source</span>
+          </div>
         </div>
-      </div>
-      <div class="how-step">
-        <div class="how-num">03</div>
-        <div class="how-body">
-          <div class="how-title">You get what matters</div>
-          <div class="how-text">The credible stories, what they mean, and what to watch next. Free, every Sunday evening.</div>
-        </div>
+        <div class="score-row"><span>Official confirmation</span><span>Strong</span></div>
+        <div class="score-row"><span>Corroboration</span><span>Moderate</span></div>
+        <div class="score-row"><span>Documentation</span><span>Strong</span></div>
+        <div class="score-row"><span>Unresolved questions</span><span>Two</span></div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">A strong score still leaves open questions. We always say which.</div>
       </div>
     </div>
-  </section>
+  </div>
+
+  <!-- WHO THIS IS FOR -->
+  <div class="band">
+    <div class="band-label">Who it's for</div>
+    <h3>Serious coverage for the curious.</h3>
+    <p>You do not have to be a lifelong UFO researcher to follow the story. The Veil explains the people, programs, documents, and developments shaping the UAP conversation, without assuming prior knowledge or asking you to believe unsupported claims. New here? Start with our <a href="new-to-uap" style="color:var(--amber);text-decoration:none;">beginner's guide</a>.</p>
+  </div>
+
+  <!-- WHO IS BEHIND -->
+  <div class="band">
+    <div class="band-label">Accountability</div>
+    <h3>Who is behind The Veil?</h3>
+    <div class="editor-card">
+      <div class="editor-avatar">AP</div>
+      <div class="editor-body">
+        <div class="editor-name">Adam Price</div>
+        <div class="editor-role">Editor · The Veil</div>
+        <p>The Veil is published by Atomic Media Group and edited by Adam Price. We follow the documented UAP record, link directly to primary sources, and clearly distinguish confirmed facts, credible reporting, and unresolved claims. Every credibility score is an editorial assessment made against a consistent, published rubric, and we correct the record when new evidence emerges.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- EDITORIAL PROMISES -->
   <section class="promises">
@@ -587,7 +667,7 @@
   <!-- CTA -->
   <div class="newsletter-cta" id="subscribe-cta">
     <div class="cta-eyebrow"><span class="eyebrow-part">The Weekly Brief</span><span class="eyebrow-sep"> · </span><span class="eyebrow-part">Sunday Evenings</span></div>
-    <h3 class="cta-headline">Understand the week in UAP.</h3>
+    <h3 class="cta-headline">Everything important. Nothing taken on faith.</h3>
     <p class="cta-sub">One briefing a week with the most credible UAP developments — each scored, sourced, and explained. Free, every Sunday evening.</p>
     <div class="cta-form">
       <input class="cta-input" type="email" placeholder="Enter your email">
@@ -869,6 +949,11 @@
 </footer>
 
 <button id="to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<!-- STICKY MOBILE SUBSCRIBE -->
+<div class="mobile-cta">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});setTimeout(function(){var i=document.querySelector('.hero-form .cta-input');if(i)i.focus();},500);return false;">Get The Veil Free →</a>
+</div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
