@@ -39,8 +39,8 @@
     background:
       radial-gradient(900px 480px at 50% -6%, rgba(226,162,75,0.10), transparent 70%),
       radial-gradient(700px 600px at 92% 16%, rgba(121,199,214,0.045), transparent 70%),
-      linear-gradient(rgba(255,255,255,0.016) 1px,transparent 1px) 0 0/100% 48px,
-      linear-gradient(90deg,rgba(255,255,255,0.016) 1px,transparent 1px) 0 0/48px 100%;}
+      linear-gradient(rgba(255,255,255,0.010) 1px,transparent 1px) 0 0/100% 64px,
+      linear-gradient(90deg,rgba(255,255,255,0.010) 1px,transparent 1px) 0 0/64px 100%;}
   #page-home,#page-scoring,header,.classbar,footer,.mobile-menu{position:relative;z-index:1}
   .mono{font-family:var(--mono)}
   a{color:inherit}
@@ -80,12 +80,19 @@
   .hero>*:not(.stamp){position:relative;z-index:1}
   .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);background:rgba(226,162,75,0.05);border:1px solid rgba(226,162,75,0.28);padding:9px 18px;border-radius:100px;margin-bottom:34px}
   .hero-eyebrow::before{content:"";width:6px;height:6px;background:var(--amber);border-radius:50%;animation:pulse 2s infinite}
-  .hero-headline{font-family:var(--sans);font-size:clamp(40px,8vw,92px);font-weight:600;line-height:1.04;letter-spacing:-0.035em;color:var(--text-primary);max-width:15ch;margin:0 auto 28px}
-  .hero-sub{font-size:clamp(16px,2vw,21px);color:var(--text-secondary);max-width:600px;margin:0 auto 40px;font-weight:400;line-height:1.6}
+  .hero-headline{font-family:var(--sans);font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.07;letter-spacing:-0.03em;color:var(--text-primary);max-width:16ch;margin:0 auto 18px}
+  .hero-dek{font-family:var(--sans);font-size:clamp(18px,2.3vw,25px);font-weight:500;letter-spacing:-0.01em;color:var(--text-secondary);max-width:620px;margin:0 auto 22px;line-height:1.3}
+  .hero-sub{font-size:clamp(15px,1.7vw,18px);color:var(--text-secondary);max-width:600px;margin:0 auto 26px;font-weight:400;line-height:1.65}
+  .hero-form{margin:6px auto 14px}
+  .hero-micro{font-size:13px;color:var(--text-muted);margin:0 auto 30px}
   .hero-meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--text-muted);text-transform:uppercase;line-height:2}
   .hero-meta span{color:var(--amber-dim);margin:0 10px}
+  .trust-bar{max-width:1180px;margin:0 auto;padding:6px 24px 0;display:flex;gap:8px 14px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
+  .trust-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+  .trust-sep{color:var(--border)}
+  .trust-sources{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--amber-dim)}
 
-  .how{max-width:1100px;margin:0 auto;padding:18px 24px 8px}
+  .how{margin:64px 0 8px;padding:0}
   .how-label{font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);text-align:center;margin-bottom:24px}
   .how-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
   .how-step{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px}
@@ -93,19 +100,20 @@
   .how-title{font-size:16px;font-weight:500;color:var(--text-primary);line-height:1.3;margin-bottom:6px}
   .how-text{font-size:14px;color:var(--text-secondary);line-height:1.55}
 
-  .main{max-width:1180px;margin:0 auto;padding:40px 24px 72px}
-  .section-header{display:flex;align-items:center;gap:18px;margin:0 0 26px}
-  .section-title{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-secondary);white-space:nowrap}
+  .main{max-width:1180px;margin:0 auto;padding:52px 24px 88px}
+  .section-header{display:flex;align-items:center;gap:20px;margin:0 0 30px}
+  .main>.section-header:not(:first-child){margin-top:64px}
+  .section-title{font-family:var(--sans);font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-0.02em;color:var(--text-primary);white-space:nowrap}
   .section-rule{flex:1;height:1px;background:var(--border)}
 
   /* lead — dossier frame */
   .featured-tile{position:relative;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:48px;cursor:pointer;background:var(--surface);transition:border-color .3s,transform .3s;display:block}
   .featured-tile:hover{border-color:var(--line2);transform:translateY(-3px)}
-  .featured-tile::before,.featured-tile::after{content:"";position:absolute;width:20px;height:20px;border:1px solid rgba(255,255,255,0.45);z-index:4;pointer-events:none}
+  .featured-tile::before,.featured-tile::after{content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(255,255,255,0.18);z-index:4;pointer-events:none}
   .featured-tile::before{top:16px;left:16px;border-right:0;border-bottom:0}
   .featured-tile::after{top:16px;right:16px;border-left:0;border-bottom:0}
   .featured-bg{position:relative;height:clamp(280px,42vw,520px);background-size:cover;background-position:center;background-color:#0a0c11;border-radius:0}
-  .featured-bg::after{content:"DECLASSIFIED // CLEARED";position:absolute;top:22px;right:48px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:rgba(226,162,75,0.8);border:1px solid rgba(226,162,75,0.4);border-radius:5px;padding:5px 10px;transform:rotate(3deg)}
+  .featured-bg::after{display:none}
   .featured-overlay{display:none}
   .featured-body{position:relative;z-index:2;padding:36px clamp(22px,4vw,52px) 42px;background:var(--surface);max-width:none}
   .featured-badge{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
@@ -326,44 +334,27 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="stamp">DECLASSIFIED</div>
   <div class="hero-glow"></div>
   <div class="hero-eyebrow">Weekly UAP Intelligence</div>
-  <h1 class="hero-headline">What's real. What's credible. What it means.</h1>
-  <p class="hero-sub">The Veil is a weekly brief on UAP and UFO news. We track every major development and score each source from 0 to 100 for credibility, so you always know how much to trust what you're reading. Free, every Sunday evening.</p>
+  <h1 class="hero-headline">The week in UAP, separated from the speculation.</h1>
+  <p class="hero-dek">What's real. What's credible. What it means.</p>
+  <p class="hero-sub">The Veil tracks the developments shaping the UAP conversation across government, science, disclosure and credible sightings. Every story gets a transparent credibility score, direct links to the evidence, and a clear explanation of why it matters.</p>
+  <div class="cta-form hero-form">
+    <input class="cta-input" type="email" placeholder="Enter your email" aria-label="Email address">
+    <button class="cta-submit">Get The Veil Free</button>
+  </div>
+  <p class="hero-micro">One intelligent briefing every Sunday evening. No hype. No spam.</p>
   <div class="hero-meta">
     <span id="meta-week">Loading this week’s issue…</span>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
-<section class="how">
-  <div class="how-label">How The Veil works</div>
-  <div class="how-inner">
-    <div class="how-step">
-      <div class="how-num">01</div>
-      <div class="how-body">
-        <div class="how-title">We track the week’s UAP news</div>
-        <div class="how-text">Every major development across government, science, disclosure, and credible sightings.</div>
-      </div>
-    </div>
-    <div class="how-step">
-      <div class="how-num">02</div>
-      <div class="how-body">
-        <div class="how-title">We score every source</div>
-        <div class="how-text">Each story gets a 0 to 100 credibility score with a transparent rationale, so hype can’t hide as fact.</div>
-      </div>
-    </div>
-    <div class="how-step">
-      <div class="how-num">03</div>
-      <div class="how-body">
-        <div class="how-title">You get what matters</div>
-        <div class="how-text">The credible stories, what they mean, and what to watch next. Free, every Sunday evening.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <span class="trust-label">Built from primary sources</span>
+  <span class="trust-sep">·</span>
+  <span class="trust-sources">AARO · ODNI · NASA · Congress · DoD · GAO</span>
+</div>
 
 <!-- MAIN -->
 <main class="main">
@@ -392,6 +383,34 @@
   </div>
 
   <div class="tile-grid" id="tile-grid"></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="how-label">How The Veil works</div>
+    <div class="how-inner">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <div class="how-body">
+          <div class="how-title">We track the week’s UAP news</div>
+          <div class="how-text">Every major development across government, science, disclosure, and credible sightings.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <div class="how-body">
+          <div class="how-title">We score every source</div>
+          <div class="how-text">Each story gets a 0 to 100 credibility score with a transparent rationale, so hype can’t hide as fact.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <div class="how-body">
+          <div class="how-title">You get what matters</div>
+          <div class="how-text">The credible stories, what they mean, and what to watch next. Free, every Sunday evening.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- GOVERNMENT RELEASES -->
   <div class="section-header" id="sec-releases">
@@ -518,7 +537,7 @@
       </div>
       <div class="timeline-item active">
         <div class="timeline-date">Jun 2026</div>
-        <div class="timeline-event">The White House forms a federal UAP science advisory council.</div>
+        <div class="timeline-event">A White House-backed interagency UAP Governance Board is established, supported by a Science Advisory Council led by Avi Loeb.</div>
       </div>
     </div>
   </div>
@@ -526,11 +545,11 @@
   <!-- CTA -->
   <div class="newsletter-cta">
     <div class="cta-eyebrow"><span class="eyebrow-part">The Weekly Brief</span><span class="eyebrow-sep"> · </span><span class="eyebrow-part">Sunday Evenings</span></div>
-    <h3 class="cta-headline">End your weekend questioning everything.</h3>
-    <p class="cta-sub">The Veil Brief: credibility-scored UAP coverage, delivered free to your inbox every Sunday evening.</p>
+    <h3 class="cta-headline">Understand the week in UAP.</h3>
+    <p class="cta-sub">One briefing a week with the most credible UAP developments — each scored, sourced, and explained. Free, every Sunday evening.</p>
     <div class="cta-form">
-      <input class="cta-input" type="email" placeholder="your@email.com">
-      <button class="cta-submit">Subscribe Free</button>
+      <input class="cta-input" type="email" placeholder="Enter your email">
+      <button class="cta-submit">Get The Veil Free</button>
     </div>
     <div class="cta-tz">
       <span>Delivered Sunday evening in your timezone:</span>
@@ -1032,31 +1051,33 @@ function veilTzFields(){
 function showVeilWhitelist(){ var m=document.getElementById('veil-whitelist-modal'); if(m){ m.style.display='flex'; document.body.style.overflow='hidden'; } }
 function closeVeilWhitelist(){ var m=document.getElementById('veil-whitelist-modal'); if(m){ m.style.display='none'; document.body.style.overflow=''; } }
 function wireSubscribe(){
-  const form = document.querySelector('.cta-form');
-  if(!form) return;
-  const input = form.querySelector('.cta-input');
-  const btn = form.querySelector('.cta-submit');
-  function setMsg(text, ok){
-    form.innerHTML = '<p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:14px;font-weight:500;color:'+(ok?'#70D4A0':'#F08080')+';">'+text+'</p>';
-  }
-  async function submit(){
-    const email = (input.value||'').trim();
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ input.style.borderColor='#F08080'; input.focus(); return; }
-    if(SUBSCRIBE_WEBHOOK.indexOf('__')===0){ setMsg('Subscriptions open shortly. Check back soon.', true); return; }
-    btn.disabled=true; btn.textContent='…';
-    try{
-      const tzf = veilTzFields();
-      const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
-      await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', body: body});
-      setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
-      setTimeout(showVeilWhitelist, 350);
-    }catch(e){
-      btn.disabled=false; btn.textContent='Subscribe Free';
-      setMsg('Something went wrong. Please try again.', false);
+  document.querySelectorAll('.cta-form').forEach(function(form){
+    const input = form.querySelector('.cta-input');
+    const btn = form.querySelector('.cta-submit');
+    if(!input || !btn) return;
+    const label = btn.textContent;
+    function setMsg(text, ok){
+      form.innerHTML = '<p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:14px;font-weight:500;color:'+(ok?'#7FD8A6':'#E08A8A')+';">'+text+'</p>';
     }
-  }
-  btn.addEventListener('click', submit);
-  input.addEventListener('keydown', function(e){ if(e.key==='Enter') submit(); });
+    async function submit(){
+      const email = (input.value||'').trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ input.style.borderColor='#E08A8A'; input.focus(); return; }
+      if(SUBSCRIBE_WEBHOOK.indexOf('__')===0){ setMsg('Subscriptions open shortly. Check back soon.', true); return; }
+      btn.disabled=true; btn.textContent='…';
+      try{
+        const tzf = veilTzFields();
+        const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
+        await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', body: body});
+        setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
+        setTimeout(showVeilWhitelist, 350);
+      }catch(e){
+        btn.disabled=false; btn.textContent=label;
+        setMsg('Something went wrong. Please try again.', false);
+      }
+    }
+    btn.addEventListener('click', submit);
+    input.addEventListener('keydown', function(e){ if(e.key==='Enter') submit(); });
+  });
 }
 // header / mobile "Subscribe Free" buttons scroll to the form
 document.querySelectorAll('.subscribe-btn, .mobile-menu a:last-child').forEach(function(a){
