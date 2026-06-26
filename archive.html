@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archive — The Veil</title>
+<meta name="description" content="Every story The Veil has covered, with its credibility score. Browse the full UAP record week by week.">
+<link rel="canonical" href="https://theveil.media/story/../archive">
+<meta property="og:type" content="article"><meta property="og:site_name" content="The Veil">
+<meta property="og:title" content="The Veil — Story Archive">
+<meta property="og:description" content="Every story The Veil has covered, with its credibility score. Browse the full UAP record week by week.">
+<meta property="og:url" content="https://theveil.media/story/../archive">
+<meta property="og:image" content="https://theveil.media/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Veil — Story Archive"><meta name="twitter:description" content="Every story The Veil has covered, with its credibility score. Browse the full UAP record week by week.">
+<meta name="twitter:image" content="{ogimg}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/veil.css">
+<style>
+  .st-wrap{max-width:760px;margin:0 auto;padding:36px 24px 72px}
+  .st-back{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:24px}
+  .st-back:hover{color:var(--amber)}
+  .st-tag{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);background:rgba(226,162,75,0.07);border:1px solid rgba(226,162,75,0.3);border-radius:6px;padding:5px 11px;margin-bottom:18px}
+  .st-h1{font-family:var(--sans);font-size:clamp(28px,4.6vw,46px);font-weight:600;line-height:1.12;letter-spacing:-0.025em;color:var(--text-primary);margin:0 0 18px}
+  .st-meta{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--text-muted);text-transform:uppercase;margin-bottom:26px}
+  .st-hero-img{width:100%;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:30px;display:block}
+  .st-credrow{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:30px}
+  .st-ring{width:64px;height:64px;border-radius:50%;border:2px solid var(--c);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:22px;font-weight:700;color:var(--c);flex-shrink:0}
+  .st-credlab{font-size:17px;font-weight:600;color:var(--text-primary)}
+  .st-credsub{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-top:3px}
+  .st-sec{margin:0 0 30px}
+  .st-sec h2{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 12px}
+  .st-sec p{font-size:17px;line-height:1.75;color:var(--text-secondary);margin:0}
+  .sw-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .sw-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
+  .sw-card h3{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px}
+  .sw-up h3{color:var(--green)} .sw-down h3{color:var(--amber)}
+  .sw-card ul{list-style:none;margin:0;padding:0}
+  .sw-card li{position:relative;padding:0 0 10px 16px;font-size:14.5px;line-height:1.55;color:var(--text-secondary)}
+  .sw-card li:last-child{padding-bottom:0}
+  .sw-card li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%}
+  .sw-up li::before{background:var(--green)} .sw-down li::before{background:var(--amber)}
+  .st-rows{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 22px}
+  .st-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);font-size:14.5px}
+  .st-row:last-child{border-bottom:none}
+  .st-row .lab{color:var(--text-secondary)} .st-row .val{font-family:var(--mono);color:var(--text-primary);font-weight:700}
+  .st-source{display:inline-flex;align-items:center;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--amber);text-decoration:none}
+  .st-cta{background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:34px;text-align:center;margin-top:8px}
+  .st-cta h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--text-primary);margin:0 0 10px}
+  .st-cta p{font-size:15px;color:var(--text-secondary);margin:0 auto 20px;max-width:440px;line-height:1.6}
+  .st-cta a{display:inline-block;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
+  @media(max-width:640px){.sw-grid{grid-template-columns:1fr}}
+</style></head><body>
+<div class="classbar"><div class="ci"><span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span><span>CLEARANCE: <span class="redact" title="Public record">PUBLIC</span></span></div></div>
+<header><div class="header-inner">
+  <a class="logo" href="/"><div class="logo-mark"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="9" cy="9" r="2.5" fill="#000"/></svg></div><div class="logo-text"><span class="logo-word">The Veil</span><span class="logo-sub">TheVeil.media</span></div></a>
+  <div class="nav-links"><a href="/">Latest Issue</a><a href="/archive">Archive</a><a href="/new-to-uap">New to UAP?</a><a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a></div>
+</div></header>
+
+<div class="scoring-hero"><div class="hero-eyebrow">The Record</div>
+<h1 class="hero-headline" style="font-size:clamp(32px,5vw,56px);">Story Archive</h1>
+<p class="hero-sub">Every story we have covered, with its credibility score. Browse the full UAP record, week by week.</p></div>
+<div style="max-width:1100px;margin:0 auto;padding:20px 24px 72px">
+<style>
+ .ar-week{margin-bottom:48px}
+ .ar-wk-label{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+ .ar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+ .ar-card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-decoration:none;transition:border-color .2s,transform .2s}
+ .ar-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+ .ar-score{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:2px solid var(--c);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--c);margin-bottom:12px}
+ .ar-tag{display:block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+ .ar-title{display:block;font-family:var(--sans);font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.3;margin-bottom:8px}
+ .ar-sub{display:block;font-size:13.5px;color:var(--text-secondary);line-height:1.5}
+ @media(max-width:820px){.ar-grid{grid-template-columns:1fr}}
+</style>
+<div class="ar-week"><div class="ar-wk-label">Week of 2026-06-22</div><div class="ar-grid"><a class="ar-card" href="/story/2026-06-22-cosmic-council-trump-creates-ufo-panel-to-be-advised-by-harvard-s-avi.html"><span class="ar-score" style="--c:#E2A24B">76</span><span class="ar-tag">Government</span><span class="ar-title">Cosmic Council: Trump creates UFO panel to be advised by Harvard’s Avi Loeb</span><span class="ar-sub">A White House UAP board with named scientific advisers is a real institutional step. Watch for its charter, reporting line, and whether it produces public findi</span></a><a class="ar-card" href="/story/2026-06-22-harvard-professor-avi-loeb-on-heading-the-new-council-studying-ufos.html"><span class="ar-score" style="--c:#E2A24B">74</span><span class="ar-tag">Government</span><span class="ar-title">Harvard professor Avi Loeb on heading the new council studying UFOs</span><span class="ar-sub">Loeb on record framing the council&#x27;s mandate gives the clearest view of what the panel claims it will do. Watch whether his data-first standard survives contact</span></a><a class="ar-card" href="/story/2026-06-22-why-i-joined-the-white-house-uap-science-advisory-council.html"><span class="ar-score" style="--c:#E2A24B">60</span><span class="ar-tag">Government</span><span class="ar-title">Why I Joined the White House UAP Science Advisory Council</span><span class="ar-sub">A self-described skeptic joining the same council signals an attempt at methodological balance. Watch the full member roster and whether dissenting voices get r</span></a><a class="ar-card" href="/story/2026-06-22-harvard-astrophysicist-avi-loeb-to-lead-new-federal-uap-science-panel.html"><span class="ar-score" style="--c:#E08A8A">49</span><span class="ar-tag">Government</span><span class="ar-title">Harvard Astrophysicist Avi Loeb To Lead New Federal UAP Science Panel</span><span class="ar-sub">Adds the detail that Loeb leads rather than merely advises, which is worth confirming against the official charter. Treat the leadership framing as unverified u</span></a><a class="ar-card" href="/story/2026-06-22-america-is-right-to-investigate-uap-claims-but-that-s-only-the-beginni.html"><span class="ar-score" style="--c:#E08A8A">45</span><span class="ar-tag">Disclosure</span><span class="ar-title">America is right to investigate UAP claims, but that’s only the beginning</span><span class="ar-sub">An ex-Pentagon voice urging evidentiary discipline mirrors the new council&#x27;s stated approach. It is opinion, not news, so weigh it as commentary rather than a d</span></a><a class="ar-card" href="/story/2026-06-22-what-should-the-uap-scientific-advisory-board-do.html"><span class="ar-score" style="--c:#E08A8A">42</span><span class="ar-tag">Government</span><span class="ar-title">What should the UAP Scientific Advisory Board do?</span><span class="ar-sub">A serious commentary on what the new board should prioritize, tied to a real institution. Useful as agenda-setting, but it reports no new fact beyond the panel&#x27;</span></a><a class="ar-card" href="/story/2026-06-22-extra-just-show-the-alien-neil-degrasse-tyson-on-pentagon-ufo-files-ai.html"><span class="ar-score" style="--c:#E08A8A">40</span><span class="ar-tag">Government</span><span class="ar-title">Extra: “Just Show the Alien” … Neil deGrasse Tyson on Pentagon UFO Files &amp; AI</span><span class="ar-sub">Tyson&#x27;s skeptical framing of Pentagon files lands as the government stands up a new science panel. It is a high-profile interview, not a disclosure, so treat it</span></a><a class="ar-card" href="/story/2026-06-22-interview-spielberg-says-disclosure-day-is-storytelling-not-a-wild-con.html"><span class="ar-score" style="--c:#E08A8A">30</span><span class="ar-tag">Disclosure</span><span class="ar-title">Interview: Spielberg says Disclosure Day is storytelling, not a wild conspiracy</span><span class="ar-sub">Cultural temperature check, not a UAP development. The film&#x27;s release coincides with real disclosure activity, which is the only reason to track public reaction</span></a><a class="ar-card" href="/story/2026-06-22-does-disclosure-day-deliver-an-astrobiologist-s-take.html"><span class="ar-score" style="--c:#E08A8A">28</span><span class="ar-tag">Science</span><span class="ar-title">Does Disclosure Day Deliver? An Astrobiologist’s Take.</span><span class="ar-sub">A scientist&#x27;s film review, not research. Of marginal interest because the author works on astrobiology, but it advances no disclosure record.</span></a><a class="ar-card" href="/story/2026-06-22-this-powerful-ufo-isn-t-alien-life-it-s-a-black-hole-unleashing-a-cosm.html"><span class="ar-score" style="--c:#E08A8A">26</span><span class="ar-tag">Science</span><span class="ar-title">This powerful UFO isn’t alien life, it’s a black hole unleashing a cosmic storm</span><span class="ar-sub">This is astrophysics jargon (ultra-fast outflow), not unidentified phenomena. Included only to flag the naming overlap; it has no bearing on UAP disclosure.</span></a><a class="ar-card" href="/story/2026-06-22-apple-s-eddy-cue-jerry-bruckheimer-open-up-on-f1-sequel-plans-ufo-thri.html"><span class="ar-score" style="--c:#E08A8A">18</span><span class="ar-tag">Disclosure</span><span class="ar-title">Apple’s Eddy Cue, Jerry Bruckheimer Open Up on ‘F1’ Sequel Plans, UFO Thriller at Cannes Lions</span><span class="ar-sub">Pure entertainment business news. Relevant only as another sign UFO themes are commercially hot in 2026, with no factual UAP content.</span></a><a class="ar-card" href="/story/2026-06-22-5-real-alien-events-hidden-in-spielberg-s-disclosure-day.html"><span class="ar-score" style="--c:#E08A8A">15</span><span class="ar-tag">Disclosure</span><span class="ar-title">5 REAL Alien Events Hidden in Spielberg&#x27;s Disclosure Day</span><span class="ar-sub">A movie-tie-in listicle dressed as history. No new reporting, low credibility by design; surfaced here only to mark it as such.</span></a><a class="ar-card" href="/story/2026-06-22-ufo-cult-descends-into-madness-in-ahoy-s-the-forgotten-divine.html"><span class="ar-score" style="--c:#E08A8A">10</span><span class="ar-tag">Disclosure</span><span class="ar-title">UFO Cult Descends Into Madness In Ahoy&#x27;s THE FORGOTTEN DIVINE</span><span class="ar-sub">Fiction and crowdfunding, not news. Included only to round out the week&#x27;s UFO-adjacent coverage and clearly mark it as non-substantive.</span></a></div></div></div>
+<footer>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:14px;">— END OF FILE · NO FURTHER PAGES —</div>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening</div>
+  <div style="margin-top:14px;font-size:13px;"><a href="/new-to-uap" style="color:var(--text-secondary);text-decoration:none;">New to UAP?</a> &nbsp;·&nbsp; <a href="/standards" style="color:var(--text-secondary);text-decoration:none;">Standards &amp; Corrections</a> &nbsp;·&nbsp; <a href="/archive" style="color:var(--text-secondary);text-decoration:none;">Archive</a></div>
+  <div style="margin-top:12px;font-size:13.5px;color:var(--text-secondary);">Contact: <a href="mailto:contact@theveil.media" style="color:var(--amber);text-decoration:none;">contact@theveil.media</a></div>
+  <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
+</footer>
+</body></html>

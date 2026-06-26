@@ -942,6 +942,8 @@
   <div style="margin-top:14px;font-size:13px;">
     <a href="new-to-uap" style="color:var(--text-secondary);text-decoration:none;">New to UAP?</a>
     &nbsp;·&nbsp;
+    <a href="archive" style="color:var(--text-secondary);text-decoration:none;">Archive</a>
+    &nbsp;·&nbsp;
     <a href="standards" style="color:var(--text-secondary);text-decoration:none;">Standards &amp; Corrections</a>
   </div>
   <div style="margin-top:12px;font-size:13.5px;color:var(--text-secondary);">Contact: <a href="mailto:contact@theveil.media" style="color:var(--amber);text-decoration:none;">contact@theveil.media</a></div>
@@ -1090,13 +1092,18 @@ function matchesFilter(a){
 }
 
 // ---- modal ----
+function veilSlug(t){ return String(t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70).replace(/-+$/,'') || 'story'; }
 function openModal(id){
   const s = stories[id];
   if(!s) return;
   const sw = s.so_what ? '<div class="modal-cred" style="margin-bottom:14px;"><strong>The “So What”</strong>'+esc(s.so_what)+'</div>' : '';
   const rationale = (s.score_breakdown && s.score_breakdown.rationale) ? s.score_breakdown.rationale : tierLabel(s.source_tier);
   const credBox = '<div class="modal-cred"><strong>Credibility Assessment: '+credLabel(s.credibility_score)+' ('+(s.credibility_score!=null?s.credibility_score:'-')+')</strong>'+esc(rationale)+'</div>';
-  const readLink = s.url ? '<p style="margin-top:18px;"><a href="'+esc(s.url)+'" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;text-decoration:none;font-size:13px;">Read the source →</a></p>' : '';
+  const storyUrl = s.week_of ? '/story/'+s.week_of+'-'+veilSlug(s.title)+'.html' : '';
+  const readLink = '<p style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap;">'
+    + (s.url ? '<a href="'+esc(s.url)+'" target="_blank" rel="noopener" style="color:var(--amber);font-weight:600;text-decoration:none;font-size:13px;">Read the source →</a>' : '')
+    + (storyUrl ? '<a href="'+storyUrl+'" style="color:var(--amber);font-weight:600;text-decoration:none;font-size:13px;">Full story page →</a>' : '')
+    + '</p>';
   document.getElementById('modal-inner').innerHTML =
     '<div class="modal-img" style="'+bg(s.image_url)+'"><div class="modal-img-overlay"></div></div>'
   + '<div class="modal-content">'
