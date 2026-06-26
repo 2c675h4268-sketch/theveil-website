@@ -314,6 +314,7 @@
       <a href="#">Releases</a>
       <a href="#">Timeline</a>
       <a href="#" onclick="showPage('scoring'); return false;" id="nav-scoring">Credibility</a>
+      <a href="new-to-uap">New to UAP?</a>
       <a href="#" class="subscribe-btn">Subscribe Free</a>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -326,6 +327,7 @@
   <a href="#">Releases</a>
   <a href="#">Timeline</a>
   <a href="#" onclick="showPage('scoring'); toggleMenu(); return false;">Credibility</a>
+  <a href="new-to-uap">New to UAP?</a>
   <a href="#">Subscribe Free</a>
 </div>
 
@@ -543,7 +545,7 @@
   </div>
 
   <!-- CTA -->
-  <div class="newsletter-cta">
+  <div class="newsletter-cta" id="subscribe-cta">
     <div class="cta-eyebrow"><span class="eyebrow-part">The Weekly Brief</span><span class="eyebrow-sep"> · </span><span class="eyebrow-part">Sunday Evenings</span></div>
     <h3 class="cta-headline">Understand the week in UAP.</h3>
     <p class="cta-sub">One briefing a week with the most credible UAP developments — each scored, sourced, and explained. Free, every Sunday evening.</p>
@@ -992,6 +994,8 @@ function showPage(page){
   window.scrollTo(0,0);
 }
 function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+// deep-link support for standalone pages: /#how-we-score opens the credibility/scoring page
+(function(){ function h(){ if(location.hash==='#how-we-score'){ showPage('scoring'); } } window.addEventListener('hashchange', h); h(); })();
 
 // ---- top nav ----
 function scrollToSel(sel){ const el=document.querySelector(sel); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
