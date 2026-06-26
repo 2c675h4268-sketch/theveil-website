@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Editorial Standards & Corrections — The Veil</title>
+<meta name="description" content="How The Veil works: our editorial promises, how we source and score every story, our corrections policy, and how we timestamp meaningful updates.">
+<link rel="canonical" href="https://theveil.media/standards">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="The Veil">
+<meta property="og:title" content="Editorial Standards & Corrections — The Veil">
+<meta property="og:description" content="Our editorial promises, how we source and score, our corrections policy, and how we timestamp meaningful updates.">
+<meta property="og:url" content="https://theveil.media/standards">
+<meta property="og:image" content="https://theveil.media/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Editorial Standards & Corrections — The Veil">
+<meta name="twitter:description" content="Our editorial promises, sourcing, corrections policy, and update timestamps.">
+<meta name="twitter:image" content="https://theveil.media/og-card.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="veil.css">
+<style>
+  .promise-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  .promise{background:var(--surface);border:1px solid var(--border);border-left:2px solid var(--amber);border-radius:var(--radius);padding:22px 24px}
+  .promise-h{font-family:var(--sans);font-size:18px;font-weight:600;color:var(--text-primary);margin:0 0 8px;line-height:1.3}
+  .promise-t{font-size:15px;line-height:1.7;color:var(--text-secondary)}
+  .std-a{font-size:16px;line-height:1.75;color:var(--text-secondary);max-width:760px;margin:0 0 14px}
+  .std-a:last-child{margin-bottom:0}
+  .std-a strong{color:var(--text-primary);font-weight:600}
+  .std-a a{color:var(--amber);text-decoration:none} .std-a a:hover{text-decoration:underline}
+  @media(max-width:700px){.promise-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- CLASSIFICATION STRIP -->
+<div class="classbar">
+  <div class="ci">
+    <span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span>
+    <span>CLEARANCE: <span class="redact" title="No clearance required — everything here is public record">PUBLIC</span></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <circle cx="9" cy="9" r="2.5" fill="#000"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-word">The Veil</span>
+        <span class="logo-sub">TheVeil.media</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/">Latest Issue</a>
+      <a href="/#how-we-score">Credibility</a>
+      <a href="new-to-uap">New to UAP?</a>
+      <a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Latest Issue</a>
+  <a href="/#how-we-score">Credibility</a>
+  <a href="new-to-uap">New to UAP?</a>
+  <a href="/#subscribe-cta">Subscribe Free</a>
+</div>
+
+<!-- HERO -->
+<div class="scoring-hero">
+  <div class="hero-eyebrow">Editorial Standards</div>
+  <h1 class="hero-headline" style="font-size:clamp(32px,5vw,56px);">Standards &amp; Corrections</h1>
+  <p class="hero-sub">The Veil exists to be trusted on a subject crowded with hype and noise. These are the commitments we hold ourselves to, and the policy we follow when we get something wrong.</p>
+</div>
+
+<div class="scoring-main">
+
+  <!-- PROMISES -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">Our promises</div>
+    <p class="scoring-section-intro">Four commitments govern everything we publish.</p>
+    <div class="promise-grid">
+      <div class="promise">
+        <div class="promise-h">We link to original material.</div>
+        <div class="promise-t">Every story points to the primary source: the document, the hearing, the footage, or the official statement. You never have to take our word for it.</div>
+      </div>
+      <div class="promise">
+        <div class="promise-h">We distinguish fact from allegation.</div>
+        <div class="promise-t">Confirmed by the record and alleged but unproven are not the same thing, and we never blur them together to make a story sound bigger.</div>
+      </div>
+      <div class="promise">
+        <div class="promise-h">We explain what would change our assessment.</div>
+        <div class="promise-t">Every credibility score comes with a rationale, including what new evidence would raise or lower it. Our judgments are falsifiable, not final.</div>
+      </div>
+      <div class="promise">
+        <div class="promise-h">We correct the record when new evidence emerges.</div>
+        <div class="promise-t">When a story develops or we make a mistake, we update it openly and say what changed, rather than quietly editing the past.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCING -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">How we source and score</div>
+    <p class="std-a">Every story is evaluated against a transparent framework and given a credibility score from 0 to 100, along with a source tier. We weight primary government documents, named officials, peer-reviewed work, and corroboration from multiple independent outlets far above anonymous claims and social posts. The full method is published on our <a href="/#how-we-score">credibility page</a>.</p>
+    <p class="std-a">We build from the public record. Our standing reference library links directly to AARO, ODNI, NASA, Congress, the Department of Defense, and the GAO, so the underlying material is always one click away.</p>
+  </div>
+
+  <!-- CORRECTIONS -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">Corrections policy</div>
+    <p class="std-a">We treat accuracy as the product. If we publish something that is wrong, we fix it promptly and transparently.</p>
+    <p class="std-a"><strong>How to report an error.</strong> Email <a href="mailto:contact@theveil.media">contact@theveil.media</a> with the issue and a link to the item. We review every report.</p>
+    <p class="std-a"><strong>What we do.</strong> For a clear factual error, we correct the text and add a dated correction note explaining what was wrong and what it now says. For a story that simply develops, we update it and note the change. We do not silently delete or rewrite published claims to hide that they were made.</p>
+    <p class="std-a"><strong>Credibility changes.</strong> If new evidence moves a story's credibility score, we update the score and the rationale, and note that it changed. A revised score is a feature of the system working, not an embarrassment to bury.</p>
+  </div>
+
+  <!-- UPDATES -->
+  <div class="scoring-section">
+    <div class="scoring-section-title">Updates and timestamps</div>
+    <p class="std-a">UAP stories move. A claim that looks thin on Sunday can be corroborated by Wednesday, and a sensational report can collapse just as fast. When a story we have covered changes in a way that matters, we mark it with a dated update so you can see how our understanding evolved, rather than presenting a moving target as if it were settled fact.</p>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="scoring-section" style="border-bottom:none;">
+    <div class="scoring-section-title">Contact</div>
+    <p class="std-a">Questions, corrections, and tips: <a href="mailto:contact@theveil.media">contact@theveil.media</a>. The Veil is published by Atomic Media Group, LLC. We are not affiliated with any government program, and credibility scores reflect our editorial assessment only.</p>
+  </div>
+
+</div><!-- end scoring-main -->
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:14px;">— END OF FILE · NO FURTHER PAGES —</div>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">
+    The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>
+    Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening
+  </div>
+  <div style="margin-top:14px;font-size:13px;">
+    <a href="new-to-uap" style="color:var(--text-secondary);text-decoration:none;">New to UAP?</a>
+    &nbsp;·&nbsp;
+    <a href="standards" style="color:var(--text-secondary);text-decoration:none;">Standards &amp; Corrections</a>
+  </div>
+  <div style="margin-top:12px;font-size:13.5px;color:var(--text-secondary);">Contact: <a href="mailto:contact@theveil.media" style="color:var(--amber);text-decoration:none;">contact@theveil.media</a></div>
+  <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
+</footer>
+
+<script>
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+</script>
+</body>
+</html>
