@@ -259,3 +259,31 @@
     .modal-content{padding:22px 20px 26px}.modal-img{height:200px}
     .featured-bg::after{right:20px;top:18px}
   }
+
+/* Larger, more legible type on phones (optimized for 40+ readers) */
+@media(max-width:600px){
+  .featured-summary{font-size:17.5px;line-height:1.72}
+  .tile-headline{font-size:20px;line-height:1.32}
+  .so-what-text{font-size:16.5px;line-height:1.72}
+  .cred-label{font-size:14px}
+  .cred-label strong{font-size:17px}
+  .cred-anchor-intro{font-size:17px;line-height:1.72}
+  .timeline-event{font-size:16.5px;line-height:1.6}
+  .src-name{font-size:16.5px}
+  .src-desc{font-size:15px;line-height:1.6}
+  .scoring-section-intro{font-size:16px;line-height:1.65}
+  .scoring-intro p{font-size:17px;line-height:1.75}
+  .scoring-section-title{font-size:23px}
+  .dimension-desc{font-size:15.5px;line-height:1.65}
+  .dimension-name{font-size:17px}
+  .scale-label{font-size:14px;line-height:1.5}
+  .scale-pts{font-size:13px}
+  .legend-body strong{font-size:16.5px}
+  .legend-body span{font-size:15px;line-height:1.6}
+  .tier-desc{font-size:15px;line-height:1.6}
+  .tier-name{font-size:17px}
+  .rule-body p{font-size:15.5px;line-height:1.65}
+  .hero-sub{font-size:17px;line-height:1.7}
+  .footer-copy{font-size:14px;line-height:1.85}
+  .mobile-menu a{font-size:18px}
+}

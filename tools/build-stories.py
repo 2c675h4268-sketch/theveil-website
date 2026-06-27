@@ -113,6 +113,15 @@ CHROME_HEAD = """<!DOCTYPE html>
   .st-cta p{font-size:15px;color:var(--text-secondary);margin:0 auto 20px;max-width:440px;line-height:1.6}
   .st-cta a{display:inline-block;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
   @media(max-width:640px){.sw-grid{grid-template-columns:1fr}}
+  @media(max-width:600px){
+    .st-sec p{font-size:17.5px;line-height:1.75}
+    .sw-card li{font-size:15.5px;line-height:1.6}
+    .st-row{font-size:15px}
+    .st-credlab{font-size:18px}
+    .st-credsub{font-size:13px}
+    .st-meta{font-size:13px}
+    .st-sec h2{font-size:13px}
+  }
 </style></head><body>
 <div class="classbar"><div class="ci"><span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span><span>CLEARANCE: <span class="redact" title="Public record">PUBLIC</span></span></div></div>
 <header><div class="header-inner">
