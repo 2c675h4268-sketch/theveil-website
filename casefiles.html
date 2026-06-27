@@ -44,11 +44,24 @@
   .cf-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;border-left:3px solid currentColor}
   .cf-top{display:flex;align-items:center;gap:14px;margin-bottom:10px}
   .cf-ring{width:48px;height:48px;flex-shrink:0;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;font-weight:700}
-  .cf-year{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--text-muted)}
+  .cf-year{font-family:var(--mono);font-size:19px;font-weight:700;letter-spacing:.03em;color:var(--text-primary)}
   .cf-tier{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:5px;border:1px solid currentColor}
   .cf-title{font-family:var(--sans);font-size:20px;font-weight:600;letter-spacing:-0.01em;color:var(--text-primary);margin:0 0 6px;line-height:1.25}
   .cf-blurb{font-size:15.5px;line-height:1.65;color:var(--text-secondary)}
   .cf-empty{padding:40px;text-align:center;color:var(--text-muted);font-family:var(--mono);font-size:13px}
+  /* time-axis marks (recompute as you filter) */
+  .cf-mark{position:relative;display:flex;align-items:center;gap:14px}
+  .cf-mark.major{margin:22px 0 18px}
+  .cf-mark.minor{margin:14px 0}
+  .cf-mark .cf-mk-dot{position:absolute;border-radius:50%;background:var(--void)}
+  .cf-mark.major .cf-mk-dot{left:-34px;top:50%;transform:translateY(-50%);width:15px;height:15px;border:3px solid var(--amber)}
+  .cf-mark.minor .cf-mk-dot{left:-31px;top:50%;transform:translateY(-50%);width:9px;height:2px;border-radius:0;background:var(--line2)}
+  .cf-mk-yr{font-family:var(--mono);letter-spacing:.08em}
+  .cf-mark.major .cf-mk-yr{font-size:20px;font-weight:700;color:var(--amber)}
+  .cf-mark.minor .cf-mk-yr{font-size:12px;font-weight:700;color:var(--text-muted)}
+  .cf-mk-rule{flex:1;height:1px}
+  .cf-mark.major .cf-mk-rule{background:linear-gradient(90deg,rgba(226,162,75,0.35),transparent)}
+  .cf-mark.minor .cf-mk-rule{background:linear-gradient(90deg,var(--border),transparent)}
   .cf-cta{background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center;margin-top:40px}
   .cf-cta h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--text-primary);margin:0 0 10px}
   .cf-cta p{font-size:15px;color:var(--text-secondary);max-width:460px;margin:0 auto 20px;line-height:1.6}
@@ -56,6 +69,7 @@
   @media(max-width:600px){
     .cf-title{font-size:19px}.cf-blurb{font-size:16px;line-height:1.65}
     .cf-btn{font-size:13px;padding:12px 16px}.cf-count{width:100%;margin:6px 0 0;text-align:left}
+    .cf-year{font-size:17px}.cf-mark.major .cf-mk-yr{font-size:17px}
     .cf-filters{top:60px}
   }
 </style>
@@ -163,11 +177,26 @@ function colorOf(s){ return s>=80 ? 'var(--green)' : s>=55 ? 'var(--amber)' : 'v
 function tierLabel(s){ return s>=80 ? 'Credible' : s>=55 ? 'Disputed' : 'Unverified'; }
 var active = { cred:true, disp:true, unv:true };
 
+// time-axis boundaries strictly between two years (hi exclusive, lo exclusive), newest first.
+// majors = every 25 years, minors = every 10 years.
+function cfBoundaries(hi, lo){
+  var set={};
+  for(var b=Math.ceil((lo+1)/10)*10; b<hi; b+=10) set[b]=1;
+  for(var q=Math.ceil((lo+1)/25)*25; q<hi; q+=25) set[q]=1;
+  return Object.keys(set).map(Number).filter(function(b){return b>lo && b<hi;})
+    .sort(function(a,b){return b-a;}).map(function(b){return {y:b, major:(b%25===0)}; });
+}
+function cfMark(m){
+  if(m.major) return '<div class="cf-mark major"><span class="cf-mk-dot"></span><span class="cf-mk-yr">'+m.y+'</span><span class="cf-mk-rule"></span></div>';
+  return '<div class="cf-mark minor"><span class="cf-mk-dot"></span><span class="cf-mk-yr">'+m.y+'</span><span class="cf-mk-rule"></span></div>';
+}
 function cfRender(){
-  var tl=document.getElementById('cf-tl'); var html=''; var shown=0;
+  var tl=document.getElementById('cf-tl'); var html=''; var shown=0; var prev=null;
   CASES.slice().sort(function(a,b){ return b[0]-a[0]; }).forEach(function(c){
     var year=c[0], title=c[1], score=c[2], blurb=c[3];
     var tier=tierOf(score); if(!active[tier]) return;
+    if(prev!==null && year<prev){ cfBoundaries(prev,year).forEach(function(m){ html+=cfMark(m); }); }
+    prev=year;
     shown++;
     var col=colorOf(score);
     html += '<div class="cf-item" style="color:'+col+'">'
