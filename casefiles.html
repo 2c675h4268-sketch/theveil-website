@@ -91,7 +91,7 @@
 <div class="scoring-hero">
   <div class="hero-eyebrow">For the curious</div>
   <h1 class="hero-headline" style="font-size:clamp(32px,5vw,56px);">The Casefiles</h1>
-  <p class="hero-sub">A credibility timeline of UAP and UFO history, from the 1897 Aurora airship to the Navy Tic Tac. Every case scored the same way we score the news: 0 to 100. Toggle the documented, the disputed, and the folklore.</p>
+  <p class="hero-sub">A credibility timeline of UAP and UFO history, working back from today's developments to the 1897 Aurora airship. Every case scored the same way we score the news: 0 to 100. Toggle the documented, the disputed, and the folklore.</p>
 </div>
 
 <div class="cf-main">
@@ -134,6 +134,10 @@ var CASES = [
   [1947,"Kenneth Arnold's sighting",56,"A pilot reported nine fast-moving objects near Mount Rainier, giving the press the phrase 'flying saucers.' A credible single witness with no corroborating evidence."],
   [1947,"The Roswell incident",24,"The Army Air Field briefly announced a recovered 'flying disc,' then said it was a weather balloon. Later tied to the classified Project Mogul. The crashed-craft-and-bodies story rests on much-later testimony, not verified evidence."],
   [1948,"The Mantell incident",42,"An Air National Guard pilot died pursuing a high-altitude object. Investigators concluded he most likely chased a classified Skyhook balloon."],
+  [1946,"The Scandinavian 'ghost rockets'",55,"Hundreds of reports of rocket-like objects over Sweden prompted a military investigation. Many were likely misidentifications, but a residue of cases went unexplained."],
+  [1950,"The McMinnville photographs",55,"An Oregon farm couple took two well-known photos of a disc. Analysts have argued for decades over whether they show a distant object or a small model; never resolved."],
+  [1955,"The Kelly-Hopkinsville encounter",24,"A rural Kentucky family reported a night-long siege by small 'goblin' creatures. A vivid, much-retold account with no supporting evidence."],
+  [1957,"The Levelland sightings",58,"Multiple Texas drivers independently reported glowing objects and stalled engines in a single night. The Air Force blamed ball lightning, which many find unconvincing."],
   [1952,"Overflights of Washington, D.C.",55,"Radar operators and pilots tracked unknown objects over the capital across two weekends. The Air Force attributed them to a temperature inversion, an explanation many still dispute."],
   [1952,"Project Blue Book begins",88,"The U.S. Air Force opened a formal UFO study that ran to 1969, reviewing 12,618 reports and leaving 701 'unidentified.' A documented government program."],
   [1961,"Betty and Barney Hill",26,"A New Hampshire couple reported an abduction, partly recalled under hypnosis. Culturally pivotal, but unsupported by physical evidence."],
@@ -161,7 +165,7 @@ var active = { cred:true, disp:true, unv:true };
 
 function cfRender(){
   var tl=document.getElementById('cf-tl'); var html=''; var shown=0;
-  CASES.forEach(function(c){
+  CASES.slice().sort(function(a,b){ return b[0]-a[0]; }).forEach(function(c){
     var year=c[0], title=c[1], score=c[2], blurb=c[3];
     var tier=tierOf(score); if(!active[tier]) return;
     shown++;
