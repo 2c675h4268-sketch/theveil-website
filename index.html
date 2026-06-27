@@ -409,7 +409,7 @@
     </a>
     <div class="nav-links">
       <a href="#">Primary Record</a>
-      <a href="#">Timeline</a>
+      <a href="casefiles">Casefiles</a>
       <a href="methodology">Credibility</a>
       <a href="new-to-uap">New to UAP?</a>
       <a href="#" class="subscribe-btn">Subscribe Free</a>
@@ -422,7 +422,7 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="#">Primary Record</a>
-  <a href="#">Timeline</a>
+  <a href="casefiles">Casefiles</a>
   <a href="methodology">Credibility</a>
   <a href="new-to-uap">New to UAP?</a>
   <a href="#">Subscribe Free</a>
@@ -634,6 +634,7 @@
         <div class="timeline-event">A White House-backed interagency UAP Governance Board is established, supported by a Science Advisory Council, with Avi Loeb advising.</div>
       </div>
     </div>
+    <div style="text-align:center;margin-top:22px;"><a href="casefiles" style="font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);text-decoration:none;">Explore the full timeline: Roswell to the Tic Tac, scored →</a></div>
   </div>
 
   <!-- HOW WE SCORE (simplified teaser) -->
@@ -734,6 +735,8 @@
   </div>
   <div style="margin-top:14px;font-size:13px;">
     <a href="new-to-uap" style="color:var(--text-secondary);text-decoration:none;">New to UAP?</a>
+    &nbsp;·&nbsp;
+    <a href="casefiles" style="color:var(--text-secondary);text-decoration:none;">Casefiles</a>
     &nbsp;·&nbsp;
     <a href="methodology" style="color:var(--text-secondary);text-decoration:none;">Methodology</a>
     &nbsp;·&nbsp;
@@ -933,9 +936,7 @@ function scrollToSel(sel){ const el=document.querySelector(sel); if(el) el.scrol
 document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
   const t = a.textContent.trim();
   const inMobile = !!a.closest('.mobile-menu');
-  if(t==='Timeline'){
-    a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#sec-timeline'); }, 40); if(inMobile) toggleMenu(); });
-  } else if(t==='Primary Record'){
+  if(t==='Primary Record'){
     a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); setTimeout(function(){ scrollToSel('#sec-releases'); }, 40); if(inMobile) toggleMenu(); });
   }
 });

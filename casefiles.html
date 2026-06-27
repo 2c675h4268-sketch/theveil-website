@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Casefiles — A Credibility Timeline of UAP History — The Veil</title>
+<meta name="description" content="Every famous UAP and UFO case, from the 1897 Aurora airship to the Navy Tic Tac, scored 0 to 100 for credibility. Filter by Credible, Disputed, or Unverified.">
+<link rel="canonical" href="https://theveil.media/casefiles">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="The Veil">
+<meta property="og:title" content="The Casefiles — A Credibility Timeline of UAP History">
+<meta property="og:description" content="Every famous UAP case, from Roswell to the Tic Tac, scored for credibility. Toggle the documented, the disputed, and the folklore.">
+<meta property="og:url" content="https://theveil.media/casefiles">
+<meta property="og:image" content="https://theveil.media/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Casefiles — A Credibility Timeline of UAP History">
+<meta name="twitter:description" content="Every famous UAP case scored for credibility. Filter the documented, the disputed, and the folklore.">
+<meta name="twitter:image" content="https://theveil.media/og-card.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="veil.css">
+<style>
+  .cf-main{max-width:880px;margin:0 auto;padding:24px 24px 80px}
+  .cf-note{font-size:14px;color:var(--text-muted);line-height:1.6;max-width:720px;margin:0 0 26px;font-style:italic}
+  /* filter bar */
+  .cf-filters{position:sticky;top:64px;z-index:20;background:rgba(6,7,11,0.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 0;margin-bottom:30px}
+  .cf-filters-inner{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .cf-btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:9px 16px;border-radius:100px;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--text-muted);transition:.18s;user-select:none}
+  .cf-dot{width:9px;height:9px;border-radius:50%;background:currentColor;opacity:.5;transition:.18s}
+  .cf-btn .cf-n{font-size:12px;opacity:.7}
+  .cf-btn[data-on="1"]{color:#0a0a0a}
+  .cf-btn.cred[data-on="1"]{background:var(--green);border-color:var(--green)}
+  .cf-btn.disp[data-on="1"]{background:var(--amber);border-color:var(--amber)}
+  .cf-btn.unv[data-on="1"]{background:var(--red);border-color:var(--red)}
+  .cf-btn[data-on="1"] .cf-dot{opacity:1;background:#0a0a0a}
+  .cf-count{margin-left:auto;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+  /* timeline */
+  .cf-tl{position:relative;padding-left:38px}
+  .cf-tl::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--border)}
+  .cf-item{position:relative;margin:0 0 18px;opacity:1;transition:opacity .25s,transform .25s}
+  .cf-item.hide{display:none}
+  .cf-node{position:absolute;left:-32px;top:24px;width:16px;height:16px;border-radius:50%;border:3px solid var(--void);box-shadow:0 0 0 2px currentColor}
+  .cf-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;border-left:3px solid currentColor}
+  .cf-top{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .cf-ring{width:48px;height:48px;flex-shrink:0;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;font-weight:700}
+  .cf-year{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--text-muted)}
+  .cf-tier{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:5px;border:1px solid currentColor}
+  .cf-title{font-family:var(--sans);font-size:20px;font-weight:600;letter-spacing:-0.01em;color:var(--text-primary);margin:0 0 6px;line-height:1.25}
+  .cf-blurb{font-size:15.5px;line-height:1.65;color:var(--text-secondary)}
+  .cf-empty{padding:40px;text-align:center;color:var(--text-muted);font-family:var(--mono);font-size:13px}
+  .cf-cta{background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center;margin-top:40px}
+  .cf-cta h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--text-primary);margin:0 0 10px}
+  .cf-cta p{font-size:15px;color:var(--text-secondary);max-width:460px;margin:0 auto 20px;line-height:1.6}
+  .cf-cta a{display:inline-block;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
+  @media(max-width:600px){
+    .cf-title{font-size:19px}.cf-blurb{font-size:16px;line-height:1.65}
+    .cf-btn{font-size:12px;padding:9px 13px}.cf-count{width:100%;margin:6px 0 0;text-align:left}
+    .cf-filters{top:60px}
+  }
+</style>
+</head>
+<body>
+
+<div class="classbar"><div class="ci"><span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span><span>CLEARANCE: <span class="redact" title="No clearance required — everything here is public record">PUBLIC</span></span></div></div>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <div class="logo-mark"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="9" cy="9" r="2.5" fill="#000"/></svg></div>
+      <div class="logo-text"><span class="logo-word">The Veil</span><span class="logo-sub">TheVeil.media</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="/">Latest Issue</a>
+      <a href="casefiles" class="nav-active">Casefiles</a>
+      <a href="/methodology">Credibility</a>
+      <a href="new-to-uap">New to UAP?</a>
+      <a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Latest Issue</a>
+  <a href="casefiles">Casefiles</a>
+  <a href="/methodology">Credibility</a>
+  <a href="new-to-uap">New to UAP?</a>
+  <a href="/#subscribe-cta">Subscribe Free</a>
+</div>
+
+<div class="scoring-hero">
+  <div class="hero-eyebrow">For the curious</div>
+  <h1 class="hero-headline" style="font-size:clamp(32px,5vw,56px);">The Casefiles</h1>
+  <p class="hero-sub">A credibility timeline of UAP and UFO history, from the 1897 Aurora airship to the Navy Tic Tac. Every case scored the same way we score the news: 0 to 100. Toggle the documented, the disputed, and the folklore.</p>
+</div>
+
+<div class="cf-main">
+  <p class="cf-note">A score reflects how much the available evidence supports the anomalous claim, not whether something happened. A low score means the evidence is thin, not that the story isn't worth knowing.</p>
+
+  <div class="cf-filters">
+    <div class="cf-filters-inner">
+      <button class="cf-btn cred" data-tier="cred" data-on="1" onclick="cfToggle('cred')"><span class="cf-dot"></span>Credible <span class="cf-n" id="n-cred"></span></button>
+      <button class="cf-btn disp" data-tier="disp" data-on="1" onclick="cfToggle('disp')"><span class="cf-dot"></span>Disputed <span class="cf-n" id="n-disp"></span></button>
+      <button class="cf-btn unv" data-tier="unv" data-on="1" onclick="cfToggle('unv')"><span class="cf-dot"></span>Unverified <span class="cf-n" id="n-unv"></span></button>
+      <span class="cf-count" id="cf-count"></span>
+    </div>
+  </div>
+
+  <div class="cf-tl" id="cf-tl"></div>
+
+  <div class="cf-cta">
+    <h3>The credible cases land in your inbox first.</h3>
+    <p>The Veil tracks today's UAP developments and scores every source, so you always know where a story sits. Free, every Sunday.</p>
+    <a href="/#subscribe-cta">Get The Veil Free</a>
+  </div>
+</div>
+
+<footer>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:14px;">— END OF FILE · NO FURTHER PAGES —</div>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening</div>
+  <div style="margin-top:14px;font-size:13px;"><a href="new-to-uap" style="color:var(--text-secondary);text-decoration:none;">New to UAP?</a> &nbsp;·&nbsp; <a href="casefiles" style="color:var(--text-secondary);text-decoration:none;">Casefiles</a> &nbsp;·&nbsp; <a href="methodology" style="color:var(--text-secondary);text-decoration:none;">Methodology</a> &nbsp;·&nbsp; <a href="archive" style="color:var(--text-secondary);text-decoration:none;">Archive</a> &nbsp;·&nbsp; <a href="standards" style="color:var(--text-secondary);text-decoration:none;">Standards</a></div>
+  <div style="margin-top:12px;font-size:13.5px;color:var(--text-secondary);">Contact: <a href="mailto:contact@theveil.media" style="color:var(--amber);text-decoration:none;">contact@theveil.media</a></div>
+  <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
+</footer>
+
+<script>
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+
+// year, title, score (0-100), blurb. Tier + color derive from the score, exactly like the rest of the site.
+var CASES = [
+  [1897,"The Aurora, Texas airship",18,"A Texas newspaper reported a crashed 'airship' and a buried alien pilot. No contemporary corroboration; widely regarded as a tall tale of the era."],
+  [1942,"The 'Battle of Los Angeles'",40,"Wartime anti-aircraft batteries fired for an hour at an unidentified object over LA. The barrage is documented; the cause was never resolved, and most accounts point to war nerves and a stray weather balloon."],
+  [1947,"Kenneth Arnold's sighting",56,"A pilot reported nine fast-moving objects near Mount Rainier, giving the press the phrase 'flying saucers.' A credible single witness with no corroborating evidence."],
+  [1947,"The Roswell incident",24,"The Army Air Field briefly announced a recovered 'flying disc,' then said it was a weather balloon. Later tied to the classified Project Mogul. The crashed-craft-and-bodies story rests on much-later testimony, not verified evidence."],
+  [1948,"The Mantell incident",42,"An Air National Guard pilot died pursuing a high-altitude object. Investigators concluded he most likely chased a classified Skyhook balloon."],
+  [1952,"Overflights of Washington, D.C.",55,"Radar operators and pilots tracked unknown objects over the capital across two weekends. The Air Force attributed them to a temperature inversion, an explanation many still dispute."],
+  [1952,"Project Blue Book begins",88,"The U.S. Air Force opened a formal UFO study that ran to 1969, reviewing 12,618 reports and leaving 701 'unidentified.' A documented government program."],
+  [1961,"Betty and Barney Hill",26,"A New Hampshire couple reported an abduction, partly recalled under hypnosis. Culturally pivotal, but unsupported by physical evidence."],
+  [1964,"Lonnie Zamora at Socorro",58,"A police officer reported a landed egg-shaped craft and two figures. Project Blue Book classified it 'unidentified.' A credible lone witness with physical trace marks but no proof of origin."],
+  [1966,"The Westall encounter",55,"Around 200 students and staff at an Australian school reported a craft descending nearby. Many consistent witnesses, no resolution or physical evidence."],
+  [1975,"The Travis Walton case",25,"An Arizona logger said he was taken aboard a craft for five days. A famous account that rests almost entirely on testimony."],
+  [1980,"Rendlesham Forest",60,"U.S. Air Force personnel near a UK base reported lights and a craft over three nights. A deputy commander's memo documents it; the cause remains unresolved."],
+  [1989,"The Belgian wave",56,"Thousands across Belgium reported triangular craft, and the air force scrambled F-16s. A famous photo was later admitted a hoax, but the broader wave of sightings is still debated."],
+  [1994,"The Ariel School sighting",60,"About 62 schoolchildren in Ruwa, Zimbabwe independently described a landed craft and a being. Notable for the number of consistent young witnesses, with no physical evidence."],
+  [1997,"The Phoenix Lights",57,"Thousands across Arizona reported lights and a large formation. The military attributed part of the night to dropped flares; an earlier triangular formation remains disputed."],
+  [2004,"USS Nimitz 'Tic Tac'",85,"Navy pilots and multiple sensors tracked a fast object off California. The FLIR1 footage was later officially released; the object remains unidentified."],
+  [2015,"GIMBAL and GoFast",84,"Two further Navy clips of unexplained objects, later acknowledged and released by the Department of Defense."],
+  [2017,"NYT reveals AATIP",90,"The New York Times disclosed a Pentagon UAP program and published two Navy videos, moving the subject into mainstream defense reporting."],
+  [2021,"The ODNI assessment",92,"The first unclassified U.S. intelligence assessment reviewed 144 incidents and could explain only one."],
+  [2022,"AARO is established",90,"The Pentagon created a permanent office to collect and investigate UAP reports across air, sea, and space."],
+  [2023,"Congress takes testimony",80,"Former officials and Navy pilots testified under oath; whistleblower claims of a recovery program were serious but remain unverified."],
+  [2024,"AARO's Historical Record Report",86,"AARO reported finding no verifiable evidence that any case it reviewed involved extraterrestrial technology."],
+  [2026,"White House UAP Governance Board",76,"A White House-backed interagency UAP Governance Board is established, supported by a Science Advisory Council, with Avi Loeb advising."]
+];
+
+function tierOf(s){ return s>=80 ? 'cred' : s>=55 ? 'disp' : 'unv'; }
+function colorOf(s){ return s>=80 ? 'var(--green)' : s>=55 ? 'var(--amber)' : 'var(--red)'; }
+function tierLabel(s){ return s>=80 ? 'Credible' : s>=55 ? 'Disputed' : 'Unverified'; }
+var active = { cred:true, disp:true, unv:true };
+
+function cfRender(){
+  var tl=document.getElementById('cf-tl'); var html=''; var shown=0;
+  CASES.forEach(function(c){
+    var year=c[0], title=c[1], score=c[2], blurb=c[3];
+    var tier=tierOf(score); if(!active[tier]) return;
+    shown++;
+    var col=colorOf(score);
+    html += '<div class="cf-item" style="color:'+col+'">'
+      + '<div class="cf-node"></div>'
+      + '<div class="cf-card">'
+      +   '<div class="cf-top">'
+      +     '<div class="cf-ring">'+score+'</div>'
+      +     '<div><div class="cf-year">'+year+'</div></div>'
+      +     '<div class="cf-tier" style="margin-left:auto">'+tierLabel(score)+'</div>'
+      +   '</div>'
+      +   '<div class="cf-title">'+title+'</div>'
+      +   '<div class="cf-blurb">'+blurb+'</div>'
+      + '</div></div>';
+  });
+  tl.innerHTML = shown ? html : '<div class="cf-empty">No cases match. Turn a filter back on above.</div>';
+  document.getElementById('cf-count').textContent = 'Showing '+shown+' of '+CASES.length+' cases';
+}
+function cfCounts(){
+  var n={cred:0,disp:0,unv:0}; CASES.forEach(function(c){ n[tierOf(c[2])]++; });
+  document.getElementById('n-cred').textContent='('+n.cred+')';
+  document.getElementById('n-disp').textContent='('+n.disp+')';
+  document.getElementById('n-unv').textContent='('+n.unv+')';
+}
+function cfToggle(t){
+  active[t]=!active[t];
+  document.querySelector('.cf-btn[data-tier="'+t+'"]').setAttribute('data-on', active[t]?'1':'0');
+  cfRender();
+}
+cfCounts(); cfRender();
+</script>
+</body>
+</html>
