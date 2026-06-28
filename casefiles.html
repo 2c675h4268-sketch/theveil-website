@@ -38,6 +38,7 @@
   .cf-btn.era[data-on="1"]{background:var(--text-secondary);border-color:var(--text-secondary);color:#0a0a0a}
   .cf-btn[data-on="1"] .cf-dot{opacity:1;background:#0a0a0a}
   .cf-count{margin-left:auto;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+  .cf-ftoggle{display:none}
   /* timeline: left axis + cards */
   .cf-tl{position:relative}
   .cf-tl::before{content:"";position:absolute;left:96px;top:8px;bottom:8px;width:2px;background:var(--border)}
@@ -71,6 +72,12 @@
     .cf-era{padding-left:90px}.cf-era-dot{left:70px}.cf-era-label{font-size:14px}
     .cf-title{font-size:18px}.cf-blurb{font-size:16px;line-height:1.65}
     .cf-btn{font-size:12px;padding:11px 14px}.cf-count{width:100%;margin:8px 0 0;text-align:left}
+    .cf-ftoggle{display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;background:var(--surface);border:1px solid var(--line2);border-radius:100px;padding:12px 18px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-primary)}
+    .cf-ftoggle-ico{color:var(--amber);margin-right:9px;display:inline-block;transition:transform .2s;font-size:17px;line-height:1}
+    .cf-ftoggle-count{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--text-muted)}
+    .cf-filters.collapsed .cf-filters-inner{display:none}
+    .cf-filters:not(.collapsed) .cf-ftoggle-ico{transform:rotate(45deg)}
+    .cf-filters-inner{margin-top:14px}
     .cf-filters{top:60px}
   }
 </style>
@@ -112,7 +119,8 @@
 <div class="cf-main">
   <p class="cf-note">A score reflects how much the available evidence supports the anomalous claim, not whether something happened. The oldest entries are ancient anecdotes, fascinating but unverifiable, so they score low by design. A low score means the evidence is thin, not that the story isn't worth knowing.</p>
 
-  <div class="cf-filters">
+  <div class="cf-filters collapsed" id="cf-filters">
+    <button class="cf-ftoggle" onclick="cfToggleFilters()" aria-expanded="false"><span><span class="cf-ftoggle-ico">+</span>Filter cases</span><span class="cf-ftoggle-count" id="cf-toggle-count"></span></button>
     <div class="cf-filters-inner">
       <div class="cf-group">
         <span class="cf-glabel">Credibility</span>
@@ -227,6 +235,11 @@ function cfRender(){
   });
   tl.innerHTML = shown ? html : '<div class="cf-empty">No cases match. Turn a filter back on above.</div>';
   document.getElementById('cf-count').textContent = 'Showing '+shown+' of '+CASES.length+' cases';
+  document.getElementById('cf-toggle-count').textContent = shown+' / '+CASES.length;
+}
+function cfToggleFilters(){
+  var f=document.getElementById('cf-filters'); f.classList.toggle('collapsed');
+  f.querySelector('.cf-ftoggle').setAttribute('aria-expanded', f.classList.contains('collapsed')?'false':'true');
 }
 function cfCounts(){
   var t={cred:0,disp:0,unv:0}, e={c21:0,c20:0,pre:0};
