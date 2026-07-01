@@ -246,7 +246,7 @@
 
   /* responsive */
   @media(max-width:900px){.tile-grid{grid-template-columns:repeat(2,1fr)}.timeline-items{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:900px){.nav-links{display:none}.hamburger{display:flex}}
+  @media(max-width:940px){.nav-links{display:none}.hamburger{display:flex}}
   @media(max-width:760px){.how-inner{grid-template-columns:1fr}}
   @media(max-width:700px){.src-grid{grid-template-columns:1fr}.tier-grid{grid-template-columns:1fr}.rules-grid{grid-template-columns:1fr}}
   @media(max-width:560px){
