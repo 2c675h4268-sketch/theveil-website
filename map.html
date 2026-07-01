@@ -102,9 +102,9 @@
       <button id="v-cases" aria-pressed="false" onclick="mpView('cases')">Famous cases</button>
     </div>
     <div class="mp-time">
-      <label>Era</label>
-      <input type="range" id="mp-slider" min="0" max="8" value="0" step="1" oninput="mpSlide(this.value)">
-      <span class="mp-decade" id="mp-decade">All time</span>
+      <label>Through</label>
+      <input type="range" id="mp-slider" min="0" max="73" value="73" step="1" oninput="mpSlide(this.value)">
+      <span class="mp-decade" id="mp-decade">2014</span>
     </div>
   </div>
 
@@ -132,7 +132,7 @@
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 <script>
 function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
-var map, heatLayer, choroLayer, casesLayer, DATA=null, GEO=null, VIEW='heat', DECS=[], decIdx=0;
+var map, heatLayer, choroLayer, casesLayer, DATA=null, GEO=null, VIEW='heat', YEARS=[], yrIdx=0, _raf=null;
 // Famous cases, mirrored from Casefiles onto the map: [sortYear,label,title,score,lat,lng,blurb]
 var NOTABLE=[
  [-1440,"c. 1440 BC","The Tulli Papyrus",12,26.0,32.6,"Alleged Egyptian text of 'circles of fire'; authenticity widely doubted."],
@@ -177,18 +177,16 @@ function ctryColor(v){ return v>=5000?'#F2B968':v>=1000?'#E2A24B':v>=200?'#c4892
 function colorOf(s){ return s>=80?'var(--green)':s>=55?'var(--amber)':'var(--red)'; }
 function tierLabel(s){ return s>=80?'Credible':s>=55?'Disputed':'Unverified'; }
 
-function curDecKey(){ return decIdx===0 ? null : String(DECS[decIdx-1]); }
-
+function selYear(){ return YEARS[yrIdx]; }
+// cumulative through the selected year, aggregated per cell so the heat layer stays light
 function gridPoints(){
-  var key=curDecKey(), pts=[];
-  var decs = key ? [key] : Object.keys(DATA.grid);
-  decs.forEach(function(d){ (DATA.grid[d]||[]).forEach(function(a){ pts.push([a[0],a[1],a[2]]); }); });
-  return pts;
+  var y0=selYear(), agg={};
+  YEARS.forEach(function(y){ if(y<=y0){ (DATA.grid[String(y)]||[]).forEach(function(a){ var k=a[0]+','+a[1]; agg[k]=(agg[k]||0)+a[2]; }); } });
+  return Object.keys(agg).map(function(k){ var p=k.split(','); return [+p[0], +p[1], agg[k]]; });
 }
 function ctryCounts(){
-  var key=curDecKey(), c={};
-  var decs = key ? [key] : Object.keys(DATA.countries);
-  decs.forEach(function(d){ var m=DATA.countries[d]||{}; for(var iso in m) c[iso]=(c[iso]||0)+m[iso]; });
+  var y0=selYear(), c={};
+  YEARS.forEach(function(y){ if(y<=y0){ var m=DATA.countries[String(y)]||{}; for(var iso in m) c[iso]=(c[iso]||0)+m[iso]; } });
   return c;
 }
 
@@ -245,9 +243,10 @@ function mpView(v){
   render();
 }
 function mpSlide(i){
-  decIdx=parseInt(i,10);
-  document.getElementById('mp-decade').textContent = decIdx===0 ? 'All time' : (DECS[decIdx-1]+'s');
-  render();
+  yrIdx=parseInt(i,10);
+  document.getElementById('mp-decade').textContent = selYear();
+  if(_raf) cancelAnimationFrame(_raf);
+  _raf=requestAnimationFrame(render);   // coalesce rapid scrubbing into one render per frame
 }
 
 (function init(){
@@ -259,8 +258,9 @@ function mpSlide(i){
     fetch('map-data.json').then(function(r){return r.json();}),
     fetch('countries.geo.json').then(function(r){return r.json();})
   ]).then(function(res){
-    DATA=res[0]; GEO=res[1]; DECS=DATA.decades;
-    var s=document.getElementById('mp-slider'); s.max=DECS.length;
+    DATA=res[0]; GEO=res[1]; YEARS=DATA.years;
+    var s=document.getElementById('mp-slider'); s.min=0; s.max=YEARS.length-1; s.value=YEARS.length-1; yrIdx=YEARS.length-1;
+    document.getElementById('mp-decade').textContent=selYear();
     render();
   }).catch(function(e){ document.getElementById('map').innerHTML='<div style="padding:40px;text-align:center;color:#74757F;font-family:monospace">Map data could not load.</div>'; });
 })();
