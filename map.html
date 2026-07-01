@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Sightings Map — Reported UAP Sightings Over Time — The Veil</title>
+<meta name="description" content="An interactive map of reported UFO/UAP sightings over eight decades. Toggle a density heatmap or a by-country view, and scrub through time. Reflects where reports are filed, not where UAP are.">
+<link rel="canonical" href="https://theveil.media/map">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Veil">
+<meta property="og:title" content="The Sightings Map — Reported UAP Sightings Over Time">
+<meta property="og:description" content="80,000+ reported UFO/UAP sightings mapped over eight decades. Density heatmap + by-country view, with a time scrubber.">
+<meta property="og:url" content="https://theveil.media/map">
+<meta property="og:image" content="https://theveil.media/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Sightings Map — The Veil">
+<meta name="twitter:description" content="80,000+ reported sightings mapped over eight decades. Heatmap + by-country, with a time scrubber.">
+<meta name="twitter:image" content="https://theveil.media/og-card.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="veil.css">
+<style>
+  .mp-main{max-width:1180px;margin:0 auto;padding:20px 24px 72px}
+  .mp-note{font-size:14px;color:var(--text-muted);line-height:1.65;max-width:820px;margin:0 0 22px;font-style:italic}
+  .mp-controls{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:center;margin-bottom:16px}
+  .mp-seg{display:inline-flex;border:1px solid var(--line2);border-radius:100px;overflow:hidden}
+  .mp-seg button{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;background:transparent;color:var(--text-muted);border:none;cursor:pointer}
+  .mp-seg button[aria-pressed="true"]{background:var(--amber);color:#0a0a0a}
+  .mp-time{display:flex;align-items:center;gap:12px;flex:1;min-width:260px}
+  .mp-time label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+  .mp-time input[type=range]{flex:1;accent-color:var(--amber);cursor:pointer}
+  .mp-decade{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--amber);min-width:78px;text-align:right}
+  #map{height:62vh;min-height:440px;border:1px solid var(--border);border-radius:var(--radius);background:#06070B}
+  .leaflet-container{background:#06070B;font-family:var(--sans)}
+  .mp-legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+  .mp-legend .sw{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+  .mp-src{font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-top:16px}
+  .mp-src a{color:var(--amber-dim);text-decoration:none}
+  .leaflet-tooltip{background:#101218;border:1px solid var(--line2);color:var(--text-primary);font-family:var(--mono);font-size:12px}
+  .leaflet-tooltip::before{display:none}
+  .mp-cta{background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:30px;text-align:center;margin-top:34px}
+  .mp-cta h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--text-primary);margin:0 0 10px}
+  .mp-cta p{font-size:15px;color:var(--text-secondary);max-width:480px;margin:0 auto 20px;line-height:1.6}
+  .mp-cta a{display:inline-block;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
+  @media(max-width:600px){.mp-main{padding:16px 14px 64px}#map{height:56vh;min-height:360px}.mp-controls{gap:12px}.mp-seg{width:100%}.mp-seg button{flex:1}.mp-time{width:100%}}
+</style>
+</head>
+<body>
+
+<div class="classbar"><div class="ci"><span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span><span>CLEARANCE: <span class="redact" title="No clearance required — everything here is public record">PUBLIC</span></span></div></div>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <div class="logo-mark"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="9" cy="9" r="2.5" fill="#000"/></svg></div>
+      <div class="logo-text"><span class="logo-word">The Veil</span><span class="logo-sub">TheVeil.media</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="/">Latest Issue</a>
+      <a href="casefiles">Casefiles</a>
+      <a href="watch">Watch</a>
+      <a href="map" class="nav-active">Map</a>
+      <a href="/methodology">How We Score</a>
+      <a href="new-to-uap">New to UAP?</a>
+      <a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Latest Issue</a>
+  <a href="casefiles">Casefiles</a>
+  <a href="watch">Watch</a>
+  <a href="map">Map</a>
+  <a href="/methodology">How We Score</a>
+  <a href="new-to-uap">New to UAP?</a>
+  <a href="/#subscribe-cta">Subscribe Free</a>
+</div>
+
+<div class="scoring-hero" style="padding-bottom:24px">
+  <div class="hero-eyebrow">The Data</div>
+  <h1 class="hero-headline" style="font-size:clamp(32px,5vw,56px);">The Sightings Map</h1>
+  <p class="hero-sub">More than 80,000 reported UFO and UAP sightings, mapped across eight decades. Switch between a density heatmap and a by-country view, and scrub through time to watch the pattern shift.</p>
+</div>
+
+<div class="mp-main">
+  <p class="mp-note">Important: these are <b>reported</b> sightings, drawn mostly from the U.S.-based National UFO Reporting Center. Concentration reflects where reports are filed, driven by population, internet access, and English-language reporting, not where UAP actually are. The United States dominates the data because that is where the reporting infrastructure lives, which is a fact about reporting, not about the phenomena.</p>
+
+  <div class="mp-controls">
+    <div class="mp-seg" role="group" aria-label="Map view">
+      <button id="v-heat" aria-pressed="true" onclick="mpView('heat')">Density</button>
+      <button id="v-ctry" aria-pressed="false" onclick="mpView('ctry')">By country</button>
+    </div>
+    <div class="mp-time">
+      <label>Era</label>
+      <input type="range" id="mp-slider" min="0" max="8" value="0" step="1" oninput="mpSlide(this.value)">
+      <span class="mp-decade" id="mp-decade">All time</span>
+    </div>
+  </div>
+
+  <div id="map"></div>
+  <div class="mp-legend" id="mp-legend"></div>
+  <p class="mp-src">Data: reports compiled by the <a href="https://nuforc.org" target="_blank" rel="noopener">National UFO Reporting Center</a> (geocoded, 1940s&ndash;2014). Base map &copy; OpenStreetMap &amp; CARTO. Counts are binned for display; a low or empty area often means few <i>reports</i>, not few sightings.</p>
+
+  <div class="mp-cta">
+    <h3>The map is history. The brief is now.</h3>
+    <p>The Veil tracks today's UAP developments and scores each for credibility. Free, every Sunday.</p>
+    <a href="/#subscribe-cta">Get The Veil Free</a>
+  </div>
+</div>
+
+<footer>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:14px;">— END OF FILE · NO FURTHER PAGES —</div>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening</div>
+  <div style="margin-top:14px;font-size:13px;"><a href="new-to-uap" style="color:var(--text-secondary);text-decoration:none;">New to UAP?</a> &nbsp;·&nbsp; <a href="casefiles" style="color:var(--text-secondary);text-decoration:none;">Casefiles</a> &nbsp;·&nbsp; <a href="watch" style="color:var(--text-secondary);text-decoration:none;">Watch</a> &nbsp;·&nbsp; <a href="map" style="color:var(--text-secondary);text-decoration:none;">Map</a> &nbsp;·&nbsp; <a href="methodology" style="color:var(--text-secondary);text-decoration:none;">How We Score</a></div>
+  <div style="margin-top:12px;font-size:13.5px;color:var(--text-secondary);">Contact: <a href="mailto:contact@theveil.media" style="color:var(--amber);text-decoration:none;">contact@theveil.media</a></div>
+  <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<script>
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+var map, heatLayer, choroLayer, DATA=null, GEO=null, VIEW='heat', DECS=[], decIdx=0;
+var HEATGRAD={0.0:'#1a1305',0.25:'#8A6420',0.5:'#E2A24B',0.75:'#F2B968',1.0:'#ffffff'};
+
+function ctryColor(v){ return v>=5000?'#F2B968':v>=1000?'#E2A24B':v>=200?'#c4892c':v>=50?'#8A6420':v>=10?'#6b4e1e':v>=1?'#3a2e16':'rgba(255,255,255,0.035)'; }
+
+function curDecKey(){ return decIdx===0 ? null : String(DECS[decIdx-1]); }
+
+function gridPoints(){
+  var key=curDecKey(), pts=[];
+  var decs = key ? [key] : Object.keys(DATA.grid);
+  decs.forEach(function(d){ (DATA.grid[d]||[]).forEach(function(a){ pts.push([a[0],a[1],a[2]]); }); });
+  return pts;
+}
+function ctryCounts(){
+  var key=curDecKey(), c={};
+  var decs = key ? [key] : Object.keys(DATA.countries);
+  decs.forEach(function(d){ var m=DATA.countries[d]||{}; for(var iso in m) c[iso]=(c[iso]||0)+m[iso]; });
+  return c;
+}
+
+function drawHeat(){
+  if(choroLayer){ map.removeLayer(choroLayer); }
+  if(heatLayer){ map.removeLayer(heatLayer); }
+  heatLayer=L.heatLayer(gridPoints(),{radius:17,blur:22,max:55,minOpacity:0.25,gradient:HEATGRAD}).addTo(map);
+  legendHeat();
+}
+function drawChoro(){
+  if(heatLayer){ map.removeLayer(heatLayer); }
+  if(choroLayer){ map.removeLayer(choroLayer); }
+  var counts=ctryCounts();
+  choroLayer=L.geoJSON(GEO,{
+    style:function(f){ var v=counts[f.id]||0; return {fillColor:ctryColor(v),fillOpacity:0.8,color:'#06070B',weight:0.5}; },
+    onEachFeature:function(f,layer){ var v=counts[f.id]||0; layer.bindTooltip((f.properties.name||f.id)+': '+v.toLocaleString()+' reports',{sticky:true}); }
+  }).addTo(map);
+  legendCtry();
+}
+function legendHeat(){
+  document.getElementById('mp-legend').innerHTML='<span>Report density</span>'
+    +'<span><span class="sw" style="background:#8A6420"></span>Low</span>'
+    +'<span><span class="sw" style="background:#E2A24B"></span>Medium</span>'
+    +'<span><span class="sw" style="background:#F2B968"></span>High</span>'
+    +'<span><span class="sw" style="background:#fff"></span>Hotspot</span>';
+}
+function legendCtry(){
+  var b=[['1+','#3a2e16'],['10+','#6b4e1e'],['50+','#8A6420'],['200+','#c4892c'],['1,000+','#E2A24B'],['5,000+','#F2B968']];
+  document.getElementById('mp-legend').innerHTML='<span>Reports by country</span>'+b.map(function(x){return '<span><span class="sw" style="background:'+x[1]+'"></span>'+x[0]+'</span>';}).join('');
+}
+function render(){ if(VIEW==='heat') drawHeat(); else drawChoro(); }
+function mpView(v){
+  VIEW=v;
+  document.getElementById('v-heat').setAttribute('aria-pressed', v==='heat');
+  document.getElementById('v-ctry').setAttribute('aria-pressed', v==='ctry');
+  render();
+}
+function mpSlide(i){
+  decIdx=parseInt(i,10);
+  document.getElementById('mp-decade').textContent = decIdx===0 ? 'All time' : (DECS[decIdx-1]+'s');
+  render();
+}
+
+(function init(){
+  map=L.map('map',{worldCopyJump:true,minZoom:2,maxZoom:9,zoomControl:true}).setView([30,-30],2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
+  }).addTo(map);
+  Promise.all([
+    fetch('map-data.json').then(function(r){return r.json();}),
+    fetch('countries.geo.json').then(function(r){return r.json();})
+  ]).then(function(res){
+    DATA=res[0]; GEO=res[1]; DECS=DATA.decades;
+    var s=document.getElementById('mp-slider'); s.max=DECS.length;
+    render();
+  }).catch(function(e){ document.getElementById('map').innerHTML='<div style="padding:40px;text-align:center;color:#74757F;font-family:monospace">Map data could not load.</div>'; });
+})();
+</script>
+</body>
+</html>
