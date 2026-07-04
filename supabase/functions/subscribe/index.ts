@@ -63,6 +63,8 @@ Deno.serve(async (req) => {
     method: "POST",
     headers: { "api-key": Deno.env.get("BREVO_API_KEY")!, "content-type": "application/json", accept: "application/json" },
     body: JSON.stringify({
+      sender: { name: "The Veil", email: "brief@theveil.media" },
+      replyTo: { name: "The Veil", email: "contact@theveil.media" },
       to: [{ email }],
       templateId: CONFIRM_TEMPLATE_ID,
       params: { confirm_url: confirmUrl },
