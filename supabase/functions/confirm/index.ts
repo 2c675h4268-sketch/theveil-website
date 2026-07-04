@@ -1,11 +1,10 @@
 // The Veil — double opt-in confirmation handler.
 // User clicks the link from the confirmation email: ?t=<signed token>. We verify the
-// HMAC + freshness, then add the contact to Brevo list 4 (create-or-update, with
+// HMAC signature, then add the contact to Brevo list 4 (create-or-update, with
 // REGION + timezone attributes), and redirect to the branded confirmed page.
-// Invalid/expired -> error state.
+// Links do NOT expire — the signature is what makes them safe. Invalid -> error state.
 const BREVO = "https://api.brevo.com/v3";
 const SITE = "https://theveil.media";
-const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const LIST_ID = 4; // The Veil Subscribers
 
 const b64urlToBytes = (s: string) => {
@@ -26,7 +25,7 @@ async function verify(token: string): Promise<{ e: string; r: string; z: string;
   if (expect !== sig) return null;
   try {
     const obj = JSON.parse(new TextDecoder().decode(b64urlToBytes(p)));
-    if (!obj?.e || typeof obj.t !== "number" || Date.now() - obj.t > MAX_AGE_MS) return null;
+    if (!obj?.e) return null;
     return obj;
   } catch { return null; }
 }

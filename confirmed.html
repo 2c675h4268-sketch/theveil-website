@@ -110,9 +110,9 @@
   function setIcon(color, d){ check.style.borderColor=color; icon.setAttribute('stroke',color); icon.setAttribute('d',d); eyebrow.style.color=color; }
   if(status==='expired'){
     setIcon('#E2A24B','M12 7v6 M12 16.5v.01'); // exclamation
-    eyebrow.textContent='Link expired';
-    title.innerHTML='This link isn’t valid anymore';
-    body.innerHTML='Confirmation links are good for 7 days. Please sign up again and we’ll send a fresh one.';
+    eyebrow.textContent='Link not valid';
+    title.innerHTML='We couldn’t read that link';
+    body.innerHTML='That confirmation link didn’t check out. Please sign up again and we’ll send a fresh one.';
     actions.innerHTML='<a class="cf-btn cf-btn-primary" href="/#subscribe-cta">Sign up again</a>';
     note.textContent='';
   } else { // error or anything else
