@@ -87,18 +87,44 @@
 </div>
 
 <div class="cf-wrap">
-  <div class="cf-check">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#7FD8A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="cf-check" id="cf-check">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="cf-icon" d="M5 12.5l4.5 4.5L19 7.5" stroke="#7FD8A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
-  <div class="cf-eyebrow">Subscription confirmed</div>
-  <h1 class="cf-title">You&rsquo;re on the list.</h1>
-  <p class="cf-body">Thanks for confirming. <strong>The Veil</strong> lands in your inbox every Sunday evening &mdash; UAP news, scored for credibility. Nothing taken on faith.</p>
-  <div class="cf-actions">
+  <div class="cf-eyebrow" id="cf-eyebrow">Subscription confirmed</div>
+  <h1 class="cf-title" id="cf-title">You&rsquo;re on the list.</h1>
+  <p class="cf-body" id="cf-body">Thanks for confirming. <strong>The Veil</strong> lands in your inbox every Sunday evening &mdash; UAP news, scored for credibility. Nothing taken on faith.</p>
+  <div class="cf-actions" id="cf-actions">
     <a class="cf-btn cf-btn-primary" href="/">Read this week&rsquo;s issue</a>
     <a class="cf-btn cf-btn-ghost" href="new-to-uap">New to UAP? Start here</a>
   </div>
-  <div class="cf-note">Tip: add brief@theveil.media to your contacts so we never land in spam.</div>
+  <div class="cf-note" id="cf-note">Tip: add brief@theveil.media to your contacts so we never land in spam.</div>
 </div>
+
+<script>
+(function(){
+  var status = new URLSearchParams(location.search).get('status');
+  if(!status) return; // success — leave the default content
+  var check=document.getElementById('cf-check'), icon=document.getElementById('cf-icon');
+  var eyebrow=document.getElementById('cf-eyebrow'), title=document.getElementById('cf-title');
+  var body=document.getElementById('cf-body'), actions=document.getElementById('cf-actions'), note=document.getElementById('cf-note');
+  function setIcon(color, d){ check.style.borderColor=color; icon.setAttribute('stroke',color); icon.setAttribute('d',d); eyebrow.style.color=color; }
+  if(status==='expired'){
+    setIcon('#E2A24B','M12 7v6 M12 16.5v.01'); // exclamation
+    eyebrow.textContent='Link expired';
+    title.innerHTML='This link isn’t valid anymore';
+    body.innerHTML='Confirmation links are good for 7 days. Please sign up again and we’ll send a fresh one.';
+    actions.innerHTML='<a class="cf-btn cf-btn-primary" href="/#subscribe-cta">Sign up again</a>';
+    note.textContent='';
+  } else { // error or anything else
+    setIcon('#E08A8A','M12 7v6 M12 16.5v.01');
+    eyebrow.textContent='Something went wrong';
+    title.innerHTML='We couldn’t confirm that';
+    body.innerHTML='Please try signing up again. If it keeps happening, email <a href="mailto:contact@theveil.media" style="color:var(--amber);">contact@theveil.media</a> and we’ll sort it out.';
+    actions.innerHTML='<a class="cf-btn cf-btn-primary" href="/#subscribe-cta">Try again</a>';
+    note.textContent='';
+  }
+})();
+</script>
 
 <!-- FOOTER -->
 <footer>

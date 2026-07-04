@@ -950,11 +950,11 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
 });
 document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); }); });
 
-// ---- subscribe (double opt-in via /subscribe Pages Function → Brevo DOI) ----
-const SUBSCRIBE_WEBHOOK = '/subscribe';
-// Safety net: if the Pages Function isn't reachable, post straight to Make
-// (old single-opt-in path) so signups never break.
-const SUBSCRIBE_FALLBACK = 'https://hook.us2.make.com/krlnf1d61bokrrwcfymviv92dte1ralt';
+// ---- subscribe (self-hosted double opt-in via Supabase Edge Function) ----
+// subscribe fn mints a signed token + emails a confirmation link (Brevo tpl 119);
+// the confirm fn adds the contact to list 4 only after the click. Bots/typos that
+// never confirm never touch the list.
+const SUBSCRIBE_WEBHOOK = 'https://zujxdvzvcyzpyfqininu.supabase.co/functions/v1/subscribe';
 
 // ── Timezone bucketing: map the browser's IANA zone to a delivery wave ──
 function veilDetectIana(){
@@ -1009,36 +1009,17 @@ function wireSubscribe(){
     async function submit(){
       const email = (input.value||'').trim();
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ input.style.borderColor='#E08A8A'; input.focus(); return; }
-      if(SUBSCRIBE_WEBHOOK.indexOf('__')===0){ setMsg('Subscriptions open shortly. Check back soon.', true); return; }
       // honeypot — bots fill hidden fields; humans never do
       const hp = form.querySelector('.cta-hp');
       btn.disabled=true; btn.textContent='…';
-      const tzf = veilTzFields();
-      async function makeFallback(){
-        try{
-          const b = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source:'website', utm_medium:'landing', utm_campaign:'home', page: location.pathname });
-          await fetch(SUBSCRIBE_FALLBACK, {method:'POST', mode:'no-cors', body: b});
-          setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
-          setTimeout(showVeilWhitelist, 350);
-          return true;
-        }catch(e){ return false; }
-      }
       try{
+        const tzf = veilTzFields();
         const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, company: (hp&&hp.value)||'', utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
         const res = await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body.toString()});
-        if(!res.ok){ if(await makeFallback()) return; throw new Error('subscribe '+res.status); }
-        const data = await res.json().catch(function(){ return {}; });
-        if(data.ok){
-          if(data.already){ setMsg('You’re already subscribed — watch for The Veil each Sunday.', true); }
-          else if(data.pending===false){ setMsg('You’re in. Watch for The Veil every Sunday evening.', true); setTimeout(showVeilWhitelist, 350); }
-          else { setMsg('Almost there — check your inbox and click the link to confirm.', true); setTimeout(showVeilWhitelist, 350); }
-        } else {
-          if(await makeFallback()) return;
-          btn.disabled=false; btn.textContent=label;
-          setMsg('Something went wrong. Please try again.', false);
-        }
+        if(!res.ok) throw new Error('subscribe '+res.status);
+        setMsg('Almost there — check your inbox and click the link to confirm.', true);
+        setTimeout(showVeilWhitelist, 350);
       }catch(e){
-        if(await makeFallback()) return;
         btn.disabled=false; btn.textContent=label;
         setMsg('Something went wrong. Please try again.', false);
       }
