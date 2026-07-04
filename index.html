@@ -952,6 +952,9 @@ document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('clic
 
 // ---- subscribe (double opt-in via /subscribe Pages Function → Brevo DOI) ----
 const SUBSCRIBE_WEBHOOK = '/subscribe';
+// Safety net: if the Pages Function isn't reachable, post straight to Make
+// (old single-opt-in path) so signups never break.
+const SUBSCRIBE_FALLBACK = 'https://hook.us2.make.com/krlnf1d61bokrrwcfymviv92dte1ralt';
 
 // ── Timezone bucketing: map the browser's IANA zone to a delivery wave ──
 function veilDetectIana(){
@@ -1010,20 +1013,32 @@ function wireSubscribe(){
       // honeypot — bots fill hidden fields; humans never do
       const hp = form.querySelector('.cta-hp');
       btn.disabled=true; btn.textContent='…';
+      const tzf = veilTzFields();
+      async function makeFallback(){
+        try{
+          const b = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source:'website', utm_medium:'landing', utm_campaign:'home', page: location.pathname });
+          await fetch(SUBSCRIBE_FALLBACK, {method:'POST', mode:'no-cors', body: b});
+          setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
+          setTimeout(showVeilWhitelist, 350);
+          return true;
+        }catch(e){ return false; }
+      }
       try{
-        const tzf = veilTzFields();
         const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, company: (hp&&hp.value)||'', utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
         const res = await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body.toString()});
+        if(!res.ok){ if(await makeFallback()) return; throw new Error('subscribe '+res.status); }
         const data = await res.json().catch(function(){ return {}; });
-        if(res.ok && data.ok){
+        if(data.ok){
           if(data.already){ setMsg('You’re already subscribed — watch for The Veil each Sunday.', true); }
           else if(data.pending===false){ setMsg('You’re in. Watch for The Veil every Sunday evening.', true); setTimeout(showVeilWhitelist, 350); }
           else { setMsg('Almost there — check your inbox and click the link to confirm.', true); setTimeout(showVeilWhitelist, 350); }
         } else {
+          if(await makeFallback()) return;
           btn.disabled=false; btn.textContent=label;
           setMsg('Something went wrong. Please try again.', false);
         }
       }catch(e){
+        if(await makeFallback()) return;
         btn.disabled=false; btn.textContent=label;
         setMsg('Something went wrong. Please try again.', false);
       }
