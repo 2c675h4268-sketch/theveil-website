@@ -255,6 +255,7 @@
   .cta-headline{font-family:var(--serif);font-size:clamp(30px,4.6vw,52px);font-weight:700;letter-spacing:-0.01em;color:var(--text-primary);margin-bottom:12px;line-height:1.08}
   .cta-sub{font-size:17px;color:var(--text-secondary);font-weight:400;margin:0 auto 32px;line-height:1.6;max-width:480px}
   .cta-form{display:flex;gap:10px;max-width:460px;margin:0 auto}
+  .cta-hp{position:absolute!important;left:-9999px!important;top:auto;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
   .cta-input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line2);color:var(--text-primary);padding:15px 22px;font-size:16px;font-family:var(--sans);outline:none;border-radius:100px;transition:border-color .2s}
   .cta-input::placeholder{color:var(--text-muted)}
   .cta-input:focus{border-color:var(--amber)}
@@ -443,6 +444,7 @@
   <p class="hero-dek">What's real. What's credible. What it means.</p>
   <p class="hero-sub">The Veil tracks the developments shaping the UAP conversation across government, science, disclosure and credible sightings. Every story gets a transparent credibility score, direct links to the evidence, and a clear explanation of why it matters.</p>
   <div class="cta-form hero-form">
+    <input class="cta-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Company">
     <input class="cta-input" type="email" placeholder="Enter your email" aria-label="Email address">
     <button class="cta-submit">Get The Veil Free</button>
   </div>
@@ -484,6 +486,7 @@
     <h3>Get this in your inbox every Sunday.</h3>
     <p>The full brief, every story scored and sourced, lands in your inbox once a week. Free.</p>
     <div class="cta-form" style="margin:0 auto;">
+      <input class="cta-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Company">
       <input class="cta-input" type="email" placeholder="Enter your email">
       <button class="cta-submit">Get The Veil Free</button>
     </div>
@@ -715,6 +718,7 @@
     <h3 class="cta-headline">Stay curious. Know what the evidence supports.</h3>
     <p class="cta-sub">One briefing a week with the most credible UAP developments — each scored, sourced, and explained. Free, every Sunday evening.</p>
     <div class="cta-form">
+      <input class="cta-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Company">
       <input class="cta-input" type="email" placeholder="Enter your email">
       <button class="cta-submit">Get The Veil Free</button>
     </div>
@@ -946,8 +950,8 @@ document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function(a){
 });
 document.querySelectorAll('.logo').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showPage('home'); }); });
 
-// ---- subscribe ----
-const SUBSCRIBE_WEBHOOK = 'https://hook.us2.make.com/krlnf1d61bokrrwcfymviv92dte1ralt';
+// ---- subscribe (double opt-in via /subscribe Pages Function → Brevo DOI) ----
+const SUBSCRIBE_WEBHOOK = '/subscribe';
 
 // ── Timezone bucketing: map the browser's IANA zone to a delivery wave ──
 function veilDetectIana(){
@@ -1003,13 +1007,22 @@ function wireSubscribe(){
       const email = (input.value||'').trim();
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ input.style.borderColor='#E08A8A'; input.focus(); return; }
       if(SUBSCRIBE_WEBHOOK.indexOf('__')===0){ setMsg('Subscriptions open shortly. Check back soon.', true); return; }
+      // honeypot — bots fill hidden fields; humans never do
+      const hp = form.querySelector('.cta-hp');
       btn.disabled=true; btn.textContent='…';
       try{
         const tzf = veilTzFields();
-        const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
-        await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', mode:'no-cors', body: body});
-        setMsg('You’re in. Watch for The Veil every Sunday evening.', true);
-        setTimeout(showVeilWhitelist, 350);
+        const body = new URLSearchParams({ email: email, region: tzf.region, tz: tzf.tz, company: (hp&&hp.value)||'', utm_source: 'website', utm_medium: 'landing', utm_campaign: 'home', page: location.pathname });
+        const res = await fetch(SUBSCRIBE_WEBHOOK, {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body.toString()});
+        const data = await res.json().catch(function(){ return {}; });
+        if(res.ok && data.ok){
+          if(data.already){ setMsg('You’re already subscribed — watch for The Veil each Sunday.', true); }
+          else if(data.pending===false){ setMsg('You’re in. Watch for The Veil every Sunday evening.', true); setTimeout(showVeilWhitelist, 350); }
+          else { setMsg('Almost there — check your inbox and click the link to confirm.', true); setTimeout(showVeilWhitelist, 350); }
+        } else {
+          btn.disabled=false; btn.textContent=label;
+          setMsg('Something went wrong. Please try again.', false);
+        }
       }catch(e){
         btn.disabled=false; btn.textContent=label;
         setMsg('Something went wrong. Please try again.', false);

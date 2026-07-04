@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>You're confirmed — The Veil</title>
+<meta name="description" content="Your subscription to The Veil is confirmed. Your next issue arrives Sunday evening.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://theveil.media/confirmed">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Veil">
+<meta property="og:title" content="You're confirmed — The Veil">
+<meta property="og:description" content="Your subscription to The Veil is confirmed.">
+<meta property="og:url" content="https://theveil.media/confirmed">
+<meta property="og:image" content="https://theveil.media/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="veil.css">
+<style>
+  .cf-wrap{max-width:640px;margin:0 auto;padding:clamp(60px,10vw,120px) 24px;text-align:center}
+  .cf-check{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
+  .cf-check svg{width:30px;height:30px}
+  .cf-eyebrow{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:18px}
+  .cf-title{font-family:var(--serif);font-size:clamp(30px,5vw,46px);font-weight:700;line-height:1.12;color:var(--text-primary);margin:0 0 18px}
+  .cf-body{font-size:clamp(16px,1.9vw,18px);line-height:1.7;color:var(--text-secondary);max-width:480px;margin:0 auto 34px}
+  .cf-body strong{color:var(--text-primary);font-weight:600}
+  .cf-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .cf-btn{display:inline-block;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 26px;border-radius:100px}
+  .cf-btn-primary{background:var(--amber);color:#0a0a0a}
+  .cf-btn-primary:hover{background:var(--amber-bright)}
+  .cf-btn-ghost{border:1px solid var(--line2);color:var(--text-primary)}
+  .cf-btn-ghost:hover{background:rgba(255,255,255,0.04)}
+  .cf-note{margin-top:30px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+  @media(max-width:600px){.cf-body{font-size:17px}}
+</style>
+</head>
+<body>
+
+<!-- CLASSIFICATION STRIP -->
+<div class="classbar">
+  <div class="ci">
+    <span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span>
+    <span>CLEARANCE: <span class="redact" title="No clearance required — everything here is public record">PUBLIC</span></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <circle cx="9" cy="9" r="2.5" fill="#000"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-word">The Veil</span>
+        <span class="logo-sub">TheVeil.media</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/">Latest Issue</a>
+      <a href="casefiles">Casefiles</a>
+      <a href="watch">Watch</a>
+      <a href="map">Map</a>
+      <a href="/methodology">How We Score</a>
+      <a href="new-to-uap">New to UAP?</a>
+      <a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Latest Issue</a>
+  <a href="casefiles">Casefiles</a>
+  <a href="watch">Watch</a>
+  <a href="map">Map</a>
+  <a href="/methodology">How We Score</a>
+  <a href="new-to-uap">New to UAP?</a>
+  <a href="/#subscribe-cta">Subscribe Free</a>
+</div>
+
+<div class="cf-wrap">
+  <div class="cf-check">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#7FD8A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="cf-eyebrow">Subscription confirmed</div>
+  <h1 class="cf-title">You&rsquo;re on the list.</h1>
+  <p class="cf-body">Thanks for confirming. <strong>The Veil</strong> lands in your inbox every Sunday evening &mdash; UAP news, scored for credibility. Nothing taken on faith.</p>
+  <div class="cf-actions">
+    <a class="cf-btn cf-btn-primary" href="/">Read this week&rsquo;s issue</a>
+    <a class="cf-btn cf-btn-ghost" href="new-to-uap">New to UAP? Start here</a>
+  </div>
+  <div class="cf-note">Tip: add brief@theveil.media to your contacts so we never land in spam.</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:14px;">— END OF FILE · NO FURTHER PAGES —</div>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">
+    The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>
+    Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening
+  </div>
+  <div style="margin-top:14px;font-size:13px;"><a href="casefiles" style="color:var(--text-secondary);text-decoration:none;">Casefiles</a> &nbsp;·&nbsp; <a href="watch" style="color:var(--text-secondary);text-decoration:none;">Watch</a> &nbsp;·&nbsp; <a href="map" style="color:var(--text-secondary);text-decoration:none;">Map</a> &nbsp;·&nbsp; <a href="methodology" style="color:var(--text-secondary);text-decoration:none;">How We Score</a> &nbsp;·&nbsp; <a href="standards" style="color:var(--text-secondary);text-decoration:none;">Standards</a></div>
+  <div style="margin-top:12px;font-size:13.5px;color:var(--text-secondary);">Contact: <a href="mailto:contact@theveil.media" style="color:var(--amber);text-decoration:none;">contact@theveil.media</a></div>
+  <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
+</footer>
+
+<script>
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+</script>
+</body>
+</html>
