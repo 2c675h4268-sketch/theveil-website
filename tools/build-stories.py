@@ -29,10 +29,25 @@ DIMS = [
 
 def esc(s): return html.escape(str(s or ""), quote=True)
 
-def head(title, desc, canon, ogtitle, ogimg):
+def head(title, desc, canon, ogtitle, ogimg, jsonld=""):
     return (CHROME_HEAD.replace("@@TITLE@@", esc(title)[:90]).replace("@@DESC@@", esc(desc))
             .replace("@@CANON@@", esc(canon)).replace("@@OGTITLE@@", esc(ogtitle)[:110])
-            .replace("@@OGIMG@@", esc(ogimg)))
+            .replace("@@OGIMG@@", esc(ogimg)).replace("@@JSONLD@@", jsonld))
+
+def newsarticle_ld(title, desc, canon, img, image_url, pub):
+    ld = {
+        "@context": "https://schema.org", "@type": "NewsArticle",
+        "headline": title[:110], "description": desc,
+        "url": canon, "mainEntityOfPage": canon,
+        "datePublished": pub, "dateModified": pub,
+        "author": {"@type": "Organization", "name": "The Veil", "url": "https://theveil.media"},
+        "publisher": {"@type": "Organization", "name": "The Veil",
+                      "logo": {"@type": "ImageObject", "url": "https://theveil.media/og-card.png"}},
+        "isAccessibleForFree": True,
+    }
+    if image_url: ld["image"] = [image_url]
+    # neutralize any "</script>" that could break out of the script tag
+    return '<script type="application/ld+json">%s</script>' % json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
 
 def slugify(title):
     s = (title or "").lower()
@@ -122,7 +137,7 @@ CHROME_HEAD = """<!DOCTYPE html>
     .st-meta{font-size:13px}
     .st-sec h2{font-size:13px}
   }
-</style></head><body>
+</style>@@JSONLD@@</head><body>
 <div class="classbar"><div class="ci"><span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span><span>CLEARANCE: <span class="redact" title="Public record">PUBLIC</span></span></div></div>
 <header><div class="header-inner">
   <a class="logo" href="/"><div class="logo-mark"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="9" cy="9" r="2.5" fill="#000"/></svg></div><div class="logo-text"><span class="logo-word">The Veil</span><span class="logo-sub">TheVeil.media</span></div></a>
@@ -227,7 +242,9 @@ def render_story(a):
     ).replace('@@SOURCELINK@@', source_block)
 
     canon = "https://theveil.media/story/%s" % fname[:-5]  # clean URL, no .html
-    return fname, head(title, desc, canon, title, img) + body + FOOTER, {
+    pub = str(a.get("published_date") or a.get("created_at") or week)[:10]
+    jsonld = newsarticle_ld(title, desc, canon, img, a.get("image_url"), pub)
+    return fname, head(title, desc, canon, title, img, jsonld) + body + FOOTER, {
         "fname": fname, "title": title, "score": score, "cat": cat, "week": week,
         "source": source, "img": img, "sowhat": (sowhat or summary)[:160]
     }
