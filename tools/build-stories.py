@@ -29,9 +29,9 @@ DIMS = [
 
 def esc(s): return html.escape(str(s or ""), quote=True)
 
-def head(title, desc, fname, ogtitle, ogimg):
+def head(title, desc, canon, ogtitle, ogimg):
     return (CHROME_HEAD.replace("@@TITLE@@", esc(title)[:90]).replace("@@DESC@@", esc(desc))
-            .replace("@@FNAME@@", esc(fname)).replace("@@OGTITLE@@", esc(ogtitle)[:110])
+            .replace("@@CANON@@", esc(canon)).replace("@@OGTITLE@@", esc(ogtitle)[:110])
             .replace("@@OGIMG@@", esc(ogimg)))
 
 def slugify(title):
@@ -67,11 +67,11 @@ CHROME_HEAD = """<!DOCTYPE html>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>@@TITLE@@ — The Veil</title>
 <meta name="description" content="@@DESC@@">
-<link rel="canonical" href="https://theveil.media/story/@@FNAME@@">
+<link rel="canonical" href="@@CANON@@">
 <meta property="og:type" content="article"><meta property="og:site_name" content="The Veil">
 <meta property="og:title" content="@@OGTITLE@@">
 <meta property="og:description" content="@@DESC@@">
-<meta property="og:url" content="https://theveil.media/story/@@FNAME@@">
+<meta property="og:url" content="@@CANON@@">
 <meta property="og:image" content="@@OGIMG@@">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="@@OGTITLE@@"><meta name="twitter:description" content="@@DESC@@">
@@ -226,7 +226,8 @@ def render_story(a):
         rows=rows, rat=rat,
     ).replace('@@SOURCELINK@@', source_block)
 
-    return fname, head(title, desc, fname, title, img) + body + FOOTER, {
+    canon = "https://theveil.media/story/%s" % fname[:-5]  # clean URL, no .html
+    return fname, head(title, desc, canon, title, img) + body + FOOTER, {
         "fname": fname, "title": title, "score": score, "cat": cat, "week": week,
         "source": source, "img": img, "sowhat": (sowhat or summary)[:160]
     }
@@ -250,7 +251,7 @@ def render_archive(index):
                 esc(it["fname"]), c, it["score"], esc(it["cat"]), esc(it["title"]), esc(it["sowhat"]))
         cards += '</div></div>'
     head_html = head("Archive", "Every story The Veil has covered, with its credibility score. Browse the full UAP record week by week.",
-        "../archive", "The Veil — Story Archive", "https://theveil.media/og-card.png")
+        "https://theveil.media/archive", "The Veil — Story Archive", "https://theveil.media/og-card.png")
     body = """
 <div class="scoring-hero"><div class="hero-eyebrow">The Record</div>
 <h1 class="hero-headline" style="font-size:clamp(32px,5vw,56px);">Story Archive</h1>
@@ -270,6 +271,28 @@ def render_archive(index):
 </style>
 """ + cards + "</div>"
     return head_html + body + FOOTER
+
+# Evergreen/hub pages that should always be in the sitemap (clean URLs, no .html).
+SITEMAP_STATIC = ["", "casefiles", "watch", "map", "new-to-uap", "methodology", "standards", "archive"]
+
+def write_sitemap(all_items):
+    latest = max((it.get("week") or "" for it in all_items), default="")
+    urls = []
+    for path in SITEMAP_STATIC:
+        loc = "https://theveil.media/" + path
+        lm = ("<lastmod>%s</lastmod>" % latest) if (path in ("", "archive") and latest) else ""
+        pr = "1.0" if path == "" else "0.7"
+        urls.append("  <url><loc>%s</loc>%s<priority>%s</priority></url>" % (loc, lm, pr))
+    for it in sorted(all_items, key=lambda x: (x.get("week") or ""), reverse=True):
+        slug = it["fname"][:-5]  # strip .html
+        lm = ("<lastmod>%s</lastmod>" % it["week"]) if it.get("week") else ""
+        urls.append('  <url><loc>https://theveil.media/story/%s</loc>%s<priority>0.6</priority></url>' % (esc(slug), lm))
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           + "\n".join(urls) + "\n</urlset>\n")
+    with open(os.path.join(ROOT, "sitemap.xml"), "w") as f:
+        f.write(xml)
+    return len(urls)
 
 def main():
     os.makedirs(STORY_DIR, exist_ok=True)
@@ -291,7 +314,8 @@ def main():
     json.dump(all_items, open(idx_path, "w"), indent=0)
     with open(os.path.join(ROOT, "archive.html"), "w") as f:
         f.write(render_archive(all_items))
-    print("generated %d story pages; archive lists %d total" % (len(index), len(all_items)))
+    n_urls = write_sitemap(all_items)
+    print("generated %d story pages; archive lists %d total; sitemap has %d urls" % (len(index), len(all_items), n_urls))
 
 if __name__ == "__main__":
     main()
