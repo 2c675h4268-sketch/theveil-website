@@ -1,0 +1,52 @@
+# The Veil — crawler policy
+# Free weekly UAP newsletter. Growth = discoverability -> email signups.
+# Posture: welcome search + AI answers + agents; block pure model-training scrapers.
+
+# Default — open to all (search engines, AI answer engines, agents)
+User-agent: *
+Allow: /
+Disallow: /confirmed
+Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference
+
+# Pure training / bulk scrapers — nothing given back, so blocked
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+# AI answer + search engines — welcome (they cite and send traffic)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+Sitemap: https://theveil.media/sitemap.xml
