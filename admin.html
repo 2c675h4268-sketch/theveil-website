@@ -91,6 +91,16 @@ function barRows(items){
 
 function render(d){
   var t=d.totals, eng=d.engagement, dm=d.domains;
+  var ru=d.recent_unsubs||[], today=t.unsub_today||0;
+  var unsubHtml = ru.length===0
+    ? '<div class="empty">No unsubscribes yet. &#128079;</div>'
+    : '<div class="rows">'+ru.map(function(x){
+        return '<div class="row"><div class="nm"><strong>'+esc(x.email)+'</strong>'+
+          (x.name && x.name!=="—" && x.name!=="" ? '<br><span style="color:#7a7e8a;font-size:12.5px">'+esc(x.name)+'</span>' : '')+
+          '</div><div class="n" style="width:auto;min-width:120px;color:#7a7e8a;font-weight:600">'+esc(x.at)+'</div></div>';
+      }).join("")+'</div>';
+  var unsubPanel = '<div class="panel"'+(today>0?' style="border-color:#f2c6c2"':'')+'>'+
+    '<h2>Recent unsubscribes'+(today>0?' &mdash; <span style="color:#c0392b">'+today+' today</span>':'')+'</h2>'+unsubHtml+'</div>';
   document.getElementById("stamp").textContent = "Updated "+d.generated_at;
   document.getElementById("foot").textContent = "Private dashboard · aggregates from Brevo, no data stored";
   var engHtml = (eng && eng.delivered>0)
@@ -110,6 +120,7 @@ function render(d){
       '<div class="card"><div class="k">Unsubscribes</div><div class="v">'+t.unsub+'</div><div class="m">blacklisted / opted out</div></div>'+
     '</div>'+
     '<div class="panel"><h2>Email engagement · opens &amp; clicks</h2>'+engHtml+'</div>'+
+    unsubPanel+
     '<div class="panel"><h2>Subscriber growth · last 30 days</h2>'+growthChart(d.daily||[])+
       '<div class="legend"><span><i style="background:'+ACCENT+'"></i>Total subscribers (cumulative)</span><span><i style="background:'+ACCENT+';opacity:.18"></i>New signups / day</span></div></div>'+
     '<div class="panel"><h2>Companies &amp; email domains (all)</h2>'+

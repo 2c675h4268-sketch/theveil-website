@@ -80,8 +80,20 @@ Deno.serve(async (req) => {
   const [contacts, eng] = await Promise.all([brevoContacts(bkey), engagement(bkey)]);
 
   const active = contacts.filter((c) => !c.emailBlacklisted);
-  const unsub = contacts.filter((c) => c.emailBlacklisted).length;
+  const blacklisted = contacts.filter((c) => c.emailBlacklisted);
+  const unsub = blacklisted.length;
   const now = Date.now();
+  const todayStr = new Date(now).toISOString().slice(0, 10);
+  const unsubToday = blacklisted.filter((c) => (c.modifiedAt || "").slice(0, 10) === todayStr).length;
+  const nameOf = (c: any) => {
+    const a = c.attributes || {};
+    return [a.FIRSTNAME, a.LASTNAME].filter(Boolean).join(" ").trim();
+  };
+  const recentUnsubs = blacklisted
+    .slice()
+    .sort((a, b) => new Date(b.modifiedAt).getTime() - new Date(a.modifiedAt).getTime())
+    .slice(0, 5)
+    .map((c) => ({ email: c.email, name: nameOf(c), at: (c.modifiedAt || "").slice(0, 16).replace("T", " ") }));
   const within = (c: any, days: number) => (now - new Date(c.createdAt).getTime()) <= days * 864e5;
   const new7 = active.filter((c) => within(c, 7)).length;
   const new30 = active.filter((c) => within(c, 30)).length;
@@ -127,7 +139,8 @@ Deno.serve(async (req) => {
   return json({
     ok: true,
     generated_at: new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC",
-    totals: { active: active.length, new7, new30, regions: Object.keys(regCount).length, unsub },
+    totals: { active: active.length, new7, new30, regions: Object.keys(regCount).length, unsub, unsub_today: unsubToday },
+    recent_unsubs: recentUnsubs,
     engagement: eng,
     daily,
     domains: { companyN, personalN, companyOrgs, rows: domainRows },
