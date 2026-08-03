@@ -97,6 +97,10 @@ Deno.serve(async (req) => {
   const within = (c: any, days: number) => (now - new Date(c.createdAt).getTime()) <= days * 864e5;
   const new7 = active.filter((c) => within(c, 7)).length;
   const new30 = active.filter((c) => within(c, 30)).length;
+  const recentSignups = active
+    .filter((c) => within(c, 30))
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .map((c) => ({ email: c.email, name: nameOf(c), region: (c.attributes?.REGION || "").toString(), at: (c.createdAt || "").slice(0, 10) }));
 
   const domCount: Record<string, number> = {};
   for (const c of active) {
@@ -141,6 +145,7 @@ Deno.serve(async (req) => {
     generated_at: new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC",
     totals: { active: active.length, new7, new30, regions: Object.keys(regCount).length, unsub, unsub_today: unsubToday },
     recent_unsubs: recentUnsubs,
+    recent_signups: recentSignups,
     engagement: eng,
     daily,
     domains: { companyN, personalN, companyOrgs, rows: domainRows },
