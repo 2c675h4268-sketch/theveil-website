@@ -57,15 +57,22 @@ async function engagement(bkey: string) {
     if (!r.ok) return null;
     const j = await r.json();
     const camps = (j.campaigns || []).filter((c: any) => (c.sender?.email || "") === "brief@theveil.media");
-    let delivered = 0, opens = 0, clicks = 0;
+    // Brevo leaves globalStats zeroed for these campaigns; the real numbers are the
+    // per-list rows in campaignStats. Sum those across all sent issues.
+    let delivered = 0, opens = 0, clicks = 0, sends = 0;
     for (const c of camps) {
-      const g = c.statistics?.globalStats || {};
-      delivered += g.delivered || 0;
-      opens += g.uniqueViews || 0;
-      clicks += g.uniqueClicks || 0;
+      const rows = c.statistics?.campaignStats || [];
+      let cDelivered = 0;
+      for (const s of rows) {
+        delivered += s.delivered || 0;
+        cDelivered += s.delivered || 0;
+        opens += s.uniqueViews || 0;
+        clicks += s.uniqueClicks || 0;
+      }
+      if (cDelivered > 0) sends += 1;
     }
     const rate = (num: number, den: number) => den > 0 ? Math.round((num / den) * 1000) / 10 : 0;
-    return { campaigns: camps.length, delivered, open: rate(opens, delivered), click: rate(clicks, delivered) };
+    return { campaigns: sends, delivered, open: rate(opens, delivered), click: rate(clicks, delivered) };
   } catch (_e) { return null; }
 }
 
