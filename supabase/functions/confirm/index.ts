@@ -1,11 +1,15 @@
 // The Veil — double opt-in confirmation handler.
 // User clicks the link from the confirmation email: ?t=<signed token>. We verify the
-// HMAC signature, then add the contact to Brevo list 4 (create-or-update, with
-// REGION + timezone attributes), and redirect to the branded confirmed page.
+// HMAC signature, then add the contact to Brevo list 4 + their region's send-wave
+// list (create-or-update, with REGION + timezone attributes), and redirect to the
+// branded confirmed page.
 // Links do NOT expire — the signature is what makes them safe. Invalid -> error state.
 const BREVO = "https://api.brevo.com/v3";
 const SITE = "https://theveil.media";
-const LIST_ID = 4; // The Veil Subscribers
+const LIST_ID = 4; // The Veil Subscribers (master list)
+// Region -> timezone-wave send list. The weekly newsletter sends to these, so a
+// subscriber must be on one to actually receive it. Default 10 (ET) covers ET/UK/EU/APAC.
+const WAVE: Record<string, number> = { CT: 11, MT: 12, PT: 13, AKT: 13, HT: 13 };
 
 const b64urlToBytes = (s: string) => {
   s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "=";
@@ -37,6 +41,7 @@ Deno.serve(async (req) => {
   if (!claim) return redir("/confirmed?status=expired");
 
   const region = (claim.r || "ET").toUpperCase();
+  const waveList = WAVE[region] || 10; // send list for this region
 
   const r = await fetch(`${BREVO}/contacts`, {
     method: "POST",
@@ -44,7 +49,7 @@ Deno.serve(async (req) => {
     body: JSON.stringify({
       email: claim.e,
       attributes: { REGION: region, CONTACT_TIMEZONE: claim.z || region, OPT_IN: true },
-      listIds: [LIST_ID],
+      listIds: [LIST_ID, waveList], // master list + region's send wave (so they receive it)
       updateEnabled: true, // idempotent: re-clicking just re-adds, no error
     }),
   });
