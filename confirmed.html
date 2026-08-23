@@ -28,10 +28,10 @@
   .cf-body strong{color:var(--text-primary);font-weight:600}
   .cf-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
   .cf-btn{display:inline-block;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 26px;border-radius:100px}
-  .cf-btn-primary{background:var(--amber);color:#0a0a0a}
+  .cf-btn-primary{background:var(--amber);color:#fff}
   .cf-btn-primary:hover{background:var(--amber-bright)}
   .cf-btn-ghost{border:1px solid var(--line2);color:var(--text-primary)}
-  .cf-btn-ghost:hover{background:rgba(255,255,255,0.04)}
+  .cf-btn-ghost:hover{background:rgba(0,0,0,0.04)}
   .cf-note{margin-top:30px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
   @media(max-width:600px){.cf-body{font-size:17px}}
 </style>
@@ -88,7 +88,7 @@
 
 <div class="cf-wrap">
   <div class="cf-check" id="cf-check">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="cf-icon" d="M5 12.5l4.5 4.5L19 7.5" stroke="#7FD8A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="cf-icon" d="M5 12.5l4.5 4.5L19 7.5" stroke="#0f8a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <div class="cf-eyebrow" id="cf-eyebrow">Subscription confirmed</div>
   <h1 class="cf-title" id="cf-title">You&rsquo;re on the list.</h1>
@@ -109,14 +109,14 @@
   var body=document.getElementById('cf-body'), actions=document.getElementById('cf-actions'), note=document.getElementById('cf-note');
   function setIcon(color, d){ check.style.borderColor=color; icon.setAttribute('stroke',color); icon.setAttribute('d',d); eyebrow.style.color=color; }
   if(status==='expired'){
-    setIcon('#E2A24B','M12 7v6 M12 16.5v.01'); // exclamation
+    setIcon('#a9740f','M12 7v6 M12 16.5v.01'); // exclamation
     eyebrow.textContent='Link not valid';
     title.innerHTML='We couldn’t read that link';
     body.innerHTML='That confirmation link didn’t check out. Please sign up again and we’ll send a fresh one.';
     actions.innerHTML='<a class="cf-btn cf-btn-primary" href="/#subscribe-cta">Sign up again</a>';
     note.textContent='';
   } else { // error or anything else
-    setIcon('#E08A8A','M12 7v6 M12 16.5v.01');
+    setIcon('#c0392b','M12 7v6 M12 16.5v.01');
     eyebrow.textContent='Something went wrong';
     title.innerHTML='We couldn’t confirm that';
     body.innerHTML='Please try signing up again. If it keeps happening, email <a href="mailto:contact@theveil.media" style="color:var(--amber);">contact@theveil.media</a> and we’ll sort it out.';

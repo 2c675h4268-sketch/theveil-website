@@ -50,7 +50,7 @@
   .mp-cta{background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:30px;text-align:center;margin-top:34px}
   .mp-cta h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--text-primary);margin:0 0 10px}
   .mp-cta p{font-size:15px;color:var(--text-secondary);max-width:480px;margin:0 auto 20px;line-height:1.6}
-  .mp-cta a{display:inline-block;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
+  .mp-cta a{display:inline-block;background:var(--amber);color:#fff;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
   @media(max-width:600px){.mp-main{padding:16px 14px 64px}#map{height:56vh;min-height:360px}.mp-controls{gap:12px}.mp-seg{width:100%}.mp-seg button{flex:1}.mp-time{width:100%}}
 </style>
 </head>
@@ -171,10 +171,10 @@ var NOTABLE=[
  [2024,"2024","AARO Historical Record Report",86,38.9,-77.03,"AARO finds no verifiable evidence of extraterrestrial technology."],
  [2026,"2026","White House UAP Governance Board",76,38.9,-77.036,"A UAP Governance Board is established, with Avi Loeb advising."]
 ];
-var HEATGRAD={0.0:'#1a1305',0.25:'#8A6420',0.5:'#E2A24B',0.75:'#F2B968',1.0:'#ffffff'};
+var HEATGRAD={0.0:'#e8eaf7',0.25:'#b9bce6',0.5:'#8b90d4',0.75:'#5257b5',1.0:'#2a2f86'};
 
-function ctryColor(v){ return v>=5000?'#F2B968':v>=1000?'#E2A24B':v>=200?'#c4892c':v>=50?'#8A6420':v>=10?'#6b4e1e':v>=1?'#3a2e16':'rgba(255,255,255,0.035)'; }
-function colorOf(s){ return s>=80?'var(--green)':s>=55?'var(--amber)':'var(--red)'; }
+function ctryColor(v){ return v>=5000?'#2a2f86':v>=1000?'#3b40a3':v>=200?'#5b61bd':v>=50?'#8b90d4':v>=10?'#b9bce6':v>=1?'#dfe1f4':'rgba(0,0,0,0.03)'; }
+function colorOf(s){ return s>=80?'var(--green)':s>=55?'#a9740f':'var(--red)'; }
 function tierLabel(s){ return s>=80?'Credible':s>=55?'Disputed':'Unverified'; }
 
 function selYear(){ return YEARS[yrIdx]; }
@@ -212,7 +212,7 @@ function drawCases(){
 function legendCases(){
   document.getElementById('mp-legend').innerHTML='<span>Famous cases, c. 1440 BC to today</span>'
     +'<span><span class="sw" style="background:var(--green)"></span>Credible</span>'
-    +'<span><span class="sw" style="background:var(--amber)"></span>Disputed</span>'
+    +'<span><span class="sw" style="background:#a9740f"></span>Disputed</span>'
     +'<span><span class="sw" style="background:var(--red)"></span>Unverified</span>';
 }
 function drawChoro(){
@@ -226,13 +226,13 @@ function drawChoro(){
 }
 function legendHeat(){
   document.getElementById('mp-legend').innerHTML='<span>Report density</span>'
-    +'<span><span class="sw" style="background:#8A6420"></span>Low</span>'
-    +'<span><span class="sw" style="background:#E2A24B"></span>Medium</span>'
-    +'<span><span class="sw" style="background:#F2B968"></span>High</span>'
-    +'<span><span class="sw" style="background:#fff"></span>Hotspot</span>';
+    +'<span><span class="sw" style="background:#b9bce6"></span>Low</span>'
+    +'<span><span class="sw" style="background:#8b90d4"></span>Medium</span>'
+    +'<span><span class="sw" style="background:#5257b5"></span>High</span>'
+    +'<span><span class="sw" style="background:#2a2f86"></span>Hotspot</span>';
 }
 function legendCtry(){
-  var b=[['1+','#3a2e16'],['10+','#6b4e1e'],['50+','#8A6420'],['200+','#c4892c'],['1,000+','#E2A24B'],['5,000+','#F2B968']];
+  var b=[['1+','#dfe1f4'],['10+','#b9bce6'],['50+','#8b90d4'],['200+','#5b61bd'],['1,000+','#3b40a3'],['5,000+','#2a2f86']];
   document.getElementById('mp-legend').innerHTML='<span>Reports by country</span>'+b.map(function(x){return '<span><span class="sw" style="background:'+x[1]+'"></span>'+x[0]+'</span>';}).join('');
 }
 function render(){ if(VIEW==='heat') drawHeat(); else if(VIEW==='ctry') drawChoro(); else drawCases(); }
