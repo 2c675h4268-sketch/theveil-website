@@ -1,10 +1,10 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
   :root{
-    --void:#06070B; --deep:#0B0D12; --surface:#101218; --panel:#14161D;
-    --border:rgba(255,255,255,0.09); --line2:rgba(255,255,255,0.16);
-    --amber:#E2A24B; --amber-bright:#F2B968; --amber-dim:#8A6420;
-    --text-primary:#F5F5F7; --text-secondary:#A9AAB4; --text-muted:#74757F;
-    --cyan:#79C7D6; --green:#7FD8A6; --red:#E08A8A;
+    --void:#ffffff; --deep:#f2f1ec; --surface:#ffffff; --panel:#f6f5f1;
+    --border:rgba(0,0,0,0.10); --line2:rgba(0,0,0,0.16);
+    --amber:#a9740f; --amber-bright:#8a5e0c; --amber-dim:#caa96a;
+    --text-primary:#14151b; --text-secondary:#484b55; --text-muted:#83868f;
+    --cyan:#2b7f8f; --green:#0f8a5a; --red:#c0392b;
     --radius:18px; --radius-sm:10px;
     --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
     --mono:"Space Mono","SF Mono",ui-monospace,Menlo,monospace;
@@ -287,3 +287,22 @@
   .footer-copy{font-size:14px;line-height:1.85}
   .mobile-menu a{font-size:18px}
 }
+
+/* ===== LIGHT THEME: fixes for elements that used hardcoded dark values ===== */
+.classbar{background:rgba(255,255,255,0.78);border-bottom:1px solid rgba(0,0,0,0.08)}
+header{background:rgba(255,255,255,0.9)}
+.redact{background:#e6e4de}
+.stamp{-webkit-text-stroke:1.4px rgba(0,0,0,0.05)}
+.subscribe-btn{background:var(--amber)!important;color:#fff!important;border-color:var(--amber)!important}
+.subscribe-btn:hover{background:var(--amber-bright)!important;color:#fff!important}
+.so-what{background:#fbf5e9;border:1px solid #ecdfc2;border-left:2px solid var(--amber)}
+.tag{background:rgba(0,0,0,0.05);color:var(--text-secondary);border-color:var(--line2)}
+.tag-disclosure{background:rgba(192,57,43,0.10);color:#b23a2e;border:1px solid rgba(192,57,43,0.28)}
+.tag-sighting{background:rgba(43,127,143,0.10);color:#256f7d;border:1px solid rgba(43,127,143,0.28)}
+.tag-science{background:rgba(15,138,90,0.10);color:#0f7a50;border:1px solid rgba(15,138,90,0.28)}
+.tag-government{background:rgba(169,116,15,0.10);color:var(--amber);border:1px solid rgba(169,116,15,0.28)}
+.cred-high{background:rgba(15,138,90,0.10)} .cred-mid{background:rgba(169,116,15,0.10)} .cred-low{background:rgba(192,57,43,0.10)}
+.cta-submit,.cta-submit:hover{color:#fff}
+.tile:hover .read-arrow{color:#fff}
+#to-top{color:#fff;box-shadow:0 6px 22px rgba(0,0,0,0.18)}
+.mobile-menu{box-shadow:0 14px 32px rgba(0,0,0,0.14)}

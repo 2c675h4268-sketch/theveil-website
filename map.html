@@ -27,22 +27,22 @@
   .mp-controls{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:center;margin-bottom:16px}
   .mp-seg{display:inline-flex;border:1px solid var(--line2);border-radius:100px;overflow:hidden}
   .mp-seg button{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;background:transparent;color:var(--text-muted);border:none;cursor:pointer}
-  .mp-seg button[aria-pressed="true"]{background:var(--amber);color:#0a0a0a}
+  .mp-seg button[aria-pressed="true"]{background:var(--amber);color:#fff}
   .mp-time{display:flex;align-items:center;gap:12px;flex:1;min-width:260px}
   .mp-time label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
   .mp-time input[type=range]{flex:1;accent-color:var(--amber);cursor:pointer}
   .mp-decade{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--amber);min-width:78px;text-align:right}
-  #map{height:62vh;min-height:440px;border:1px solid var(--border);border-radius:var(--radius);background:#06070B}
-  .leaflet-container{background:#06070B;font-family:var(--sans)}
+  #map{height:62vh;min-height:440px;border:1px solid var(--border);border-radius:var(--radius);background:#e9eaec}
+  .leaflet-container{background:#e9eaec;font-family:var(--sans)}
   .mp-legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
   .mp-legend .sw{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
   .mp-src{font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-top:16px}
   .mp-src a{color:var(--amber-dim);text-decoration:none}
-  .leaflet-tooltip{background:#101218;border:1px solid var(--line2);color:var(--text-primary);font-family:var(--mono);font-size:12px}
+  .leaflet-tooltip{background:#fff;border:1px solid var(--line2);color:var(--text-primary);font-family:var(--mono);font-size:12px}
   .leaflet-tooltip::before{display:none}
-  .mp-pin{width:34px;height:34px;border-radius:50%;border:2px solid;background:rgba(6,7,11,0.9);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;box-shadow:0 0 10px rgba(0,0,0,.6)}
-  .leaflet-popup-content-wrapper{background:#101218;color:var(--text-primary);border:1px solid var(--line2);border-radius:12px}
-  .leaflet-popup-tip{background:#101218;border:1px solid var(--line2)}
+  .mp-pin{width:34px;height:34px;border-radius:50%;border:2px solid;background:rgba(255,255,255,0.95);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+  .leaflet-popup-content-wrapper{background:#fff;color:var(--text-primary);border:1px solid var(--line2);border-radius:12px}
+  .leaflet-popup-tip{background:#fff;border:1px solid var(--line2)}
   .leaflet-popup-content{margin:13px 15px;font-family:var(--sans)}
   .mp-pop-t{font-family:var(--sans);font-weight:600;font-size:15px;line-height:1.25;margin:0 0 5px}
   .mp-pop-m{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-weight:700}
@@ -251,7 +251,7 @@ function mpSlide(i){
 
 (function init(){
   map=L.map('map',{worldCopyJump:true,minZoom:2,maxZoom:9,zoomControl:true}).setView([30,-30],2);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
     attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
   }).addTo(map);
   Promise.all([

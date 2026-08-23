@@ -126,7 +126,7 @@ CHROME_HEAD = """<!DOCTYPE html>
   .st-cta{background:linear-gradient(160deg,var(--surface),var(--deep));border:1px solid var(--border);border-radius:20px;padding:34px;text-align:center;margin-top:8px}
   .st-cta h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--text-primary);margin:0 0 10px}
   .st-cta p{font-size:15px;color:var(--text-secondary);margin:0 auto 20px;max-width:440px;line-height:1.6}
-  .st-cta a{display:inline-block;background:var(--amber);color:#0a0a0a;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
+  .st-cta a{display:inline-block;background:var(--amber);color:#fff;text-decoration:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 30px;border-radius:100px}
   @media(max-width:640px){.sw-grid{grid-template-columns:1fr}}
   @media(max-width:600px){
     .st-sec p{font-size:17.5px;line-height:1.75}
