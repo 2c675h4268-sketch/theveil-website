@@ -287,8 +287,10 @@ function loadMapData(){
 }
 (function init(){
   map=L.map('map',{worldCopyJump:true,minZoom:2,maxZoom:9,zoomControl:true}).setView([30,-30],2);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
+  // CARTO deprecated their keyless basemaps (tiles now watermarked "API KEY REQUIRED").
+  // Esri World Light Gray Base is free, needs no key, and keeps the clean light look.
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'Tiles &copy; Esri', maxZoom:16
   }).addTo(map);
   window.__retryMap = loadMapData;
   loadMapData();
