@@ -249,20 +249,49 @@ function mpSlide(i){
   _raf=requestAnimationFrame(render);   // coalesce rapid scrubbing into one render per frame
 }
 
+// Resilient loader: the two data files are ~490KB combined, and an occasional
+// cold-load fetch hiccup used to permanently break the map (no retry). Retry a
+// few times with backoff, verify r.ok, and offer a one-click retry on failure.
+function loadJSON(url, tries){
+  tries = tries || 4;
+  return fetch(url).then(function(r){
+    if(!r.ok) throw new Error(url + ' HTTP ' + r.status);
+    return r.json();
+  }).catch(function(e){
+    if(tries > 1){
+      return new Promise(function(res){ setTimeout(res, 500); }).then(function(){ return loadJSON(url, tries - 1); });
+    }
+    throw e;
+  });
+}
+function showMapError(){
+  var el=document.getElementById('map');
+  var old=document.getElementById('mp-err'); if(old) old.remove();
+  var ov=document.createElement('div');
+  ov.id='mp-err';
+  ov.style.cssText='position:absolute;inset:0;z-index:500;background:#e9eaec;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px';
+  ov.innerHTML='<div style="font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--text-muted)">Map data didn’t load. This is usually a brief network hiccup.<br><button onclick="window.__retryMap()" style="margin-top:14px;background:var(--amber);color:#fff;border:none;border-radius:100px;padding:10px 22px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer">Retry</button></div>';
+  el.appendChild(ov);
+}
+function loadMapData(){
+  var ov=document.getElementById('mp-err'); if(ov) ov.remove();
+  Promise.all([ loadJSON('/map-data.json'), loadJSON('/countries.geo.json') ]).then(function(res){
+    DATA=res[0]; GEO=res[1]; YEARS=DATA.years;
+    var s=document.getElementById('mp-slider'); s.min=0; s.max=YEARS.length-1; s.value=YEARS.length-1; yrIdx=YEARS.length-1;
+    document.getElementById('mp-decade').textContent=selYear();
+    render();
+  }).catch(function(e){
+    console.error('The Veil map: data load failed after retries ->', e);
+    showMapError();
+  });
+}
 (function init(){
   map=L.map('map',{worldCopyJump:true,minZoom:2,maxZoom:9,zoomControl:true}).setView([30,-30],2);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
     attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
   }).addTo(map);
-  Promise.all([
-    fetch('map-data.json').then(function(r){return r.json();}),
-    fetch('countries.geo.json').then(function(r){return r.json();})
-  ]).then(function(res){
-    DATA=res[0]; GEO=res[1]; YEARS=DATA.years;
-    var s=document.getElementById('mp-slider'); s.min=0; s.max=YEARS.length-1; s.value=YEARS.length-1; yrIdx=YEARS.length-1;
-    document.getElementById('mp-decade').textContent=selYear();
-    render();
-  }).catch(function(e){ document.getElementById('map').innerHTML='<div style="padding:40px;text-align:center;color:#74757F;font-family:monospace">Map data could not load.</div>'; });
+  window.__retryMap = loadMapData;
+  loadMapData();
 })();
 </script>
 </body>
