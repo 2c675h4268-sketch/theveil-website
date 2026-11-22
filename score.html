@@ -91,6 +91,7 @@
       <a href="watch">Watch</a>
       <a href="map">Map</a>
       <a href="/methodology">How We Score</a>
+      <a href="/score">Score a Link</a>
       <a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -105,6 +106,7 @@
   <a href="watch">Watch</a>
   <a href="map">Map</a>
   <a href="/methodology">How We Score</a>
+  <a href="/score">Score a Link</a>
   <a href="/#subscribe-cta">Subscribe Free</a>
 </div>
 
@@ -152,7 +154,7 @@
     </div>
   </div>
 
-  <p class="sc-disc">The score reflects how much the available evidence supports the claim, not whether it is true. We read the page you link; paywalled, private, or JavaScript-only pages (including most X posts, for now) may not be readable. Results are cached, so the same link returns the same score.</p>
+  <p class="sc-disc">The score reflects how much the available evidence supports the claim, not whether it is true. Public X posts and most article links are read directly; paywalled, login-only, or protected pages may not be readable. Results are cached, so the same link returns the same score.</p>
 </div>
 
 <footer>
@@ -174,6 +176,7 @@ var TIER = {1:['#0f8a5a','Tier 1 · Official / Major'],2:['#a9740f','Tier 2 · E
 function colorFor(s){ return s>=70?'#0f8a5a':s>=45?'#a9740f':'#c0392b'; }
 function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 try{ var e=localStorage.getItem('veil-email'); if(e) document.getElementById('sc-email').value=e; }catch(_e){}
+try{ var pu=new URLSearchParams(location.search).get('url'); if(pu){ document.getElementById('sc-url').value=pu; var em=document.getElementById('sc-email'); if(em.value) document.getElementById('sc-go').focus(); else em.focus(); } }catch(_e){}
 function msg(t,cls){ var m=document.getElementById('sc-msg'); m.className='sc-msg '+cls; m.innerHTML=t; }
 function scReset(){ document.getElementById('sc-result').style.display='none'; document.getElementById('sc-msg').className='sc-msg'; document.getElementById('sc-url').value=''; document.getElementById('sc-url').focus(); }
 function render(r){

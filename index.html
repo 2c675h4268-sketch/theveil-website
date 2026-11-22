@@ -85,6 +85,15 @@
   .hero-sub{font-size:clamp(15px,1.7vw,18px);color:var(--text-secondary);max-width:600px;margin:0 auto 26px;font-weight:400;line-height:1.65}
   .hero-form{margin:6px auto 14px}
   .hero-micro{font-size:13px;color:var(--text-muted);margin:0 auto 30px}
+  .hero-score{max-width:560px;margin:0 auto 20px}
+  .hero-score-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+  .hero-score-row{display:flex;gap:9px}
+  .hero-score-input{flex:1;min-width:0;background:#fff;border:1px solid var(--line2);color:var(--text-primary);padding:13px 18px;font-size:15px;font-family:var(--sans);outline:none;border-radius:100px;transition:border-color .2s}
+  .hero-score-input::placeholder{color:var(--text-muted)}
+  .hero-score-input:focus{border-color:var(--amber)}
+  .hero-score-btn{background:var(--surface);border:1px solid var(--line2);color:var(--text-primary);padding:13px 22px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;border-radius:100px;white-space:nowrap;transition:border-color .2s,color .2s}
+  .hero-score-btn:hover{border-color:var(--amber);color:var(--amber)}
+  @media(max-width:600px){.hero-score-row{flex-direction:column}.hero-score-btn{width:100%}}
   .hero-meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--text-muted);text-transform:uppercase;line-height:2}
   .hero-meta span{color:var(--amber-dim);margin:0 10px}
   .trust-bar{max-width:1180px;margin:0 auto;padding:6px 24px 0;display:flex;gap:8px 14px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
@@ -327,7 +336,7 @@
 
   /* responsive */
   @media(max-width:900px){.tile-grid{grid-template-columns:repeat(2,1fr)}.timeline-items{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:1000px){.nav-links{display:none}.hamburger{display:flex}}
+  @media(max-width:1080px){.nav-links{display:none}.hamburger{display:flex}}
   @media(max-width:760px){.how-inner{grid-template-columns:1fr}}
   @media(max-width:700px){.src-grid{grid-template-columns:1fr}.tier-grid{grid-template-columns:1fr}.rules-grid{grid-template-columns:1fr}}
   @media(max-width:560px){
@@ -438,6 +447,7 @@
       <a href="watch">Watch</a>
       <a href="map">Map</a>
       <a href="methodology">How We Score</a>
+      <a href="score">Score a Link</a>
       <a href="new-to-uap">New to UAP?</a>
       <a href="#" class="subscribe-btn">Subscribe Free</a>
     </div>
@@ -453,6 +463,7 @@
       <a href="watch">Watch</a>
       <a href="map">Map</a>
   <a href="methodology">How We Score</a>
+  <a href="score">Score a Link</a>
   <a href="new-to-uap">New to UAP?</a>
   <a href="#">Subscribe Free</a>
 </div>
@@ -467,6 +478,13 @@
   <h1 class="hero-headline">UAP news, scored for credibility.</h1>
   <p class="hero-dek">What's real. What's credible. What it means.</p>
   <p class="hero-sub">The Veil tracks the developments shaping the UAP conversation across government, science, disclosure and credible sightings. Every story gets a transparent credibility score, direct links to the evidence, and a clear explanation of why it matters.</p>
+  <form class="hero-score" onsubmit="goScore(event)">
+    <div class="hero-score-label">Subscribers · rate any link with our credibility framework</div>
+    <div class="hero-score-row">
+      <input class="hero-score-input" type="url" id="hero-score-url" placeholder="Paste an article or X post to check its credibility" aria-label="Link to rate">
+      <button class="hero-score-btn" type="submit">Rate it →</button>
+    </div>
+  </form>
   <div class="cta-form hero-form">
     <input class="cta-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Company">
     <input class="cta-input" type="email" placeholder="Enter your email" aria-label="Email address">
@@ -959,6 +977,7 @@ function closeModalOnOverlay(e){ if(e.target===document.getElementById('modal-ov
 // ---- pages / nav ----
 function showPage(){ var home=document.getElementById('page-home'); if(home) home.style.display='block'; window.scrollTo(0,0); }
 function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+function goScore(e){ e.preventDefault(); var u=document.getElementById('hero-score-url').value.trim(); location.href='score'+(u?'?url='+encodeURIComponent(u):''); }
 // methodology now lives at /methodology; redirect any legacy /#how-we-score deep links there
 (function(){ if(location.hash==='#how-we-score'){ location.replace('/methodology'); } })();
 
