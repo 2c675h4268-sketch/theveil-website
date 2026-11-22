@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Score a Link — The Veil</title>
+<meta name="description" content="Paste any UAP or UFO article link and run it through The Veil's credibility scoring — the same 0 to 100 rubric we use on every story in the newsletter. For subscribers.">
+<link rel="canonical" href="https://theveil.media/score">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Veil">
+<meta property="og:title" content="Score a Link — The Veil">
+<meta property="og:description" content="Run any UAP link through The Veil's credibility scoring. Same rubric as the newsletter. For subscribers.">
+<meta property="og:url" content="https://theveil.media/score">
+<meta property="og:image" content="https://theveil.media/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="veil.css">
+<style>
+  .sc-wrap{max-width:720px;margin:0 auto;padding:8px 24px 72px}
+  .sc-intro{font-size:clamp(16px,1.9vw,18px);line-height:1.7;color:var(--text-secondary);max-width:620px;margin:0 0 26px}
+  .sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px clamp(20px,3vw,28px)}
+  .sc-gate-note{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;font-weight:700}
+  .sc-field{display:block;margin-bottom:14px}
+  .sc-field label{display:block;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+  .sc-input{width:100%;background:#fff;border:1px solid var(--line2);color:var(--text-primary);padding:13px 16px;font-size:16px;font-family:var(--sans);outline:none;border-radius:12px;transition:border-color .2s}
+  .sc-input:focus{border-color:var(--amber)}
+  .sc-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;pointer-events:none}
+  .sc-btn{width:100%;background:var(--amber);color:#fff;border:none;padding:14px;font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;border-radius:100px;transition:background .2s;margin-top:4px}
+  .sc-btn:hover{background:var(--amber-bright)}
+  .sc-btn:disabled{opacity:.55;cursor:default}
+  .sc-msg{font-size:14px;line-height:1.6;margin-top:14px;padding:13px 16px;border-radius:12px;display:none}
+  .sc-msg.err{display:block;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.25);color:#8c2f26}
+  .sc-msg.info{display:block;background:rgba(169,116,15,0.08);border:1px solid rgba(169,116,15,0.25);color:var(--amber)}
+  .sc-msg a{color:var(--amber);font-weight:600}
+  /* result */
+  .sc-result{display:none;margin-top:22px}
+  .sc-res-head{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+  .sc-ring{width:84px;height:84px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;flex-shrink:0;border:4px solid}
+  .sc-ring .n{font-size:30px;line-height:1}
+  .sc-ring .o{font-size:9px;letter-spacing:.1em;opacity:.8;margin-top:1px}
+  .sc-res-meta{flex:1;min-width:220px}
+  .sc-tier{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+  .sc-title{font-family:var(--sans);font-size:19px;font-weight:600;line-height:1.3;color:var(--text-primary);margin:0 0 6px}
+  .sc-src{font-family:var(--mono);font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em}
+  .sc-sowhat{background:#fbf5e9;border:1px solid #ecdfc2;border-left:2px solid var(--amber);border-radius:var(--radius-sm);padding:15px 17px;margin-top:20px}
+  .sc-sowhat .lbl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:7px}
+  .sc-sowhat p{font-size:15.5px;line-height:1.6;color:var(--text-secondary);margin:0}
+  .sc-summary{font-size:15px;line-height:1.65;color:var(--text-secondary);margin-top:16px}
+  .sc-bd{margin-top:22px}
+  .sc-bd h3{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin:0 0 12px}
+  .sc-dim{display:flex;align-items:center;gap:12px;margin-bottom:9px;font-size:13.5px}
+  .sc-dim .dn{flex:1;color:var(--text-secondary)}
+  .sc-dim .db{flex:none;width:130px;height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
+  .sc-dim .db i{display:block;height:100%;background:var(--amber);border-radius:99px}
+  .sc-dim .dv{flex:none;width:44px;text-align:right;font-family:var(--mono);font-weight:700;color:var(--text-primary)}
+  .sc-hard{font-size:13px;color:#8c2f26;margin-top:10px;font-weight:600}
+  .sc-again{margin-top:20px;text-align:center}
+  .sc-again a{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);text-decoration:none;cursor:pointer}
+  .sc-disc{font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-top:22px;font-style:italic}
+  @media(max-width:600px){.sc-ring{width:72px;height:72px}.sc-ring .n{font-size:26px}}
+</style>
+</head>
+<body>
+
+<div class="classbar">
+  <div class="ci">
+    <span><span class="cdot"></span>UAP INTELLIGENCE BRIEF · OPEN SOURCE</span>
+    <span>CLEARANCE: <span class="redact" title="No clearance required — everything here is public record">PUBLIC</span></span>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="9" r="7" stroke="#000" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <circle cx="9" cy="9" r="2.5" fill="#000"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-word">The Veil</span>
+        <span class="logo-sub">TheVeil.media</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/">Latest Issue</a>
+      <a href="casefiles">Casefiles</a>
+      <a href="watch">Watch</a>
+      <a href="map">Map</a>
+      <a href="/methodology">How We Score</a>
+      <a href="/#subscribe-cta" class="subscribe-btn">Subscribe Free</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Latest Issue</a>
+  <a href="casefiles">Casefiles</a>
+  <a href="watch">Watch</a>
+  <a href="map">Map</a>
+  <a href="/methodology">How We Score</a>
+  <a href="/#subscribe-cta">Subscribe Free</a>
+</div>
+
+<div class="scoring-hero">
+  <div class="hero-eyebrow">For Subscribers</div>
+  <h1 class="hero-headline" style="font-size:clamp(32px,5vw,54px);">Score a link.</h1>
+</div>
+
+<div class="sc-wrap">
+  <p class="sc-intro">Paste any UAP or UFO article and run it through the same 0 to 100 credibility rubric we use on every story in the newsletter: source tier, corroboration, specificity, the outlet's track record, and consistency with the known record. You see the score and the reasoning.</p>
+
+  <div class="sc-card">
+    <div class="sc-gate-note">Subscriber tool · use the email you subscribed with</div>
+    <form id="sc-form" autocomplete="on">
+      <input class="sc-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Company">
+      <div class="sc-field">
+        <label for="sc-email">Your email</label>
+        <input class="sc-input" id="sc-email" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="sc-field">
+        <label for="sc-url">Link to score</label>
+        <input class="sc-input" id="sc-url" type="url" placeholder="https://… (a UAP/UFO article)">
+      </div>
+      <button class="sc-btn" id="sc-go" type="submit">Score it</button>
+    </form>
+    <div class="sc-msg" id="sc-msg"></div>
+
+    <div class="sc-result" id="sc-result">
+      <div class="sc-res-head">
+        <div class="sc-ring" id="sc-ring"><span class="n" id="sc-score">0</span><span class="o">/ 100</span></div>
+        <div class="sc-res-meta">
+          <div class="sc-tier" id="sc-tier"></div>
+          <h2 class="sc-title" id="sc-rtitle"></h2>
+          <div class="sc-src" id="sc-rsrc"></div>
+        </div>
+      </div>
+      <div class="sc-sowhat"><div class="lbl">The “So What”</div><p id="sc-sowhat-t"></p></div>
+      <div class="sc-summary" id="sc-rsummary"></div>
+      <div class="sc-bd">
+        <h3>Credibility breakdown</h3>
+        <div id="sc-dims"></div>
+        <div class="sc-hard" id="sc-hard" style="display:none"></div>
+      </div>
+      <div class="sc-again"><a onclick="scReset()">← Score another link</a></div>
+    </div>
+  </div>
+
+  <p class="sc-disc">The score reflects how much the available evidence supports the claim, not whether it is true. We read the page you link; paywalled, private, or JavaScript-only pages (including most X posts, for now) may not be readable. Results are cached, so the same link returns the same score.</p>
+</div>
+
+<footer>
+  <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:14px;">— END OF FILE · NO FURTHER PAGES —</div>
+  <div class="footer-logo">The Veil</div>
+  <div class="footer-copy">
+    The Veil / TheVeil.media &nbsp;·&nbsp; Credibility scores reflect editorial assessment only<br>
+    Not affiliated with any government program &nbsp;·&nbsp; Delivered every Sunday evening
+  </div>
+  <div style="margin-top:14px;font-size:13px;"><a href="casefiles" style="color:var(--text-secondary);text-decoration:none;">Casefiles</a> &nbsp;·&nbsp; <a href="watch" style="color:var(--text-secondary);text-decoration:none;">Watch</a> &nbsp;·&nbsp; <a href="map" style="color:var(--text-secondary);text-decoration:none;">Map</a> &nbsp;·&nbsp; <a href="methodology" style="color:var(--text-secondary);text-decoration:none;">How We Score</a> &nbsp;·&nbsp; <a href="standards" style="color:var(--text-secondary);text-decoration:none;">Standards</a></div>
+  <div style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Powered by Atomic Media Group LLC</div>
+</footer>
+
+<script>
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+var SCORE_URL = 'https://zujxdvzvcyzpyfqininu.supabase.co/functions/v1/score-link';
+var DIMS = [['source_tier_points','Source tier',30],['corroboration_points','Corroboration',25],['specificity_points','Specificity',20],['track_record_points','Outlet track record',15],['consistency_points','Consistency with record',10]];
+var TIER = {1:['#0f8a5a','Tier 1 · Official / Major'],2:['#a9740f','Tier 2 · Established independent'],3:['#c0392b','Tier 3 · Unverified / Social']};
+function colorFor(s){ return s>=70?'#0f8a5a':s>=45?'#a9740f':'#c0392b'; }
+function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+try{ var e=localStorage.getItem('veil-email'); if(e) document.getElementById('sc-email').value=e; }catch(_e){}
+function msg(t,cls){ var m=document.getElementById('sc-msg'); m.className='sc-msg '+cls; m.innerHTML=t; }
+function scReset(){ document.getElementById('sc-result').style.display='none'; document.getElementById('sc-msg').className='sc-msg'; document.getElementById('sc-url').value=''; document.getElementById('sc-url').focus(); }
+function render(r){
+  document.getElementById('sc-msg').className='sc-msg';
+  if(r.is_uap===false){ msg('That link does not look like it is about UAP or UFO topics, so there is nothing to score here. This tool is scoped to The Veil’s subject.','info'); return; }
+  var s=r.credibility_score||0, c=colorFor(s);
+  var ring=document.getElementById('sc-ring'); ring.style.borderColor=c; ring.style.color=c;
+  document.getElementById('sc-score').textContent=s;
+  var t=TIER[r.source_tier]||['#74757F',''];
+  var tl=document.getElementById('sc-tier'); tl.textContent=(s>=70?'High':s>=45?'Moderate':'Low')+' Credibility · '+(t[1]||r.category||''); tl.style.color=c;
+  document.getElementById('sc-rtitle').textContent=r.title||'(untitled)';
+  document.getElementById('sc-rsrc').textContent=(r.source||'')+(r.category?'  ·  '+r.category:'');
+  document.getElementById('sc-sowhat-t').textContent=r.so_what||'';
+  document.getElementById('sc-rsummary').textContent=r.summary||'';
+  var bd=r.score_breakdown||{}, html='';
+  DIMS.forEach(function(d){ var v=bd[d[0]]||0, pct=Math.round(v/d[2]*100);
+    html+='<div class="sc-dim"><div class="dn">'+d[1]+'</div><div class="db"><i style="width:'+pct+'%;background:'+c+'"></i></div><div class="dv">'+v+'/'+d[2]+'</div></div>'; });
+  document.getElementById('sc-dims').innerHTML=html;
+  var hard=document.getElementById('sc-hard');
+  if(bd.hard_rule==='social_ceiling_60'){ hard.style.display='block'; hard.textContent='Hard rule: sourced only from social media, so the score is capped at 60.'; }
+  else if(bd.hard_rule==='fabrication_floor_0'){ hard.style.display='block'; hard.textContent='Hard rule: outlet has a documented fabrication history, so the score is set to 0.'; }
+  else hard.style.display='none';
+  if(bd.rationale){ document.getElementById('sc-rsummary').innerHTML=esc(r.summary||'')+'<br><br><span style="color:var(--text-muted);font-size:14px">Why this score: '+esc(bd.rationale)+'</span>'; }
+  document.getElementById('sc-result').style.display='block';
+}
+document.getElementById('sc-form').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var email=document.getElementById('sc-email').value.trim();
+  var url=document.getElementById('sc-url').value.trim();
+  var hp=document.querySelector('.sc-hp').value;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg('Enter the email you subscribed with.','err'); return; }
+  if(!/^https?:\/\/\S+\.\S+/.test(url)){ msg('Paste a full link, starting with http.','err'); return; }
+  try{ localStorage.setItem('veil-email',email); }catch(_e){}
+  var btn=document.getElementById('sc-go'); btn.disabled=true; btn.textContent='Scoring…';
+  document.getElementById('sc-result').style.display='none';
+  document.getElementById('sc-msg').className='sc-msg';
+  fetch(SCORE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,url:url,company:hp})})
+    .then(function(res){ return res.json().then(function(d){ return {status:res.status,d:d}; }); })
+    .then(function(o){
+      var d=o.d;
+      if(d.ok){ render(d.result); }
+      else if(d.reason==='not_subscriber'){ msg('That email is not on our subscriber list. <a href="/#subscribe-cta">Subscribe free</a> (it takes a few seconds) and then score any link you like.','info'); }
+      else if(d.reason==='daily_cap'){ msg('You have hit today’s limit of '+(d.cap||20)+' scores. Try again tomorrow.','info'); }
+      else if(d.reason==='could_not_read'){ msg(d.error||'Could not read that link.','err'); }
+      else if(d.error==='invalid_url'){ msg('That does not look like a valid link.','err'); }
+      else { msg('Something went wrong scoring that link. Please try again.','err'); }
+    })
+    .catch(function(){ msg('Network error. Please try again.','err'); })
+    .then(function(){ btn.disabled=false; btn.textContent='Score it'; });
+});
+</script>
+</body>
+</html>
