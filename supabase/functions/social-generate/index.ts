@@ -84,9 +84,10 @@ Deno.serve(async (req) => {
   // Prefer the deep story page, but fall back to the homepage if it isn't live
   // yet (the weekly page-builder may lag the issue), so we never post a dead link.
   async function resolveLink(title: string): Promise<string> {
-    const deep = `${SITE}/story/${week}-${slugify(title)}.html`;
+    // Clean (extensionless) canonical URL — the Worker serves it 200 directly.
+    const deep = `${SITE}/story/${week}-${slugify(title)}`;
     try {
-      const r = await fetch(deep, { method: "HEAD" });
+      const r = await fetch(deep, { method: "HEAD", redirect: "follow" });
       if (r.ok) return deep;
     } catch { /* fall through */ }
     return `${SITE}/`;
