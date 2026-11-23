@@ -92,6 +92,11 @@ Deno.serve(async (req) => {
     return `${SITE}/`;
   }
 
+  // autopost=1 inserts rows already approved, so the weekly cron can post them
+  // straight away with no manual review step.
+  const autopost = url.searchParams.get("autopost") === "1" || url.searchParams.get("autopost") === "true";
+  const initialStatus = autopost ? "approved" : "draft";
+
   const drafts = await Promise.all(selected.map(async (a, i) => {
     const title = String(a.title || "");
     const score = Number(a.credibility_score || 0);
@@ -104,7 +109,7 @@ Deno.serve(async (req) => {
       score,
       category: a.category ?? null,
       text: compose(i, title, score, link),
-      status: "draft",
+      status: initialStatus,
     };
   }));
 
