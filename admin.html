@@ -38,6 +38,30 @@
   .gate input{width:100%;margin-top:16px;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit}
   .gate button{width:100%;margin-top:10px;padding:11px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
   footer{text-align:center;padding:24px;font-size:12px;color:var(--ink-muted)}
+  .xq{display:flex;flex-direction:column;gap:14px}
+  .xcard{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--surface)}
+  .xcard.posted{opacity:.7}
+  .xmeta{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:12px;color:var(--ink-muted);flex-wrap:wrap}
+  .xpill{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 9px;border-radius:99px}
+  .xpill.draft{background:#eceaff;color:#4b45a3}
+  .xpill.approved{background:#e3f4ec;color:#00875a}
+  .xpill.posted{background:#0d0f14;color:#fff}
+  .xpill.skipped{background:#eee;color:#7a7e8a}
+  .xpill.failed{background:#fbe6e4;color:#c0392b}
+  .xscore{font-weight:700;color:var(--accent)}
+  .xta{width:100%;min-height:96px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:13.5px;line-height:1.5;resize:vertical;background:#fff;color:var(--ink)}
+  .xta:focus{outline:none;border-color:var(--accent)}
+  .xbar{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:10px;flex-wrap:wrap}
+  .xcount{font-size:12px;color:var(--ink-muted);font-variant-numeric:tabular-nums}
+  .xcount.over{color:#c0392b;font-weight:700}
+  .xbtns{display:flex;gap:8px;flex-wrap:wrap}
+  .xb{padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;font-family:inherit;color:var(--ink)}
+  .xb:hover{border-color:var(--ink-muted)}
+  .xb.post{background:#0d0f14;color:#fff;border-color:#0d0f14}
+  .xb.post:disabled{opacity:.4;cursor:not-allowed}
+  .xb.skip{color:#c0392b}
+  .xb.gen{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .xlink{color:var(--accent);font-size:12px;text-decoration:none}
   @media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
 </style></head><body>
 <nav><div class="nav-in"><a href="https://theveil.media" class="logo"><div class="logo-mark"><svg viewBox="0 0 18 18" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="9" r="7" stroke-dasharray="3 2"/><circle cx="9" cy="9" r="2.4" fill="currentColor" stroke="none"/></svg></div><span class="logo-text">The <span>Veil</span></span></a><span class="stamp" id="stamp">Growth</span></div></nav>
@@ -47,6 +71,77 @@
 var ACCENT = "#b07d1e";
 var STATS_URL = "https://zujxdvzvcyzpyfqininu.supabase.co/functions/v1/admin";
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+// ---- X / social draft queue ----
+var FN = "https://zujxdvzvcyzpyfqininu.supabase.co/functions/v1";
+var KEY = "";
+function tweetLen(t){ return String(t||"").replace(/https?:\/\/\S+/g, "12345678901234567890123").length; } // URLs weigh 23
+function xStatus(s){ return '<span class="xpill '+esc(s)+'">'+esc(s)+'</span>'; }
+function queueCard(r){
+  var len=tweetLen(r.text), over=len>280, posted=r.status==="posted", skipped=r.status==="skipped";
+  var tweetUrl = r.tweet_id ? "https://x.com/TheVeilMedia/status/"+encodeURIComponent(r.tweet_id) : "";
+  var posLabel = r.position===0 ? "Lead" : "Story "+(r.position+1);
+  var head='<div class="xmeta">'+xStatus(r.status)+'<span>'+esc(posLabel)+'</span>'+
+    (r.score!=null?'<span class="xscore">'+esc(r.score)+'/100</span>':'')+
+    (r.category?'<span>'+esc(r.category)+'</span>':'')+
+    (posted&&tweetUrl?'<a class="xlink" href="'+tweetUrl+'" target="_blank" rel="noopener">View on X &#8599;</a>':'')+
+    (r.status==="failed"&&r.error?'<span style="color:#c0392b">'+esc(r.error)+'</span>':'')+'</div>';
+  if(posted||skipped){
+    return '<div class="xcard '+(posted?'posted':'')+'">'+head+
+      '<div style="font-size:13.5px;white-space:pre-wrap;color:var(--ink-soft)">'+esc(r.text)+'</div>'+
+      (skipped?'<div class="xbar"><span></span><div class="xbtns"><button class="xb" onclick="xAct(\''+r.id+'\',\'unapprove\')">Restore to draft</button></div></div>':'')+
+      '</div>';
+  }
+  return '<div class="xcard">'+head+
+    '<textarea class="xta" id="t_'+r.id+'" oninput="xCount(\''+r.id+'\')">'+esc(r.text)+'</textarea>'+
+    '<div class="xbar"><span class="xcount'+(over?' over':'')+'" id="c_'+r.id+'">'+len+'/280</span>'+
+      '<div class="xbtns">'+
+        '<button class="xb" onclick="xSave(\''+r.id+'\')">Save edit</button>'+
+        '<button class="xb skip" onclick="xAct(\''+r.id+'\',\'skip\')">Skip</button>'+
+        '<button class="xb post" onclick="xPost(\''+r.id+'\')">Post to X</button>'+
+      '</div></div></div>';
+}
+function renderQueue(rows){
+  if(!rows||!rows.length) return '<div class="empty">No drafts yet. Click “Generate this week’s drafts” above.</div>';
+  var byWeek={}; rows.forEach(function(r){ (byWeek[r.week_of]=byWeek[r.week_of]||[]).push(r); });
+  var weeks=Object.keys(byWeek).sort().reverse();
+  return weeks.map(function(w){
+    return '<div style="font-size:12px;color:#7a7e8a;margin:4px 0 2px;font-weight:600">Week of '+esc(w)+'</div>'+
+      '<div class="xq">'+byWeek[w].map(queueCard).join("")+'</div>';
+  }).join("");
+}
+function xCount(id){
+  var t=document.getElementById("t_"+id), c=document.getElementById("c_"+id); if(!t||!c)return;
+  var len=tweetLen(t.value); c.textContent=len+"/280"; c.className="xcount"+(len>280?" over":"");
+}
+function loadQueue(){
+  var el=document.getElementById("xqueue-body"); if(!el)return;
+  fetch(FN+"/social-admin?key="+encodeURIComponent(KEY)).then(function(r){return r.json();}).then(function(d){
+    el.innerHTML = (d&&d.ok) ? renderQueue(d.queue||[]) : '<div class="empty">Couldn\'t load the queue.</div>';
+  }).catch(function(){ el.innerHTML='<div class="empty">Couldn\'t load the queue.</div>'; });
+}
+function xAct(id, action, text){
+  return fetch(FN+"/social-admin?key="+encodeURIComponent(KEY),{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({id:id,action:action,text:text})}).then(function(r){return r.json();});
+}
+function xSave(id){ var t=document.getElementById("t_"+id).value; xAct(id,"edit",t).then(function(){ loadQueue(); }); }
+function xGenerate(){
+  if(!confirm("Generate X drafts from the latest issue? (existing drafts are kept)"))return;
+  var el=document.getElementById("xqueue-body"); if(el) el.innerHTML='<div class="empty">Generating…</div>';
+  fetch(FN+"/social-generate?key="+encodeURIComponent(KEY),{method:"POST"}).then(function(r){return r.json();}).then(function(){ loadQueue(); }).catch(loadQueue);
+}
+function xPost(id){
+  var t=document.getElementById("t_"+id).value;
+  if(tweetLen(t)>280){ alert("This post is over 280 characters — trim it first."); return; }
+  if(!confirm("Post this to @TheVeilMedia now?\n\nThis is public and cannot be undone."))return;
+  xAct(id,"edit",t).then(function(){ return xAct(id,"approve"); }).then(function(){
+    return fetch(FN+"/social-post?key="+encodeURIComponent(KEY),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:id})}).then(function(r){return r.json();});
+  }).then(function(d){
+    if(d&&d.ok&&d.posted>0){ alert("Posted to X ✅"); }
+    else { alert("Could not post:\n"+(d&&d.results?JSON.stringify(d.results):JSON.stringify(d))); }
+    loadQueue();
+  }).catch(function(e){ alert("Error: "+e); loadQueue(); });
+}
 
 function gate(msg){
   document.getElementById("root").innerHTML =
@@ -128,6 +223,10 @@ function render(d){
       '<div class="card"><div class="k">Regions</div><div class="v">'+t.regions+'</div><div class="m">time-zone waves in use</div></div>'+
       '<div class="card"><div class="k">Unsubscribes</div><div class="v">'+t.unsub+'</div><div class="m">blacklisted / opted out</div></div>'+
     '</div>'+
+    '<div class="panel" id="xqueue"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">'+
+      '<h2 style="margin:0">X / social queue <span style="text-transform:none;font-weight:400;color:#7a7e8a">&middot; review &amp; post to @TheVeilMedia</span></h2>'+
+      '<button class="xb gen" onclick="xGenerate()">Generate this week’s drafts</button></div>'+
+      '<div id="xqueue-body"><div class="empty">Loading…</div></div></div>'+
     signupPanel+
     '<div class="panel"><h2>Email engagement · opens &amp; clicks</h2>'+engHtml+'</div>'+
     unsubPanel+
@@ -140,10 +239,12 @@ function render(d){
     '<div class="grid2"><div class="panel"><h2>Regions</h2>'+barRows(d.regions)+'</div>'+
       '<div class="panel"><h2>Time zones</h2>'+barRows(d.timezones)+'</div></div>'+
     '</div>';
+  loadQueue();
 }
 
 (function(){
   var key = new URLSearchParams(location.search).get("key") || "";
+  KEY = key;
   if(!key){ gate(); return; }
   document.getElementById("root").innerHTML = '<div class="wrap"><div class="empty">Loading…</div></div>';
   fetch(STATS_URL+"?key="+encodeURIComponent(key))
