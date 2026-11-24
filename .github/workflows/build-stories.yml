@@ -1,0 +1,33 @@
+name: Build story pages
+
+on:
+  schedule:
+    - cron: "30 0 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate story pages + archive
+        run: python3 tools/build-stories.py
+      - name: Bake current issue into the homepage
+        run: python3 tools/bake-home.py
+      - name: Commit if changed
+        run: |
+          git config user.name "veil-bot"
+          git config user.email "bot@theveil.media"
+          if [ -n "$(git status --porcelain story archive.html index.html sitemap.xml)" ]; then
+            git add story archive.html index.html sitemap.xml
+            git commit -m "Auto: rebuild story pages + archive + sitemap + bake homepage [skip ci]"
+            git push
+          else
+            echo "No changes."
+          fi
