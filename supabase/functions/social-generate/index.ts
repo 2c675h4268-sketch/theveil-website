@@ -42,8 +42,8 @@ function composeCallout(kind: "high" | "low", title: string, score: number): str
     ? "🛸 This week's most credible UAP story"
     : "⚠️ This week's least credible UAP story";
   const verdict = kind === "high"
-    ? `Veil credibility score: ${score}/100 — the best-sourced story in this week's issue.`
-    : `Veil credibility score: ${score}/100 — thin sourcing, so treat it with skepticism until it's corroborated.`;
+    ? `Veil credibility score: ${score}/100. The best-sourced UAP story we saw this week.`
+    : `Veil credibility score: ${score}/100. Thin sourcing, so give it time before you believe it.`;
   // No URL, so the full 280 weighted chars are available; keep margin for the
   // 2-weight emoji, curly quotes and newlines. Budget the title against the rest.
   const fixed = header.length + verdict.length + 8;
@@ -60,10 +60,10 @@ function composePromo(weekOf: string, count: number): string {
   const site = `${SITE}/`;
   const n = count > 0 ? count : "";
   const variants = [
-    `The UAP conversation is mostly noise. The Veil turns it into signal.\n\n🗞️ Free newsletter, every Sunday night\n🔎 Paste any article or X post → an instant 0–100 credibility read\n\n${site}`,
-    `This week we scored ${n} UAP stories 0–100 for credibility — so you don't have to guess which ones are real.\n\n🗞️ Free, every Sunday night\n🔎 Check any article or X post yourself\n\n${site}`,
-    `What's real in UAP, and what isn't?\n\nThe Veil scores every story 0–100. A free newsletter every Sunday night — plus a tool to paste any article or X post and get a credibility read.\n\n${site}`,
-    `Stop doomscrolling UFO claims. Start scoring them.\n\nThe Veil puts a 0–100 credibility score on every UAP story.\n🗞️ Free Sunday-night newsletter\n🔎 Paste any link or X post to check it\n\n${site}`,
+    `New UFO headlines show up every week, and it's hard to know which ones hold up. The Veil scores each story from 0 to 100 for credibility, free, every Sunday night. You can also paste any article or X post and check it yourself.\n\n${site}`,
+    `The Veil is a free weekly newsletter that scores every UFO and UAP story from 0 to 100 for credibility, so you can see which ones hold up. It goes out every Sunday night, and you can check any article or X post yourself here: ${site}`,
+    `This week we looked at ${n} UFO and UAP stories and scored each one from 0 to 100 for credibility. It's free and goes out every Sunday night. You can also check any article or X post yourself: ${site}`,
+    `Not sure which UFO stories to believe? The Veil scores every one from 0 to 100 for credibility. It's free, it comes out every Sunday night, and you can paste any article or X post to check it yourself.\n\n${site}`,
   ];
   const epochWeek = Math.floor(new Date(`${weekOf}T00:00:00Z`).getTime() / (7 * 24 * 3600 * 1000));
   const idx = ((epochWeek % variants.length) + variants.length) % variants.length;
