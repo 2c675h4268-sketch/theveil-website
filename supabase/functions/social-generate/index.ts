@@ -34,6 +34,23 @@ function compose(pos: number, title: string, score: number, link: string): strin
   return `${header}${t}${scoreLine}${link}`;
 }
 
+// Text-only credibility callouts (positions 10 & 11) — the week's most- and
+// least-credible story. They run on the off-days (Mon/Wed) and deliberately
+// carry NO link: cheaper to post and not downranked by X's link suppression.
+function composeCallout(kind: "high" | "low", title: string, score: number): string {
+  const header = kind === "high"
+    ? "🛸 This week's most credible UAP story"
+    : "⚠️ This week's least credible UAP story";
+  const verdict = kind === "high"
+    ? `Veil credibility score: ${score}/100 — the best-sourced story in this week's issue.`
+    : `Veil credibility score: ${score}/100 — thin sourcing, so treat it with skepticism until it's corroborated.`;
+  // No URL, so the full 280 weighted chars are available; keep margin for the
+  // 2-weight emoji, curly quotes and newlines. Budget the title against the rest.
+  const fixed = header.length + verdict.length + 8;
+  const t = clip(title, Math.max(40, Math.min(190, 270 - fixed)));
+  return `${header}\n\n“${t}”\n\n${verdict}`;
+}
+
 async function sb(path: string, init: RequestInit = {}): Promise<Response> {
   return await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...init,
@@ -98,7 +115,7 @@ Deno.serve(async (req) => {
   const autopost = url.searchParams.get("autopost") === "1" || url.searchParams.get("autopost") === "true";
   const initialStatus = autopost ? "approved" : "draft";
 
-  const drafts = await Promise.all(selected.map(async (a, i) => {
+  const storyDrafts = await Promise.all(selected.map(async (a, i) => {
     const title = String(a.title || "");
     const score = Number(a.credibility_score || 0);
     const link = await resolveLink(title);
@@ -113,6 +130,34 @@ Deno.serve(async (req) => {
       status: initialStatus,
     };
   }));
+
+  // Off-day text callouts. `pool` is ordered by credibility_score desc, so the
+  // first element is the most credible story and the last is the least.
+  const calloutDrafts: Array<Record<string, unknown>> = [];
+  const highest = pool[0];
+  if (highest) {
+    const title = String(highest.title || "");
+    const score = Number(highest.credibility_score || 0);
+    calloutDrafts.push({
+      week_of: week, position: 10, title, link: null, score,
+      category: highest.category ?? null,
+      text: composeCallout("high", title, score), status: initialStatus,
+    });
+  }
+  // Only run the "least credible" callout when the issue is big enough that the
+  // lowest story isn't already one of the top-3 link posts.
+  const lowest = pool[pool.length - 1];
+  if (lowest && pool.length >= 4 && lowest !== highest) {
+    const title = String(lowest.title || "");
+    const score = Number(lowest.credibility_score || 0);
+    calloutDrafts.push({
+      week_of: week, position: 11, title, link: null, score,
+      category: lowest.category ?? null,
+      text: composeCallout("low", title, score), status: initialStatus,
+    });
+  }
+
+  const drafts = [...storyDrafts, ...calloutDrafts];
 
   // Upsert, ignoring existing (week_of, position) so edited/approved drafts stick.
   const up = await sb("social_posts?on_conflict=week_of,position", {
