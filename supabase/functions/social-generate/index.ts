@@ -51,6 +51,25 @@ function composeCallout(kind: "high" | "low", title: string, score: number): str
   return `${header}\n\n“${t}”\n\n${verdict}`;
 }
 
+// Saturday promo (position 20) — an evergreen advertisement for the site, not
+// tied to any story. Rotates across variants by ISO week so consecutive
+// Saturdays never post identical text (X rejects duplicate tweets). Every
+// variant hits the three pitches: free Sunday-night newsletter, 0-100
+// credibility scoring, and the paste-a-link checker. Ends on the site URL.
+function composePromo(weekOf: string, count: number): string {
+  const site = `${SITE}/`;
+  const n = count > 0 ? count : "";
+  const variants = [
+    `The UAP conversation is mostly noise. The Veil turns it into signal.\n\n🗞️ Free newsletter, every Sunday night\n🔎 Paste any article or X post → an instant 0–100 credibility read\n\n${site}`,
+    `This week we scored ${n} UAP stories 0–100 for credibility — so you don't have to guess which ones are real.\n\n🗞️ Free, every Sunday night\n🔎 Check any article or X post yourself\n\n${site}`,
+    `What's real in UAP, and what isn't?\n\nThe Veil scores every story 0–100. A free newsletter every Sunday night — plus a tool to paste any article or X post and get a credibility read.\n\n${site}`,
+    `Stop doomscrolling UFO claims. Start scoring them.\n\nThe Veil puts a 0–100 credibility score on every UAP story.\n🗞️ Free Sunday-night newsletter\n🔎 Paste any link or X post to check it\n\n${site}`,
+  ];
+  const epochWeek = Math.floor(new Date(`${weekOf}T00:00:00Z`).getTime() / (7 * 24 * 3600 * 1000));
+  const idx = ((epochWeek % variants.length) + variants.length) % variants.length;
+  return variants[idx];
+}
+
 async function sb(path: string, init: RequestInit = {}): Promise<Response> {
   return await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...init,
@@ -157,7 +176,14 @@ Deno.serve(async (req) => {
     });
   }
 
-  const drafts = [...storyDrafts, ...calloutDrafts];
+  // Saturday evergreen promo (position 20) — an ad for the site, not a story.
+  const promoDrafts: Array<Record<string, unknown>> = [{
+    week_of: week, position: 20, title: "Weekly promo", link: `${SITE}/`,
+    score: null, category: "promo",
+    text: composePromo(week, pool.length), status: initialStatus,
+  }];
+
+  const drafts = [...storyDrafts, ...calloutDrafts, ...promoDrafts];
 
   // Upsert, ignoring existing (week_of, position) so edited/approved drafts stick.
   const up = await sb("social_posts?on_conflict=week_of,position", {
