@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- X / Twitter profile photo. Square 800x800; X displays it as a circle, so
+     all content stays inside the inscribed circle. Indigo ground + white
+     dashed "eye" mark + Playfair wordmark — matches the site nav mark. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:800px;height:800px;overflow:hidden}
+  body{
+    background:
+      radial-gradient(circle at 50% 36%, #4a50c4 0%, #3b40a3 54%, #2d3183 100%);
+    font-family:"Playfair Display",Georgia,serif;
+    -webkit-font-smoothing:antialiased;color:#fff;
+  }
+  .wrap{width:800px;height:800px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  /* inscribed-circle guide (not rendered visibly) */
+  .eye{width:300px;height:300px;margin-bottom:34px;filter:drop-shadow(0 8px 26px rgba(0,0,0,0.25))}
+  .word{font-weight:700;font-size:118px;line-height:.9;letter-spacing:-0.01em}
+  .tag{
+    font-family:"Space Mono",ui-monospace,monospace;font-size:21px;
+    letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,0.78);
+    margin-top:22px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <svg class="eye" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="9" cy="9" r="7" stroke="#fff" stroke-width="1.15" stroke-dasharray="3 2"/>
+      <circle cx="9" cy="9" r="2.5" fill="#fff"/>
+    </svg>
+    <div class="word">The Veil</div>
+    <div class="tag">Weekly&nbsp;UAP&nbsp;Intelligence</div>
+  </div>
+</body>
+</html>
